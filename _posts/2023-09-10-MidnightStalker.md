@@ -3,7 +3,7 @@ toc: true
 comments: true
 layout: post
 title: Midnight Stalker Animation
-description:  This is level _____ in our came mode for our game. This is the how they look separately.
+description:  This is level _____ in our game. This is the how it looks separately.
 courses: { compsci: {week: 1} }
 type: hacks
 ---

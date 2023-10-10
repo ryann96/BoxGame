@@ -42,8 +42,8 @@ type: hacks
     window.addEventListener('load', function () {
         const canvas = document.getElementById('spriteContainer');
         const ctx = canvas.getContext('2d');
-        const SPRITE_WIDTH = 28;  // matches sprite pixel width
-        const SPRITE_HEIGHT = 32; // matches sprite pixel height
+        const SPRITE_WIDTH = 30;  // matches sprite pixel width
+        const SPRITE_HEIGHT = 30; // matches sprite pixel height
         const SCALE_FACTOR = 5;  // control size of sprite on canvas
         const FRAME_LIMIT = 5;  // number of frames per row, this code assume each row is same
         // const FRAME_RATE = 15;  // not used
@@ -126,12 +126,6 @@ type: hacks
                         ninja.frameY = 6;
                         break;
                     case 'H':
-                        ninja.frameY = 7;
-                        break;
-                    case 'I':
-                        ninja.frameY = 8;
-                        break;
-
 
 
                     default:

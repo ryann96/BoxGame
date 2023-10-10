@@ -6,4 +6,4 @@ ghp_4PqCWpdI6l6Nlmgk1D5rCTcm9aU2tO0PX0s + G
 
 VARNIKA:
 //git commit -m "customizations"
-//I have commitment issues :,)
+//I have commitment issues :

@@ -3,7 +3,7 @@ toc: true
 comments: true
 layout: post
 title: Midnight Stalker Animation
-description:  This is level _____ in our came mode for our game. This is the how they look separately.
+description:  This is level _____ in our game. This is the how it looks separately.
 courses: { compsci: {week: 1} }
 type: hacks
 ---
@@ -45,7 +45,7 @@ type: hacks
         const SPRITE_WIDTH = 28;  // matches sprite pixel width
         const SPRITE_HEIGHT = 32; // matches sprite pixel height
         const SCALE_FACTOR = 5;  // control size of sprite on canvas
-        const FRAME_LIMIT = 7;  // number of frames per row, this code assume each row is same
+        const FRAME_LIMIT = 5;  // number of frames per row, this code assume each row is same
         // const FRAME_RATE = 15;  // not used
         const FRAME_RATE = 30; // 30 frames per second
         const DESIRED_FRAME_RATE = 8; // 1 frames per second

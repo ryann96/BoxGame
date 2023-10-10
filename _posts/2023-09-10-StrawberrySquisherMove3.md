@@ -2,7 +2,7 @@
 toc: true
 comments: true
 layout: post
-title: Strawberry Squisher Animation
+title: Strawberry Squisher Animation 3
 description:  Example!!! This sample shows markdown cell, markdown table, markdown code fencing, and code cells.
 courses: { compsci: {week: 1} }
 type: hacks
@@ -14,12 +14,8 @@ type: hacks
             <img id="StrawberrySquisher" src="{{site.baseurl}}/images/StrawberrySquisher.png"> 
         </canvas>
         <div id="controls"> <!--basic radio buttons which can be used to check whether each individual animaiton works -->
-            <input type="radio" name="animation" id="A" checked>
-            <label for="idle">A</label><br>
-            <input type="radio" name="animation" id="B">
-            <label for="barking">B</label><br>
-            <input type="radio" name="animation" id="C">
-            <label for="walking">C</label><br>
+            <input type="radio" name="animation" id="jumping" checked>
+            <label for="idle">Jumping</label><br>
         </div>
     </div>
 </body>
@@ -91,16 +87,9 @@ type: hacks
             if (event.target.tagName === 'INPUT') {
                 const selectedAnimation = event.target.id;
                 switch (selectedAnimation) {
-                    case 'A':
+                    case 'jumping':
                         strawberrySquisher.frameY = 0;
                         break;
-                    case 'B':
-                        strawberrySquisher.frameY = 1;
-                        break;
-                    case 'C':
-                        strawberrySquisher.frameY = 2;
-                        break;
-                        
 
                     default:
                         break;

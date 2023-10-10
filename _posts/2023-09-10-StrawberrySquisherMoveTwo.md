@@ -2,7 +2,7 @@
 toc: true
 comments: true
 layout: post
-title: Strawberry Squisher Animation
+title: Strawberry Squisher Animation 2
 description:  Example!!! This sample shows markdown cell, markdown table, markdown code fencing, and code cells.
 courses: { compsci: {week: 1} }
 type: hacks
@@ -14,12 +14,8 @@ type: hacks
             <img id="StrawberrySquisher" src="{{site.baseurl}}/images/StrawberrySquisher.png"> 
         </canvas>
         <div id="controls"> <!--basic radio buttons which can be used to check whether each individual animaiton works -->
-            <input type="radio" name="animation" id="A" checked>
-            <label for="idle">A</label><br>
-            <input type="radio" name="animation" id="B">
-            <label for="barking">B</label><br>
-            <input type="radio" name="animation" id="C">
-            <label for="walking">C</label><br>
+            <input type="radio" name="animation" id="chomping" checked>
+            <label for="idle">Chomping</label><br>
         </div>
     </div>
 </body>
@@ -30,9 +26,9 @@ type: hacks
         const canvas = document.getElementById('spriteContainer');
         const ctx = canvas.getContext('2d');
         const SPRITE_WIDTH = 120;  // matches sprite pixel width
-        const SPRITE_HEIGHT = 100; // matches sprite pixel height
+        const SPRITE_HEIGHT = 114; // matches sprite pixel height
         const SCALE_FACTOR = 1;  // control size of sprite on canvas
-        const FRAME_LIMIT = 6;  // number of frames per row, this code assume each row is same
+        const FRAME_LIMIT = 5;  // number of frames per row, this code assume each row is same
         // const FRAME_RATE = 15;  // not used
         const FRAME_RATE = 30; // 30 frames per second
         const DESIRED_FRAME_RATE = 8; // 1 frames per second
@@ -91,16 +87,9 @@ type: hacks
             if (event.target.tagName === 'INPUT') {
                 const selectedAnimation = event.target.id;
                 switch (selectedAnimation) {
-                    case 'A':
+                    case 'chomping':
                         strawberrySquisher.frameY = 0;
                         break;
-                    case 'B':
-                        strawberrySquisher.frameY = 1;
-                        break;
-                    case 'C':
-                        strawberrySquisher.frameY = 2;
-                        break;
-                        
 
                     default:
                         break;

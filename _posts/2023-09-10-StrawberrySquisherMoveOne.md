@@ -2,7 +2,7 @@
 toc: true
 comments: true
 layout: post
-title: Iceman Animation
+title: Strawberry Squisher Animation 1
 description:  Example!!! This sample shows markdown cell, markdown table, markdown code fencing, and code cells.
 courses: { compsci: {week: 1} }
 type: hacks
@@ -11,17 +11,11 @@ type: hacks
 <body>
     <div>
         <canvas id="spriteContainer"> <!-- Within the base div is a canvas. An HTML canvas is used only for graphics. It allows the user to access some basic functions related to the image created on the canvas (including animation) -->
-            <img id="Iceman" src="{{site.baseurl}}/images/IceMan.png"> 
+            <img id="StrawberrySquisher" src="{{site.baseurl}}/images/StrawberrySquisher.png"> 
         </canvas>
         <div id="controls"> <!--basic radio buttons which can be used to check whether each individual animaiton works -->
-            <input type="radio" name="animation" id="A">
-            <label for="idle">A</label><br>
-            <input type="radio" name="animation" id="B">
-            <label for="barking">B</label><br>
-            <input type="radio" name="animation" id="C">
-            <label for="walking">C</label><br>
-            <input type="radio" name="animation" id="D">
-            <label for="talking">D</label><br>
+            <input type="radio" name="animation" id="running" checked>
+            <label for="idle">Running</label><br>
         </div>
     </div>
 </body>
@@ -31,22 +25,21 @@ type: hacks
     window.addEventListener('load', function () {
         const canvas = document.getElementById('spriteContainer');
         const ctx = canvas.getContext('2d');
-        const SPRITE_WIDTH = 60;  // matches sprite pixel width
-        const SPRITE_HEIGHT = 100; // matches sprite pixel height
+        const SPRITE_WIDTH = 120;  // matches sprite pixel width
+        const SPRITE_HEIGHT = 114; // matches sprite pixel height
         const SCALE_FACTOR = 1;  // control size of sprite on canvas
         const FRAME_LIMIT = 5;  // number of frames per row, this code assume each row is same
         // const FRAME_RATE = 15;  // not used
-        
-        const FRAME_RATE = 60; // 60 frames per second
-        const DESIRED_FRAME_RATE = 6; // 1 frames per second
+        const FRAME_RATE = 30; // 30 frames per second
+        const DESIRED_FRAME_RATE = 8; // 1 frames per second
         const FRAME_INTERVAL = 1000 / DESIRED_FRAME_RATE;
 
         canvas.width = SPRITE_WIDTH * SCALE_FACTOR;
         canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
 
-        class Iceman {
+        class StrawberrySquisher{
             constructor() {
-                this.image = document.getElementById("Iceman");
+                this.image = document.getElementById("StrawberrySquisher");
                 this.spriteWidth = SPRITE_WIDTH;
                 this.spriteHeight = SPRITE_HEIGHT;
                 this.width = this.spriteWidth;
@@ -86,7 +79,7 @@ type: hacks
         }
 
         // dog object
-        const iceman = new Iceman();
+        const strawberrySquisher = new StrawberrySquisher();
 
         // update frameY of dog object, action from idle, bark, walk radio control
         const controls = document.getElementById('controls');
@@ -94,17 +87,11 @@ type: hacks
             if (event.target.tagName === 'INPUT') {
                 const selectedAnimation = event.target.id;
                 switch (selectedAnimation) {
-                    case 'A':
-                        iceman.frameY = 0;
+                    case 'running':
+                        strawberrySquisher.frameY = 0;
                         break;
-                    case 'B':
-                        iceman.frameY = 1;
-                        break;
-                    case 'C':
-                        iceman.frameY = 2;
-                        break;
-                    case 'D':
-                        iceman.frameY = 3;
+
+                    default:
                         break;
                 }
             }
@@ -117,10 +104,10 @@ type: hacks
                 // Clears the canvas to remove the previous frame.
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 // Draws the current frame of the sprite.
-                iceman.draw(ctx);
+                strawberrySquisher.draw(ctx);
 
                 // Updates the `frameX` property to prepare for the next frame in the sprite sheet.
-                iceman.update();
+                strawberrySquisher.update();
 
             // Uses `requestAnimationFrame` to synchronize the animation loop with the display's refresh rate,
             // ensuring smooth visuals.

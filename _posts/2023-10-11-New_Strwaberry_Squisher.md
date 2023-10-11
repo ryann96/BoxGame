@@ -94,9 +94,20 @@ type: hacks
             if (event.target.tagName === 'INPUT') {
                 const selectedAnimation = event.target.id;
                 switch (selectedAnimation) {
-                    case 'running':
+                    case 'A':
                         strawberrySquisher.frameY = 0;
                         break;
+                        case 'B':
+                        strawberrySquisher.frameY = 1;
+                        break;case 'C':
+                        strawberrySquisher.frameY = 2;
+                        break;case 'D':
+                        strawberrySquisher.frameY = 3;
+                        break;case 'E':
+                        strawberrySquisher.frameY = 4;
+                        break;
+                        
+                        
 
                     default:
                         break;

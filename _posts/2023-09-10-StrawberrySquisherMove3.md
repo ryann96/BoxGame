@@ -26,9 +26,15 @@ type: hacks
         const canvas = document.getElementById('spriteContainer');
         const ctx = canvas.getContext('2d');
         const SPRITE_WIDTH = 120;  // matches sprite pixel width
+<<<<<<< HEAD:_posts/2023-09-10-StrawberrySquisher.md
+        const SPRITE_HEIGHT = 100; // matches sprite pixel height
+        const SCALE_FACTOR = 1;  // control size of sprite on canvas
+        const FRAME_LIMIT = 6;  // number of frames per row, this code assume each row is same
+=======
         const SPRITE_HEIGHT = 114; // matches sprite pixel height
         const SCALE_FACTOR = 1;  // control size of sprite on canvas
         const FRAME_LIMIT = 5;  // number of frames per row, this code assume each row is same
+>>>>>>> c7dcc41a8aff36548dfa6db16d4e42c3aa00036d:_posts/2023-09-10-StrawberrySquisherMove3.md
         // const FRAME_RATE = 15;  // not used
         const FRAME_RATE = 30; // 30 frames per second
         const DESIRED_FRAME_RATE = 8; // 1 frames per second

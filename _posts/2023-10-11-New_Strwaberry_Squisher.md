@@ -14,15 +14,15 @@ type: hacks
         </canvas>
         <div id="controls"> <!--basic radio buttons which can be used to check whether each individual animaiton works -->
             <input type="radio" name="animation" id="A" checked>
-            <label for="idle">A</label><br>
+            <label for="A">A</label><br>
             <input type="radio" name="animation" id="B" checked>
-            <label for="idle">B</label><br>
+            <label for="B">B</label><br>
             <input type="radio" name="animation" id="C" checked>
-            <label for="idle">C</label><br>
+            <label for="C">C</label><br>
             <input type="radio" name="animation" id="D" checked>
-            <label for="idle">D</label><br>
+            <label for="D">D</label><br>
             <input type="radio" name="animation" id="E" checked>
-            <label for="idle">E</label><br>
+            <label for="E">E</label><br>
         </div>
     </div>
 </body>

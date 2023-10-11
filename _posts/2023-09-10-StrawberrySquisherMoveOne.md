@@ -2,7 +2,7 @@
 toc: true
 comments: true
 layout: post
-title: Strawberry Squisher Animation
+title: Strawberry Squisher Animation 1
 description:  Example!!! This sample shows markdown cell, markdown table, markdown code fencing, and code cells.
 courses: { compsci: {week: 1} }
 type: hacks
@@ -11,15 +11,11 @@ type: hacks
 <body>
     <div>
         <canvas id="spriteContainer"> <!-- Within the base div is a canvas. An HTML canvas is used only for graphics. It allows the user to access some basic functions related to the image created on the canvas (including animation) -->
-            <img id="StrawberrySquisher" src="{{site.baseurl}}/images/StrawberrySquisher.png"> 
+            <img id="StrawberrySquisher" src="{{site.baseurl}}/images/StrawberrySquisherTopRow.png"> 
         </canvas>
         <div id="controls"> <!--basic radio buttons which can be used to check whether each individual animaiton works -->
-            <input type="radio" name="animation" id="A" checked>
-            <label for="idle">A</label><br>
-            <input type="radio" name="animation" id="B">
-            <label for="barking">B</label><br>
-            <input type="radio" name="animation" id="C">
-            <label for="walking">C</label><br>
+            <input type="radio" name="animation" id="running" checked>
+            <label for="idle">Running</label><br>
         </div>
     </div>
 </body>
@@ -29,8 +25,8 @@ type: hacks
     window.addEventListener('load', function () {
         const canvas = document.getElementById('spriteContainer');
         const ctx = canvas.getContext('2d');
-        const SPRITE_WIDTH = 120;  // matches sprite pixel width
-        const SPRITE_HEIGHT = 114; // matches sprite pixel height
+        const SPRITE_WIDTH = 348;  // matches sprite pixel width
+        const SPRITE_HEIGHT = 274; // matches sprite pixel height
         const SCALE_FACTOR = 1;  // control size of sprite on canvas
         const FRAME_LIMIT = 5;  // number of frames per row, this code assume each row is same
         // const FRAME_RATE = 15;  // not used
@@ -91,16 +87,9 @@ type: hacks
             if (event.target.tagName === 'INPUT') {
                 const selectedAnimation = event.target.id;
                 switch (selectedAnimation) {
-                    case 'A':
+                    case 'running':
                         strawberrySquisher.frameY = 0;
                         break;
-                    case 'B':
-                        strawberrySquisher.frameY = 1;
-                        break;
-                    case 'C':
-                        strawberrySquisher.frameY = 2;
-                        break;
-                        
 
                     default:
                         break;

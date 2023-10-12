@@ -1,10 +1,168 @@
-NORA
+NORA:
 ghp_gbjTUd0p2H70qkOXriPMAm38xtggAG0kiDp + 7 
 
 SONI:
 ghp_4PqCWpdI6l6Nlmgk1D5rCTcm9aU2tO0PX0s + G
 
 VARNIKA:
-//git commit -m "customizations"
+//git commit -m "meSsage"
 //I have commitment issues :c
 me too girlie
+
+<body>
+    <div>
+        <canvas id="spriteContainer"> <!-- Within the base div is a canvas. An HTML canvas is used only for graphics. It allows the user to access some basic functions related to the image created on the canvas (including animation) -->
+            <img id="ninjaSprite" src="{{site.baseurl}}/images/ZombieGal.png"> 
+        </canvas>
+        <div id="controls"> <!--basic radio buttons which can be used to check whether each individual animaiton works -->
+            <input type="radio" name="animation" id="A" checked>
+            <label for="A">A</label><br>
+            <input type="radio" name="animation" id="B">
+            <label for="B">B</label><br>
+            <input type="radio" name="animation" id="C">
+            <label for="C">C</label><br>
+            <input type="radio" name="animation" id="D" checked>
+            <label for="D">D</label><br>
+            <input type="radio" name="animation" id="E">
+            <label for="E">E</label><br>
+        </div>
+    </div>
+</body>
+
+<script>
+     window.addEventListener('load', function () {
+        const canvas = document.getElementById('spriteContainer');
+        const ctx = canvas.getContext('2d');
+        const SPRITE_WIDTH = 40;  // matches sprite pixel width
+        const SPRITE_HEIGHT = 60; // matches sprite pixel height
+        const SCALE_FACTOR = 2;  // control size of sprite on canvas
+        const DESIRED_FRAME_RATE = 3; // 3 frames per second
+        const FRAME_INTERVAL = 1000 / DESIRED_FRAME_RATE;
+        const animationData = {
+            'A': {
+                frameLimit: 3,
+                x: 18, // X position for 'idle' animation
+                y: -1, // Y position for 'idle' animation
+            },
+            'B': {
+                frameLimit: 3,
+                x: 18, // X position for 'barking' animation
+                y: 2, // Y position for 'barking' animation
+            },
+            'C': {
+                frameLimit: 5,
+                x: 18, // X position for 'walking' animation
+                y: -1, // Y position for 'walking' animation
+            },
+            'D': {
+                frameLimit: 4,
+                x: 18, // X position for 'walking' animation
+                y: -1, // Y position for 'walking' animation
+            },
+            'E': {
+                frameLimit: 3,
+                x: 18, // X position for 'walking' animation
+                y: -1, // Y position for 'walking' animation
+            }
+        };
+          // number of frames per row, this code assumes each row is different
+        // const FRAME_RATE = 15;  // not used
+        canvas.width = SPRITE_WIDTH * SCALE_FACTOR;
+        canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
+        class test {
+            constructor() {
+                this.image = document.getElementById("ZombieGal");
+                this.spriteWidth = SPRITE_WIDTH;
+                this.spriteHeight = SPRITE_HEIGHT;
+                this.width = this.spriteWidth;
+                this.height = this.spriteHeight;
+                this.x = 0;
+                this.y = 0;
+                this.scale = SCALE_FACTOR;
+                this.minFrame = 0;
+                this.frameY = 0;
+                this.frameX = 0;
+                this.maxFrame = 0;
+            }
+            setFrameLimit(limit) {
+                this.maxFrame = limit;
+            }
+            setPosition(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            // draw object
+            draw(context) {
+                context.drawImage(
+                    this.image,
+                    this.frameX * this.spriteWidth,
+                    this.frameY * this.spriteHeight,
+                    this.spriteWidth,
+                    this.spriteHeight,
+                    this.x,
+                    this.y,
+                    this.width * this.scale,
+                    this.height * this.scale
+                );
+            }
+            // update frameX of object
+            update() {
+                if (this.frameX < this.maxFrame) {
+                    this.frameX++;
+                } else {
+                    this.frameX = 0;
+                }
+            }
+        }
+        // object
+        const test = new Test();
+        // update frameY of object, action from idle, bark, walk, and other radio controls
+        const controls = document.getElementById('controls');
+        controls.addEventListener('click', function (event) {
+            if (event.target.tagName === 'INPUT') {
+                const selectedAnimation = event.target.id;
+                const animationInfo = animationData[selectedAnimation];
+                if (animationInfo) {
+                    test.setFrameLimit(animationInfo.frameLimit);
+                    test.setPosition(animationInfo.x, animationInfo.y);
+                }
+                switch (selectedAnimation) {
+                    case 'A':
+                        test.frameY = 5;
+                        break;
+                    case 'B':
+                        test.frameY = 0;
+                        break;
+                    case 'C':
+                        test.frameY = 1;
+                        break;
+                     case 'D':
+                        test.frameY = 2;
+                        break;
+                     case 'E':
+                        test.frameY = 3;
+                        break;
+                }
+            }
+        });
+        let lastTimestamp = 0;
+        // Animation recursive control function
+        function animate(timestamp) {
+            const deltaTime = timestamp - lastTimestamp;
+            if (deltaTime >= FRAME_INTERVAL) {
+                // Clears the canvas to remove the previous frame.
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                // Draws the current frame of the sprite.
+                test.draw(ctx);
+                // Updates the `frameX` property to prepare for the next frame in the sprite sheet.
+                test.update();
+                // Uses `requestAnimationFrame` to synchronize the animation loop with the display's refresh rate,
+                // ensuring smooth visuals.
+                lastTimestamp = timestamp;
+                }
+            requestAnimationFrame(animate);
+        }
+        // run 1st animate
+        animate();
+    });
+</script>

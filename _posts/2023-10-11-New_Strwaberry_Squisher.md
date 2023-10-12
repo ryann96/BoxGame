@@ -35,7 +35,7 @@ type: hacks
         const SPRITE_WIDTH = 72.375;  // matches sprite pixel width
         const SPRITE_HEIGHT = 86.2; // matches sprite pixel height
         const SCALE_FACTOR = 3;  // control size of sprite on canvas
-        const FRAME_LIMIT = 8;  // number of frames per row, this code assume each row is same
+        const FRAME_LIMIT = 8;  // number of frames per row, this code assume each row is same 
         // const FRAME_RATE = 15;  // not used
         const FRAME_RATE = 30; // 30 frames per second
         const DESIRED_FRAME_RATE = 8; // 1 frames per second

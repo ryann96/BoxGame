@@ -8,4 +8,4 @@ type: hacks
 courses: { compsci: {week: 1} }
 ---
 
-<img src="images/Backy_Roundy.jpg" width="502" height="300">
+<img src="{{site.baseurl}}/images/Backy_Roundy.jpg" width="505" height="300">

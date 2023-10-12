@@ -2,7 +2,7 @@
 toc: true
 comments: false
 layout: post
-title: Box Opening Animation
+title: Iceman2 Animation
 description: idk
 type: hacks
 courses: { compsci: {week: 1} }
@@ -20,10 +20,10 @@ courses: { compsci: {week: 1} }
     window.addEventListener('load', function () {
         const canvas = document.getElementById('spriteContainer');
         const ctx = canvas.getContext('2d');
-        const SPRITE_WIDTH = 53.67;  // matches sprite pixel width
-        const SPRITE_HEIGHT = 81; // matches sprite pixel height
+        const SPRITE_WIDTH = 52.54;  // matches sprite pixel width
+        const SPRITE_HEIGHT = 95; // matches sprite pixel height
         const SCALE_FACTOR = 2;  // control size of sprite on canvas
-        const FRAME_LIMIT = 14;  // number of frames per row, this code assume each row is same
+        const FRAME_LIMIT = 22;  // number of frames per row, this code assume each row is same
 
         canvas.width = SPRITE_WIDTH * SCALE_FACTOR;
         canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
@@ -32,7 +32,7 @@ courses: { compsci: {week: 1} }
         const dogImage = new Image();
 
         // Set the src attribute
-        dogImage.src = "{{site.baseurl}}/images/box_opening.png"; // Change the image path here
+        dogImage.src = "{{site.baseurl}}/images/Iceman.png"; // Change the image path here
 
         // Wait for the image to load
         dogImage.onload = function () {

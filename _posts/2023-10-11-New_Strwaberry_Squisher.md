@@ -10,7 +10,7 @@ type: hacks
 <body>
     <div>
         <canvas id="spriteContainer"> <!-- Within the base div is a canvas. An HTML canvas is used only for graphics. It allows the user to access some basic functions related to the image created on the canvas (including animation) -->
-            <img id="StrawberrySquisher" src="{{site.baseurl}}/images/StrawberrySquisher2.0.png"> 
+            <img id="StrawberrySquisher" src="{{site.baseurl}}/images/StrawberrySquisher2.1.png"> 
         </canvas>
         <div id="controls"> <!--basic radio buttons which can be used to check whether each individual animaiton works -->
             <input type="radio" name="animation" id="A" checked>
@@ -32,8 +32,8 @@ type: hacks
     window.addEventListener('load', function () {
         const canvas = document.getElementById('spriteContainer');
         const ctx = canvas.getContext('2d');
-        const SPRITE_WIDTH = 240.75;  // matches sprite pixel width
-        const SPRITE_HEIGHT = 287.2; // matches sprite pixel height
+        const SPRITE_WIDTH = 72.375;  // matches sprite pixel width
+        const SPRITE_HEIGHT = 86.2; // matches sprite pixel height
         const SCALE_FACTOR = 1;  // control size of sprite on canvas
         const FRAME_LIMIT = 8;  // number of frames per row, this code assume each row is same
         // const FRAME_RATE = 15;  // not used

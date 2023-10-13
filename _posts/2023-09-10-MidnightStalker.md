@@ -3,18 +3,17 @@ toc: true
 comments: true
 layout: post
 title: Midnight Stalker Animation
-description:  This is level _____ in our game. This is the how it looks separately.
+description:  This is level _____ in our game. This is how it looks separately.
 courses: { compsci: {week: 1} }
 type: hacks
 ---
-
 
 <body>
     <div>
         <canvas id="spriteContainer"> <!-- Within the base div is a canvas. An HTML canvas is used only for graphics. It allows the user to access some basic functions related to the image created on the canvas (including animation) -->
             <img id="ninjaSprite" src="{{site.baseurl}}/images/midnightStalker.png"> 
         </canvas>
-        <div id="controls"> <!--basic radio buttons which can be used to check whether each individual animaiton works -->
+        <div id="controls"> <!--basic radio buttons which can be used to check whether each individual animation works -->
             <input type="radio" name="animation" id="A" checked>
             <label for="idle">A</label><br>
             <input type="radio" name="animation" id="B">
@@ -44,14 +43,12 @@ type: hacks
         const ctx = canvas.getContext('2d');
         const SPRITE_WIDTH = 30;  // matches sprite pixel width
         const SPRITE_HEIGHT = 30; // matches sprite pixel height
-        const SCALE_FACTOR = 5;  // control size of sprite on canvas
-        const FRAME_LIMIT = 5;  // number of frames per row, this code assume each row is same
-        // const FRAME_RATE = 15;  // not used
-        const FRAME_RATE = 30; // 30 frames per second
-        const DESIRED_FRAME_RATE = 8; // 1 frames per second
+        const SCALE_FACTOR = 3;  // control size of sprite on canvas
+        const FRAME_LIMIT = 5;  // number of frames per row, this code assumes each row is the same
+        const DESIRED_FRAME_RATE = 8; // 8 frames per second
         const FRAME_INTERVAL = 1000 / DESIRED_FRAME_RATE;
 
-        canvas.width = SPRITE_WIDTH * SCALE_FACTOR;
+        canvas.width = SPRITE_WIDTH * SCALE_FACTOR * 8;
         canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
 
         class Ninja {
@@ -61,13 +58,14 @@ type: hacks
                 this.spriteHeight = SPRITE_HEIGHT;
                 this.width = this.spriteWidth;
                 this.height = this.spriteHeight;
-                this.x = 0;
+                this.x = 0; // Initial x position
                 this.y = 0;
                 this.scale = SCALE_FACTOR;
                 this.minFrame = 0;
                 this.maxFrame = FRAME_LIMIT;
                 this.frameX = 0;
                 this.frameY = 0;
+                this.velocityX = 7; // Horizontal velocity
             }
 
             // draw dog object
@@ -91,6 +89,14 @@ type: hacks
                     this.frameX++;
                 } else {
                     this.frameX = 0;
+                }
+
+                // Update x position for horizontal movement
+                this.x += this.velocityX;
+
+                // Reset x position if it goes beyond the canvas
+                if (this.x > canvas.width) {
+                    this.x = -this.width * this.scale;
                 }
             }
         }
@@ -126,13 +132,12 @@ type: hacks
                         ninja.frameY = 6;
                         break;
                     case 'H':
-
-
                     default:
                         break;
                 }
             }
         });
+
         let lastTimestamp = 0;
         // Animation recursive control function
         function animate(timestamp) {
@@ -146,12 +151,13 @@ type: hacks
                 // Updates the `frameX` property to prepare for the next frame in the sprite sheet.
                 ninja.update();
 
-            // Uses `requestAnimationFrame` to synchronize the animation loop with the display's refresh rate,
-            // ensuring smooth visuals.
+                // Uses `requestAnimationFrame` to synchronize the animation loop with the display's refresh rate,
+                // ensuring smooth visuals.
                 lastTimestamp = timestamp;
-                }
+            }
             requestAnimationFrame(animate);
         }
+
         // run 1st animate
         animate();
     });

@@ -131,7 +131,7 @@ courses: { compsci: {week: 1} }
     // Define gravity value
     let gravity = 1.5;
     // Define the Player class
-    class Dog {
+    class Player {
         constructor() {
             // Initial position and velocity of the player
             this.position = {
@@ -143,8 +143,11 @@ courses: { compsci: {week: 1} }
                 y: 0
             };
             // Dimensions of the player
-            this.width = 30;
-            this.height = 30;
+            this.icemanDetails = {
+            width: 52.54,   // The width of the iceman
+            height: 95,     // The height of the iceman
+            // Add other details if needed
+        };
         }
         // Method to draw the player on the canvas
         draw() {

@@ -11,43 +11,73 @@ type: hacks
 <body>
     <div>
         <canvas id="spriteContainer"> <!-- Within the base div is a canvas. An HTML canvas is used only for graphics. It allows the user to access some basic functions related to the image created on the canvas (including animation) -->
-            <img id="StrawberrySquisher" src="{{site.baseurl}}/images/StrawberrySquisher2.1.png"> 
+            <img id="HuskySpriteSheet" src="{{site.baseurl}}/images/HuskySpriteSheet.png">
         </canvas>
         <div id="controls"> <!--basic radio buttons which can be used to check whether each individual animaiton works -->
             <input type="radio" name="animation" id="A" checked>
             <label for="A">A</label><br>
-            <input type="radio" name="animation" id="B" checked>
+            <input type="radio" name="animation" id="B">
             <label for="B">B</label><br>
-            <input type="radio" name="animation" id="C" checked>
+            <input type="radio" name="animation" id="C">
             <label for="C">C</label><br>
             <input type="radio" name="animation" id="D" checked>
             <label for="D">D</label><br>
-            <input type="radio" name="animation" id="E" checked>
+            <input type="radio" name="animation" id="E">
             <label for="E">E</label><br>
+            <input type="radio" name="animation" id="F">
+            <label for="F">F</label><br>
         </div>
     </div>
 </body>
-
 <script>
     // start on page load
     window.addEventListener('load', function () {
         const canvas = document.getElementById('spriteContainer');
         const ctx = canvas.getContext('2d');
-        const SPRITE_WIDTH = 74;  // matches sprite pixel width
-        const SPRITE_HEIGHT = 64; // matches sprite pixel height
-        const SCALE_FACTOR = 3;  // control size of sprite on canvas
-        const FRAME_LIMIT = 3;  // number of frames per row, this code assume each row is same 
-        // const FRAME_RATE = 15;  // not used
-        const FRAME_RATE = 30; // 30 frames per second
-        const DESIRED_FRAME_RATE = 8; // 1 frames per second
+        const SPRITE_WIDTH = 71;  // matches sprite pixel width
+        const SPRITE_HEIGHT = 71; // matches sprite pixel height
+        const SCALE_FACTOR = 2;  // control size of sprite on canvas
+        const DESIRED_FRAME_RATE = 3; // 3 frames per second
         const FRAME_INTERVAL = 1000 / DESIRED_FRAME_RATE;
-
+        const animationData = {
+            'A': {
+                frameLimit: 3,
+                x: 18, // X position for 'idle' animation
+                y: -1, // Y position for 'idle' animation
+            },
+            'B': {
+                frameLimit: 3,
+                x: 18, // X position for 'barking' animation
+                y: 2, // Y position for 'barking' animation
+            },
+            'C': {
+                frameLimit: 5,
+                x: 18, // X position for 'walking' animation
+                y: -1, // Y position for 'walking' animation
+            },
+            'D': {
+                frameLimit: 4,
+                x: 18, // X position for 'walking' animation
+                y: -1, // Y position for 'walking' animation
+            },
+            'E': {
+                frameLimit: 3,
+                x: 18, // X position for 'walking' animation
+                y: -1, // Y position for 'walking' animation
+            },
+            'F': {
+                frameLimit: 2,
+                x: 18, // X position for 'walking' animation
+                y: -1, // Y position for 'walking' animation
+            }
+        };
+          // number of frames per row, this code assumes each row is different
+        // const FRAME_RATE = 15;  // not used
         canvas.width = SPRITE_WIDTH * SCALE_FACTOR;
         canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
-
-        class StrawberrySquisher{
+        class Strawberry {
             constructor() {
-                this.image = document.getElementById("StrawberrySquisher");
+                this.image = document.getElementById("Pinky");
                 this.spriteWidth = SPRITE_WIDTH;
                 this.spriteHeight = SPRITE_HEIGHT;
                 this.width = this.spriteWidth;
@@ -56,12 +86,18 @@ type: hacks
                 this.y = 0;
                 this.scale = SCALE_FACTOR;
                 this.minFrame = 0;
-                this.maxFrame = FRAME_LIMIT;
-                this.frameX = 0;
                 this.frameY = 0;
+                this.frameX = 0;
+                this.maxFrame = 0;
             }
-
-            // draw dog object
+            setFrameLimit(limit) {
+                this.maxFrame = limit;
+            }
+            setPosition(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            // draw object
             draw(context) {
                 context.drawImage(
                     this.image,
@@ -75,7 +111,6 @@ type: hacks
                     this.height * this.scale
                 );
             }
-
             // update frameX of object
             update() {
                 if (this.frameX < this.maxFrame) {
@@ -85,32 +120,36 @@ type: hacks
                 }
             }
         }
-
-        // dog object
-        const strawberrySquisher = new StrawberrySquisher();
-
-        // update frameY of dog object, action from idle, bark, walk radio control
+        // object
+        const strawberry = new Strawberry();
+        // update frameY of husky object, action from idle, bark, walk, and other radio controls
         const controls = document.getElementById('controls');
         controls.addEventListener('click', function (event) {
             if (event.target.tagName === 'INPUT') {
                 const selectedAnimation = event.target.id;
+                const animationInfo = animationData[selectedAnimation];
+                if (animationInfo) {
+                    husky.setFrameLimit(animationInfo.frameLimit);
+                    husky.setPosition(animationInfo.x, animationInfo.y);
+                }
                 switch (selectedAnimation) {
                     case 'A':
-                        strawberrySquisher.frameY = 0;
+                        husky.frameY = 0;
                         break;
-                        case 'B':
-                        strawberrySquisher.frameY = 1;
-                        break;case 'C':
-                        strawberrySquisher.frameY = 2;
-                        break;case 'D':
-                        strawberrySquisher.frameY = 3;
-                        break;case 'E':
-                        strawberrySquisher.frameY = 4;
+                    case 'B':
+                        husky.frameY = 1;
                         break;
-                        
-                        
-
-                    default:
+                    case 'C':
+                        husky.frameY = 2;
+                        break;
+                     case 'D':
+                        husky.frameY = 3;
+                        break;
+                     case 'E':
+                        husky.frameY = 4;
+                        break;
+                     case 'F':
+                        husky.frameY = 5;
                         break;
                 }
             }
@@ -123,13 +162,11 @@ type: hacks
                 // Clears the canvas to remove the previous frame.
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 // Draws the current frame of the sprite.
-                strawberrySquisher.draw(ctx);
-
+                strawberry.draw(ctx);
                 // Updates the `frameX` property to prepare for the next frame in the sprite sheet.
-                strawberrySquisher.update();
-
-            // Uses `requestAnimationFrame` to synchronize the animation loop with the display's refresh rate,
-            // ensuring smooth visuals.
+                strawberry.update();
+                // Uses `requestAnimationFrame` to synchronize the animation loop with the display's refresh rate,
+                // ensuring smooth visuals.
                 lastTimestamp = timestamp;
                 }
             requestAnimationFrame(animate);

@@ -122,7 +122,7 @@ courses: { compsci: {week: 1} }
     // Define gravity value
     let gravity = 1.5;
     // Define the Player class
-    class Player {
+    class Dog {
         constructor() {
             // Initial position and velocity of the player
             this.position = {

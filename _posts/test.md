@@ -11,7 +11,7 @@ type: hacks
 <body>
     <div>
         <canvas id="spriteContainer"> <!-- Within the base div is a canvas. An HTML canvas is used only for graphics. It allows the user to access some basic functions related to the image created on the canvas (including animation) -->
-            <img id="HuskySpriteSheet" src="{{site.baseurl}}/images/HuskySpriteSheet.png">
+            <img id="pinky" src="{{site.baseurl}}/images/pinky.png">
         </canvas>
         <div id="controls"> <!--basic radio buttons which can be used to check whether each individual animaiton works -->
             <input type="radio" name="animation" id="A" checked>
@@ -43,32 +43,32 @@ type: hacks
             'A': {
                 frameLimit: 3,
                 x: 18, // X position for 'idle' animation
-                y: -1, // Y position for 'idle' animation
+                y: -2, // Y position for 'idle' animation
             },
             'B': {
                 frameLimit: 3,
                 x: 18, // X position for 'barking' animation
-                y: 2, // Y position for 'barking' animation
+                y: -2, // Y position for 'barking' animation
             },
             'C': {
                 frameLimit: 5,
                 x: 18, // X position for 'walking' animation
-                y: -1, // Y position for 'walking' animation
+                y: -2, // Y position for 'walking' animation
             },
             'D': {
                 frameLimit: 4,
                 x: 18, // X position for 'walking' animation
-                y: -1, // Y position for 'walking' animation
+                y: -2, // Y position for 'walking' animation
             },
             'E': {
                 frameLimit: 3,
                 x: 18, // X position for 'walking' animation
-                y: -1, // Y position for 'walking' animation
+                y: -2, // Y position for 'walking' animation
             },
             'F': {
                 frameLimit: 2,
                 x: 18, // X position for 'walking' animation
-                y: -1, // Y position for 'walking' animation
+                y: -2, // Y position for 'walking' animation
             }
         };
           // number of frames per row, this code assumes each row is different
@@ -77,7 +77,7 @@ type: hacks
         canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
         class Strawberry {
             constructor() {
-                this.image = document.getElementById("Pinky");
+                this.image = document.getElementById("pinky");
                 this.spriteWidth = SPRITE_WIDTH;
                 this.spriteHeight = SPRITE_HEIGHT;
                 this.width = this.spriteWidth;

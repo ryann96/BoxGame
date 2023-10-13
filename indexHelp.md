@@ -1,4 +1,0 @@
----
-layout: help
-title: Help
----

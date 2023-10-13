@@ -41,7 +41,7 @@ type: hacks
         const DESIRED_FRAME_RATE = 8; // 1 frames per second
         const FRAME_INTERVAL = 1000 / DESIRED_FRAME_RATE;
 
-        canvas.width = SPRITE_WIDTH * SCALE_FACTOR;
+        canvas.width = SPRITE_WIDTH * SCALE_FACTOR * 8;
         canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
 
         class StrawberrySquisher{

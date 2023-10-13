@@ -25,7 +25,7 @@ courses: { compsci: {week: 1} }
         const SCALE_FACTOR = 2;  // control size of sprite on canvas
         const FRAME_LIMIT = 22;  // number of frames per row, this code assume each row is same
 
-        canvas.width = SPRITE_WIDTH * SCALE_FACTOR;
+        canvas.width = SPRITE_WIDTH * SCALE_FACTOR*8;
         canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
 
         // Create an Image object
@@ -50,6 +50,7 @@ courses: { compsci: {week: 1} }
                     this.maxFrame = FRAME_LIMIT;
                     this.frameX = 0;
                     this.frameY = 0;
+                    this.velocityX = 7;
                 }
 
                 // draw dog object
@@ -74,6 +75,14 @@ courses: { compsci: {week: 1} }
                     } else {
                         this.frameX = 0;
                     }
+
+                // Update x position for horizontal movement
+                    this.x += this.velocityX;
+
+                // Reset x position if it goes beyond the canvas
+                    if (this.x > canvas.width) {
+                        this.x = -this.width * this.scale;
+                }
                 }
             }
 

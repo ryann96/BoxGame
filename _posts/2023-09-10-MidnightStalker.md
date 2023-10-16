@@ -35,8 +35,8 @@ type: hacks
             const DESIRED_FRAME_RATE = 8; // 8 frames per second
             const FRAME_INTERVAL = 1000 / DESIRED_FRAME_RATE;
             const BOMB_RADIUS = 5; // radius of the bomb
-            const BOMB_SPEED = 8; // speed of the bomb
-            const BOMB_DISTANCE = 100; // distance before bomb disappears
+            const BOMB_SPEED = 20; // speed of the bomb
+            const BOMB_DISTANCE = 200; // distance before bomb disappears
             canvas.width = SPRITE_WIDTH * SCALE_FACTOR * 8;
             canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
             class Ninja {
@@ -96,7 +96,7 @@ type: hacks
                 draw(context) {
                     context.beginPath();
                     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-                    context.fillStyle = 'red';
+                    context.fillStyle = 'black';
                     context.fill();
                     context.closePath();
                 }

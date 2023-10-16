@@ -91,25 +91,35 @@ type: hacks
                     this.radius = BOMB_RADIUS;
                     this.speed = BOMB_SPEED;
                     this.distanceTravelled = 0; // to track the distance the bomb has traveled
+                    this.exploded = false; // flag to track if bomb has exploded
                 }
                 // draw bomb object
                 draw(context) {
-                    context.beginPath();
-                    context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-                    context.fillStyle = 'black';
-                    context.fill();
-                    context.closePath();
+                    if (!this.exploded) {
+                        context.beginPath();
+                        context.moveTo(this.x, this.y - this.radius);
+                        for (let i = 0; i < 5; i++) {
+                            context.rotate(Math.PI / 5);
+                            context.lineTo(this.x, this.y - this.radius * 0.5);
+                            context.rotate(Math.PI / 5);
+                            context.lineTo(this.x, this.y - this.radius);
+                        }
+                        context.fillStyle = 'black';
+                        context.fill();
+                        context.closePath();
+                    }
                 }
                 // update bomb object
                 update() {
-                    this.x += this.speed;
-                    this.distanceTravelled += this.speed;
-                    // Check if the bomb has reached the explosion point
-                    if (this.distanceTravelled >= BOMB_DISTANCE) {
-                        // Implement explosion logic here (you can add an explosion animation or effect)
-                        console.log('Bomb exploded!');
-                        // Remove the bomb from the array
-                        bombs.splice(bombs.indexOf(this), 1);
+                    if (!this.exploded) {
+                        this.x += this.speed;
+                        this.distanceTravelled += this.speed;
+                        // Check if the bomb has reached the explosion point
+                        if (this.distanceTravelled >= BOMB_DISTANCE) {
+                            // Implement explosion logic here (you can add an explosion animation or effect)
+                            console.log('Bomb exploded!');
+                            this.exploded = true;
+                        }
                     }
                 }
             }

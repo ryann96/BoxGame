@@ -43,7 +43,7 @@ courses: { compsci: {week: 1} }
                     this.spriteHeight = SPRITE_HEIGHT;
                     this.width = this.spriteWidth;
                     this.height = this.spriteHeight;
-                    this.x = 0;
+                    this.x = canvas.width - this.width * SCALE_FACTOR; // Start on the right side
                     this.y = 0;
                     this.scale = SCALE_FACTOR;
                     this.minFrame = 0;

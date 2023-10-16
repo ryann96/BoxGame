@@ -71,7 +71,7 @@ courses: { compsci: {week: 1} }
                 // update frameX of object
                 update() {
                     if (this.frameX < this.maxFrame) {
-                        this.frameX++;
+                        this.frameX--;
                     } else {
                         this.frameX = 0;
                     }

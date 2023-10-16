@@ -32,7 +32,7 @@ courses: { compsci: {week: 1} }
         const dogImage = new Image();
 
         // Set the src attribute
-        dogImage.src = "{{site.baseurl}}/images/Iceman.png"; // Change the image path here
+        dogImage.src = "{{site.baseurl}}/images/Iceman flipped.png"; // Change the image path here
 
         // Wait for the image to load
         dogImage.onload = function () {

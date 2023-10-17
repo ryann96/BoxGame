@@ -43,14 +43,14 @@ courses: { compsci: {week: 1} }
                     this.spriteHeight = SPRITE_HEIGHT;
                     this.width = this.spriteWidth;
                     this.height = this.spriteHeight;
-                    this.x = canvas.width - this.width * SCALE_FACTOR; // Start on the right side
-                    this.y = 0;
+                    this.x = canvas.width; // Start from the right edge of the canvas
+                    this.y = Math.random() * (canvas.height - this.height); // Random initial Y position
                     this.scale = SCALE_FACTOR;
                     this.minFrame = 0;
                     this.maxFrame = FRAME_LIMIT;
                     this.frameX = 0;
                     this.frameY = 0;
-                    this.velocityX = 7;
+                    this.velocityX = -7; // Negative value to move from right to left
                 }
 
                 // draw dog object
@@ -70,11 +70,11 @@ courses: { compsci: {week: 1} }
 
                 // update frameX of object
                 update() {
-                    if (this.frameX < this.maxFrame) {
-                        this.frameX--;
-                    } else {
-                        this.frameX = 0;
-                    }
+                    // Randomly change the velocity or position
+                    if (Math.random() < 0.1) {
+                    this.velocityX = Math.random() * 20 - 10; // Random velocity between -10 and 10
+        }
+        
 
                 // Update x position for horizontal movement
                     this.x += this.velocityX;

@@ -44,7 +44,7 @@ courses: { compsci: {week: 1} }
                     this.width = this.spriteWidth;
                     this.height = this.spriteHeight;
                     this.x = canvas.width; // Start from the right edge of the canvas
-                    this.y = Math.random() * (canvas.height - this.height); // Random initial Y position
+                    this.y = 0
                     this.scale = SCALE_FACTOR;
                     this.minFrame = 0;
                     this.maxFrame = FRAME_LIMIT;
@@ -70,15 +70,13 @@ courses: { compsci: {week: 1} }
                     );
                 }
 
-               // update frameX and position of the object
-            update(currentTime) {
-                if (currentTime - this.lastAppearTime > this.appearInterval) {
-                    // Reset the sprite's position and appear interval
-                    this.x = canvas.width;
-                    this.y = Math.random() * (canvas.height - this.height);
-                    this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval
-                    this.lastAppearTime = currentTime;
-                }
+              // update frameX of object
+                update() {
+                    if (this.frameX < this.maxFrame) {
+                        this.frameX++;
+                    } else {
+                        this.frameX = 0;
+                    }
         
 
                 // Update x position for horizontal movement

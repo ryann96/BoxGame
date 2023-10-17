@@ -86,6 +86,10 @@ courses: { compsci: {week: 1} }
                     if (this.x > canvas.width) {
                         this.x = -this.width * this.scale;
                 }
+                // Randomly change the appearance interval
+                    if (Math.random() < 0.05) {
+                        this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval
+                    }
                 }
             }
 

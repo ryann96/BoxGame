@@ -43,14 +43,14 @@ courses: { compsci: {week: 1} }
                     this.spriteHeight = SPRITE_HEIGHT;
                     this.width = this.spriteWidth;
                     this.height = this.spriteHeight;
-                    this.x = 0;
+                    this.x = canvas.width; // Start from the right edge of the canvas
                     this.y = 0;
                     this.scale = SCALE_FACTOR;
                     this.minFrame = 0;
                     this.maxFrame = FRAME_LIMIT;
                     this.frameX = 0;
                     this.frameY = 0;
-                    this.velocityX = 7;
+                    this.velocityX = -7; // Negative value to move from right to left
                 }
 
                 // draw dog object

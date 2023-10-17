@@ -59,11 +59,7 @@ me too girlie
                 x: 18, // X position for 'walking' animation
                 y: -1, // Y position for 'walking' animation
             },
-            'E': {
-                frameLimit: 3,
-                x: 18, // X position for 'walking' animation
-                y: -1, // Y position for 'walking' animation
-            }
+
         };
           // number of frames per row, this code assumes each row is different
         // const FRAME_RATE = 15;  // not used

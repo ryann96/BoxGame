@@ -43,14 +43,16 @@ courses: { compsci: {week: 1} }
                     this.spriteHeight = SPRITE_HEIGHT;
                     this.width = this.spriteWidth;
                     this.height = this.spriteHeight;
-                    this.x = canvas.width - this.width * SCALE_FACTOR; // Start on the right side
-                    this.y = 0;
+                    this.x = canvas.width; // Start from the right edge of the canvas
+                    this.y = 0
                     this.scale = SCALE_FACTOR;
                     this.minFrame = 0;
                     this.maxFrame = FRAME_LIMIT;
                     this.frameX = 0;
                     this.frameY = 0;
-                    this.velocityX = 7;
+                    this.velocityX = -7; // Negative value to move from right to left
+                     this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval in milliseconds
+                    this.lastAppearTime = 0;
                 }
 
                 // draw dog object
@@ -68,13 +70,14 @@ courses: { compsci: {week: 1} }
                     );
                 }
 
-                // update frameX of object
+              // update frameX of object
                 update() {
                     if (this.frameX < this.maxFrame) {
-                        this.frameX--;
+                        this.frameX++;
                     } else {
                         this.frameX = 0;
                     }
+        
 
                 // Update x position for horizontal movement
                     this.x += this.velocityX;

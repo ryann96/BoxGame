@@ -43,7 +43,7 @@ courses: { compsci: {week: 1} }
                     this.spriteHeight = SPRITE_HEIGHT;
                     this.width = this.spriteWidth;
                     this.height = this.spriteHeight;
-                    this.x = canvas.width - this.width * SCALE_FACTOR; // Start on the right side
+                    this.x = 0;
                     this.y = 0;
                     this.scale = SCALE_FACTOR;
                     this.minFrame = 0;
@@ -71,7 +71,7 @@ courses: { compsci: {week: 1} }
                 // update frameX of object
                 update() {
                     if (this.frameX < this.maxFrame) {
-                        this.frameX--;
+                        this.frameX++;
                     } else {
                         this.frameX = 0;
                     }

@@ -51,6 +51,8 @@ courses: { compsci: {week: 1} }
                     this.frameX = 0;
                     this.frameY = 0;
                     this.velocityX = -7; // Negative value to move from right to left
+                     this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval in milliseconds
+                    this.lastAppearTime = 0;
                 }
 
                 // draw dog object
@@ -68,12 +70,15 @@ courses: { compsci: {week: 1} }
                     );
                 }
 
-                // update frameX of object
-                update() {
-                    // Randomly change the velocity or position
-                    if (Math.random() < 0.1) {
-                    this.velocityX = Math.random() * 20 - 10; // Random velocity between -10 and 10
-        }
+               // update frameX and position of the object
+            update(currentTime) {
+                if (currentTime - this.lastAppearTime > this.appearInterval) {
+                    // Reset the sprite's position and appear interval
+                    this.x = canvas.width;
+                    this.y = Math.random() * (canvas.height - this.height);
+                    this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval
+                    this.lastAppearTime = currentTime;
+                }
         
 
                 // Update x position for horizontal movement

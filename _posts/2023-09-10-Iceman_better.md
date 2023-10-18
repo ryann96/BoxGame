@@ -45,6 +45,9 @@ courses: { compsci: {week: 1} }
                     this.height = this.spriteHeight;
                     this.x = Math.random() * (canvas.width - this.   width * SCALE_FACTOR); // Random X position
                     this.y = Math.random() * (canvas.height - this.height * SCALE_FACTOR); // Random Y position
+                    this.scale = SCALE_FACTOR;
+                    this.minFrame = 0;
+                    this.maxFrame = FRAME_LIMIT;
                     this.frameX = 0;
                     this.frameY = 0;
                     this.velocityX = -7; // Negative value to move from right to left
@@ -69,7 +72,7 @@ courses: { compsci: {week: 1} }
 
               // update frameX of object
                 update() {
-                    if (this.frameX < this.maxFrame - 1) {
+                    if (this.frameX < this.maxFrame) {
                         this.frameX++;
                     } else {
                         this.frameX = 0;
@@ -80,8 +83,8 @@ courses: { compsci: {week: 1} }
                     this.x += this.velocityX;
 
                 // Reset x position if it goes beyond the canvas
-                    if (this.x + this.width < 0) {
-                        this.x = -this.width * this.scale;
+                    if (tthis.x + this.width < 0) {
+                        this.x = canvas.width;
                         this.y = Math.random() * (canvas.height - this.height * this.scale); // Random Y position
                         }
                 }

@@ -16,9 +16,6 @@ title: Delveries
 
 <div class="canvas-container">
     <canvas id="playerCanvas"></canvas>
-    <canvas id="spriteContainer">
-        <img id="box" src="{{site.baseurl}}/images/box.png"> 
-    </canvas>
 </div>
 
 <div id="controls">
@@ -33,37 +30,6 @@ title: Delveries
     let c = canvas.getContext('2d');
     canvas.width = 650;
     canvas.height = 400;
-    let gravity = 1.5;
-
-    class Player {
-        constructor() {
-            this.position = {
-                x: 100,
-                y: 200
-            };
-            this.velocity = {
-                x: 0,
-                y: 0
-            };
-            this.width = 30;
-            this.height = 30;
-        }
-        draw() {
-            c.fillStyle = 'red';
-            c.fillRect(this.position.x, this.position.y, this.width, this.height);
-        }
-        update() {
-            this.draw();
-            this.position.y += this.velocity.y;
-            this.position.x += this.velocity.x;
-            if (this.position.y + this.height + this.velocity.y <= canvas.height)
-                this.velocity.y += gravity;
-            else
-                this.velocity.y = 0;
-        }
-    }
-
-    player = new Player();
 
     let keys = {
         right: {
@@ -77,13 +43,11 @@ title: Delveries
     function animate() {
         requestAnimationFrame(animate);
         c.clearRect(0, 0, canvas.width, canvas.height);
-        player.update();
-        if (keys.right.pressed && player.position.x + player.width <= canvas.width - 50) {
-            player.velocity.x = 15;
-        } else if (keys.left.pressed && player.position.x >= 50) {
-            player.velocity.x = -15;
-        } else {
-            player.velocity.x = 0;
+
+        if (keys.right.pressed && iceman.x + iceman.width <= canvas.width - 50) {
+            iceman.x += iceman.speed;
+        } else if (keys.left.pressed && iceman.x >= 50) {
+            iceman.x -= iceman.speed;
         }
     }
 
@@ -92,19 +56,10 @@ title: Delveries
     addEventListener('keydown', ({ keyCode }) => {
         switch (keyCode) {
             case 65:
-                console.log('left');
                 keys.left.pressed = true;
                 break;
-            case 83:
-                console.log('down');
-                break;
             case 68:
-                console.log('right');
                 keys.right.pressed = true;
-                break;
-            case 87:
-                console.log('up');
-                player.velocity.y -= 20;
                 break;
         }
     });
@@ -112,25 +67,14 @@ title: Delveries
     addEventListener('keyup', ({ keyCode }) => {
         switch (keyCode) {
             case 65:
-                console.log('left');
                 keys.left.pressed = false;
                 break;
-            case 83:
-                console.log('down');
-                break;
             case 68:
-                console.log('right');
                 keys.right.pressed = false;
-                break;
-            case 87:
-                console.log('up');
-                player.velocity.y = -20;
                 break;
         }
     });
 
-    const canvas2 = document.getElementById('spriteContainer');
-    const ctx = canvas2.getContext('2d');
     const SPRITE_WIDTH = 71.75;
     const SPRITE_HEIGHT = 80.5;
     const SCALE_FACTOR = 2;
@@ -148,12 +92,11 @@ title: Delveries
             y: -20,
         }
     };
-    canvas2.width = SPRITE_WIDTH * SCALE_FACTOR * 7;
-    canvas2.height = SPRITE_HEIGHT * SCALE_FACTOR;
 
     class Iceman {
         constructor() {
-            this.image = document.getElementById("box");
+            this.image = new Image();
+            this.image.src = "{{site.baseurl}}/images/box.png"; // Update the path to your image
             this.spriteWidth = SPRITE_WIDTH;
             this.spriteHeight = SPRITE_HEIGHT;
             this.width = this.spriteWidth;
@@ -177,10 +120,6 @@ title: Delveries
         draw(context) {
             context.drawImage(
                 this.image,
-                this.frameX * this.spriteWidth,
-                this.frameY * this.spriteHeight,
-                this.spriteWidth,
-                this.spriteHeight,
                 this.x,
                 this.y,
                 this.width * this.scale,
@@ -220,16 +159,16 @@ title: Delveries
 
     document.addEventListener('keydown', function (event) {
         switch (event.key) {
-            case 'ArrowLeft':
+            case 'a':
                 iceman.x -= iceman.speed;
                 break;
-            case 'ArrowRight':
+            case 'd':
                 iceman.x += iceman.speed;
                 break;
-            case 'ArrowUp':
+            case 'w':
                 iceman.y -= iceman.speed;
                 break;
-            case 'ArrowDown':
+            case 's':
                 iceman.y += iceman.speed;
                 break;
         }
@@ -239,8 +178,8 @@ title: Delveries
     function animate2(timestamp) {
         const deltaTime = timestamp - lastTimestamp;
         if (deltaTime >= FRAME_INTERVAL) {
-            ctx.clearRect(0, 0, canvas2.width, canvas2.height);
-            iceman.draw(ctx);
+            c.clearRect(0, 0, canvas.width, canvas.height);
+            iceman.draw(c);
             iceman.update();
             lastTimestamp = timestamp;
         }

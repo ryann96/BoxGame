@@ -3,42 +3,38 @@ toc: true
 comments: false
 layout: post
 title: Box Opening Animation
-description: idk
+description: complete
 type: hacks
 courses: { compsci: {week: 1} }
 ---
 
 <body>
     <div>
-        <canvas id="spriteContainer"> <!-- Within the base div is a canvas. An HTML canvas is used only for graphics. It allows the user to access some basic functions related to the image created on the canvas (including animation) -->
+        <canvas id="spriteContainer">
         </canvas>
     </div>
 </body>
 
 <script>
-    // start on page load
     window.addEventListener('load', function () {
         const canvas = document.getElementById('spriteContainer');
         const ctx = canvas.getContext('2d');
-        const SPRITE_WIDTH = 53.67;  // matches sprite pixel width
-        const SPRITE_HEIGHT = 81; // matches sprite pixel height
-        const SCALE_FACTOR = 2;  // control size of sprite on canvas
-        const FRAME_LIMIT = 14;  // number of frames per row, this code assume each row is same
+        const SPRITE_WIDTH = 53.67; 
+        const SPRITE_HEIGHT = 81;
+        const SCALE_FACTOR = 2; 
+        const FRAME_LIMIT = 14;
 
         canvas.width = SPRITE_WIDTH * SCALE_FACTOR;
         canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
 
-        // Create an Image object
         const boxopenImage = new Image();
 
-        // Set the src attribute
-        boxopenImage.src = "{{site.baseurl}}/images/box_opening.png"; // Change the image path here
+        boxopenImage.src = "{{site.baseurl}}/images/box_opening.png";
 
-        // Wait for the image to load
         boxopenImage.onload = function () {
             class Boxopen {
                 constructor() {
-                    this.image = boxopenImage; // Use the loaded image
+                    this.image = boxopenImage; 
                     this.spriteWidth = SPRITE_WIDTH;
                     this.spriteHeight = SPRITE_HEIGHT;
                     this.width = this.spriteWidth;
@@ -52,7 +48,6 @@ courses: { compsci: {week: 1} }
                     this.frameY = 0;
                 }
 
-                // draw boxopen object
                 draw(context) {
                     context.drawImage(
                         this.image,
@@ -67,7 +62,6 @@ courses: { compsci: {week: 1} }
                     );
                 }
 
-                // update frameX of object
                 update() {
                     if (this.frameX < this.maxFrame) {
                         this.frameX++;
@@ -77,29 +71,16 @@ courses: { compsci: {week: 1} }
                 }
             }
 
-            // boxopen object
             const boxopen = new Boxopen();
 
-            // Animation recursive control function
             function animate() {
-                // Clears the canvas to remove the previous frame.
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                // Draws the current frame of the sprite.
                 boxopen.draw(ctx);
-
-                // Updates the `frameX` property to prepare for the next frame in the sprite sheet.
                 boxopen.update();
-
-                // Use setTimeout to introduce a delay before the next frame
                 setTimeout(function () {
-                    // Uses `requestAnimationFrame` to synchronize the animation loop with the display's refresh rate,
-                    // ensuring smooth visuals. Call `animate` again to continue the animation loop.
                     requestAnimationFrame(animate);
-                }, 50); // Set the timeout delay in milliseconds (e.g., 100ms = 0.1 second)
+                }, 50); 
             }
-
-            // Start the animation loop
             animate();
         };
     });

@@ -3,7 +3,7 @@ toc: true
 comments: false
 layout: post
 title: Iceman2 Animation
-description: idk
+description: in progress
 type: hacks
 courses: { compsci: {week: 1} }
 ---

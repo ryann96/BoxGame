@@ -91,19 +91,32 @@ courses: { compsci: {week: 1} }
                     }
                 }
 
+<<<<<<< HEAD
                 // dog object
                 const dog = new Dog();
+=======
+            // iceman object
+            const iceman = new Iceman();
+>>>>>>> 5ab304583b97c066948f127bb78bf498b97f5b9d
 
                 // Animation recursive control function
                 function animate() {
                     // Clears the canvas to remove the previous frame.
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+<<<<<<< HEAD
                     // Draws the current frame of the sprite.
                     dog.draw(ctx);
 
                     // Updates the `frameX` property to prepare for the next frame in the sprite sheet.
                     dog.update();
+=======
+                // Draws the current frame of the sprite.
+                iceman.draw(ctx);
+
+                // Updates the `frameX` property to prepare for the next frame in the sprite sheet.
+                iceman.update();
+>>>>>>> 5ab304583b97c066948f127bb78bf498b97f5b9d
 
                     // Use setTimeout to introduce a delay before the next frame
                     setTimeout(function () {

@@ -43,8 +43,8 @@ courses: { compsci: {week: 1} }
                     this.spriteHeight = SPRITE_HEIGHT;
                     this.width = this.spriteWidth;
                     this.height = this.spriteHeight;
-                    this.x = canvas.width; // Start from the right edge of the canvas
-                    this.y = 0
+                    this.x = Math.random() * (canvas.width - this.   width * SCALE_FACTOR); // Random X position
+                    this.y = Math.random() * (canvas.height - this.height * SCALE_FACTOR); // Random Y position
                     this.scale = SCALE_FACTOR;
                     this.minFrame = 0;
                     this.maxFrame = FRAME_LIMIT;
@@ -83,9 +83,15 @@ courses: { compsci: {week: 1} }
                     this.x += this.velocityX;
 
                 // Reset x position if it goes beyond the canvas
-                    if (this.x > canvas.width) {
-                        this.x = -this.width * this.scale;
+                    if (tthis.x + this.width < 0) {
+                        this.x = canvas.width;
+                        this.y = Math.random() * (canvas.height - this.height * this.scale); // Random Y position
+                        }
                 }
+                // Randomly change the appearance interval
+                    if (Math.random() < 0.05) {
+                        this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval
+                    }
                 }
             }
 

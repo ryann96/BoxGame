@@ -3,42 +3,38 @@ toc: true
 comments: false
 layout: post
 title: platform go up
-description: idk
+description: complete
 type: hacks
 courses: { compsci: {week: 1} }
 ---
 
 <body>
     <div>
-        <canvas id="spriteContainer"> <!-- Within the base div is a canvas. An HTML canvas is used only for graphics. It allows the user to access some basic functions related to the image created on the canvas (including animation) -->
+        <canvas id="spriteContainer"> 
         </canvas>
     </div>
 </body>
 
 <script>
-    // start on page load
     window.addEventListener('load', function () {
         const canvas = document.getElementById('spriteContainer');
         const ctx = canvas.getContext('2d');
-        const SPRITE_WIDTH = 362.25;  // matches sprite pixel width
-        const SPRITE_HEIGHT = 377; // matches sprite pixel height
-        const SCALE_FACTOR = 0.25;  // control size of sprite on canvas
-        const FRAME_LIMIT = 3;  // number of frames per row, this code assume each row is same
+        const SPRITE_WIDTH = 362.25; 
+        const SPRITE_HEIGHT = 377;
+        const SCALE_FACTOR = 0.25;  
+        const FRAME_LIMIT = 3;  
 
         canvas.width = SPRITE_WIDTH * SCALE_FACTOR;
         canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
 
-        // Create an Image object
         const platformImage = new Image();
 
-        // Set the src attribute
-        platformImage.src = "{{site.baseurl}}/images/platform.png"; // Change the image path here
+        platformImage.src = "{{site.baseurl}}/images/platform.png"; 
 
-        // Wait for the image to load
         platformImage.onload = function () {
             class Platform {
                 constructor() {
-                    this.image = platformImage; // Use the loaded image
+                    this.image = platformImage; 
                     this.spriteWidth = SPRITE_WIDTH;
                     this.spriteHeight = SPRITE_HEIGHT;
                     this.width = this.spriteWidth;
@@ -52,7 +48,6 @@ courses: { compsci: {week: 1} }
                     this.frameY = 0;
                 }
 
-                // draw platform object
                 draw(context) {
                     context.drawImage(
                         this.image,
@@ -67,7 +62,6 @@ courses: { compsci: {week: 1} }
                     );
                 }
 
-                // update frameX of object
                 update() {
                     if (this.frameX < this.maxFrame) {
                         this.frameX++;
@@ -77,29 +71,16 @@ courses: { compsci: {week: 1} }
                 }
             }
 
-            // platform object
             const platform = new Platform();
 
-            // Animation recursive control function
             function animate() {
-                // Clears the canvas to remove the previous frame.
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                // Draws the current frame of the sprite.
                 platform.draw(ctx);
-
-                // Updates the `frameX` property to prepare for the next frame in the sprite sheet.
                 platform.update();
-
-                // Use setTimeout to introduce a delay before the next frame
                 setTimeout(function () {
-                    // Uses `requestAnimationFrame` to synchronize the animation loop with the display's refresh rate,
-                    // ensuring smooth visuals. Call `animate` again to continue the animation loop.
                     requestAnimationFrame(animate);
-                }, 100); // Set the timeout delay in milliseconds (e.g., 100ms = 0.1 second)
+                }, 100); 
             }
-
-            // Start the animation loop
             animate();
         };
     });

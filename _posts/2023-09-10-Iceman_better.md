@@ -29,31 +29,33 @@ courses: { compsci: {week: 1} }
         canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
 
         // Create an Image object
-        const dogImage = new Image();
+        const icemanImage = new Image();
 
         // Set the src attribute
-        dogImage.src = "{{site.baseurl}}/images/Iceman flipped.png"; // Change the image path here
+        icemanImage.src = "{{site.baseurl}}/images/Iceman flipped.png"; // Change the image path here
 
         // Wait for the image to load
-        dogImage.onload = function () {
-            class Dog {
+        icemanImage.onload = function () {
+            class Iceman {
                 constructor() {
-                    this.image = dogImage; // Use the loaded image
+                    this.image = icemanImage; // Use the loaded image
                     this.spriteWidth = SPRITE_WIDTH;
                     this.spriteHeight = SPRITE_HEIGHT;
                     this.width = this.spriteWidth;
                     this.height = this.spriteHeight;
-                    this.x = canvas.width; // Start from the right edge of the canvas
-                    this.y = Math.random() * (canvas.height - this.height); // Random initial Y position
+                    this.x = Math.random() * (canvas.width - this.   width * SCALE_FACTOR); // Random X position
+                    this.y = Math.random() * (canvas.height - this.height * SCALE_FACTOR); // Random Y position
                     this.scale = SCALE_FACTOR;
                     this.minFrame = 0;
                     this.maxFrame = FRAME_LIMIT;
                     this.frameX = 0;
                     this.frameY = 0;
                     this.velocityX = -7; // Negative value to move from right to left
+                     this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval in milliseconds
+                    this.lastAppearTime = 0;
                 }
 
-                // draw dog object
+                // draw iceman object
                 draw(context) {
                     context.drawImage(
                         this.image,
@@ -68,26 +70,33 @@ courses: { compsci: {week: 1} }
                     );
                 }
 
-                // update frameX of object
+              // update frameX of object
                 update() {
-                    // Randomly change the velocity or position
-                    if (Math.random() < 0.1) {
-                    this.velocityX = Math.random() * 20 - 10; // Random velocity between -10 and 10
-        }
+                    if (this.frameX < this.maxFrame) {
+                        this.frameX++;
+                    } else {
+                        this.frameX = 0;
+                    }
         
 
                 // Update x position for horizontal movement
                     this.x += this.velocityX;
 
                 // Reset x position if it goes beyond the canvas
-                    if (this.x > canvas.width) {
-                        this.x = -this.width * this.scale;
+                    if (tthis.x + this.width < 0) {
+                        this.x = canvas.width;
+                        this.y = Math.random() * (canvas.height - this.height * this.scale); // Random Y position
+                        }
                 }
+                // Randomly change the appearance interval
+                    if (Math.random() < 0.05) {
+                        this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval
+                    }
                 }
             }
 
-            // dog object
-            const dog = new Dog();
+            // iceman object
+            const iceman = new Iceman();
 
             // Animation recursive control function
             function animate() {
@@ -95,10 +104,10 @@ courses: { compsci: {week: 1} }
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 // Draws the current frame of the sprite.
-                dog.draw(ctx);
+                iceman.draw(ctx);
 
                 // Updates the `frameX` property to prepare for the next frame in the sprite sheet.
-                dog.update();
+                iceman.update();
 
                 // Use setTimeout to introduce a delay before the next frame
                 setTimeout(function () {

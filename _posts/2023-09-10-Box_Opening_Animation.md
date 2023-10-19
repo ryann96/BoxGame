@@ -29,16 +29,16 @@ courses: { compsci: {week: 1} }
         canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
 
         // Create an Image object
-        const dogImage = new Image();
+        const boxopenImage = new Image();
 
         // Set the src attribute
-        dogImage.src = "{{site.baseurl}}/images/box_opening.png"; // Change the image path here
+        boxopenImage.src = "{{site.baseurl}}/images/box_opening.png"; // Change the image path here
 
         // Wait for the image to load
-        dogImage.onload = function () {
-            class Dog {
+        boxopenImage.onload = function () {
+            class Boxopen {
                 constructor() {
-                    this.image = dogImage; // Use the loaded image
+                    this.image = boxopenImage; // Use the loaded image
                     this.spriteWidth = SPRITE_WIDTH;
                     this.spriteHeight = SPRITE_HEIGHT;
                     this.width = this.spriteWidth;
@@ -52,7 +52,7 @@ courses: { compsci: {week: 1} }
                     this.frameY = 0;
                 }
 
-                // draw dog object
+                // draw boxopen object
                 draw(context) {
                     context.drawImage(
                         this.image,
@@ -77,8 +77,8 @@ courses: { compsci: {week: 1} }
                 }
             }
 
-            // dog object
-            const dog = new Dog();
+            // boxopen object
+            const boxopen = new Boxopen();
 
             // Animation recursive control function
             function animate() {
@@ -86,10 +86,10 @@ courses: { compsci: {week: 1} }
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 // Draws the current frame of the sprite.
-                dog.draw(ctx);
+                boxopen.draw(ctx);
 
                 // Updates the `frameX` property to prepare for the next frame in the sprite sheet.
-                dog.update();
+                boxopen.update();
 
                 // Use setTimeout to introduce a delay before the next frame
                 setTimeout(function () {

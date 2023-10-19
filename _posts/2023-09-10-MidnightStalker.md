@@ -107,7 +107,6 @@ type: hacks
                     // Check if the bomb has reached the explosion point
                     if (this.distanceTravelled >= BOMB_DISTANCE) {
                         // Implement explosion logic here (you can add an explosion animation or effect)
-                        console.log('Bomb exploded!');
                         // Remove the bomb from the array
                         bombs.splice(bombs.indexOf(this), 1);
                     }

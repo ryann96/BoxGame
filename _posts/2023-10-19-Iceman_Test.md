@@ -70,7 +70,9 @@ courses: { compsci: {week: 1} }
                     );
                 }
 
-              // update frameX of object
+                // Define a glitch variable to control the glitch effect
+                let glitch = 0;
+
                 update() {
                     if (this.frameX < this.maxFrame) {
                         this.frameX++;
@@ -78,17 +80,23 @@ courses: { compsci: {week: 1} }
                         this.frameX = 0;
                     }
 
-                    // Update x position for horizontal movement
-                    this.x += this.velocityX;
-
-                    // Check if it's time to perform the glitch
-                    if (Math.random() < 0.05) {
-                        // Glitch 100 pixels forward
-                        this.x += 100;
+                    // Disappear and reappear the sprite 100 pixels forward
+                    if (glitch > 0) {
+                        this.x += this.velocityX;
+                        glitch--;
+                    } else {
+                        this.x += this.velocityX;
                     }
-                    // If the sprite goes beyond the canvas, reset its position to the left edge
-                    if (this.x > canvas.width) {
-                        this.x = -this.width * this.scale;
+
+                    // If the sprite goes beyond the canvas, make it reappear 100 pixels forward
+                    if (this.x < -100) {
+                        this.x = canvas.width;
+                        glitch = 100; // Set the glitch variable to 100 to move it forward
+                    }
+
+                    // Randomly change the appearance interval
+                    if (Math.random() < 0.05) {
+                        this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval
                     }
                 }
 

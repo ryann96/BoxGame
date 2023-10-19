@@ -52,17 +52,17 @@ courses: { compsci: {week: 1} }
 
                 draw(context) {
                     context.drawImage(
-                        this.image,
-                        this.frameX * this.spriteWidth,
-                        this.frameY * this.spriteHeight,
-                        this.spriteWidth,
-                        this.spriteHeight,
-                        this.x + Math.random() * 5 - 2, // Add random x position offset
-                        this.y + Math.random() * 5 - 2, // Add random y position offset
-                        this.width * this.scale + Math.random() * 4 - 2, // Add random width offset
-                        this.height * this.scale + Math.random() * 4 - 2 // Add random height offset
-                    );
-                }
+                    this.image,
+                    this.frameX * this.spriteWidth,
+                    this.frameY * this.spriteHeight,
+                    this.spriteWidth,
+                    this.spriteHeight,
+                    this.x + Math.random() * 20 - 10, // Increase random x position offset
+                    this.y + Math.random() * 20 - 10, // Increase random y position offset
+                    this.width * this.scale + Math.random() * 10 - 5, // Increase random width offset
+                    this.height * this.scale + Math.random() * 10 - 5 // Increase random height offset
+    );
+}
 
                 update() {
                     if (this.frameX < this.maxFrame) {

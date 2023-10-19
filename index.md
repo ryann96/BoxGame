@@ -88,28 +88,28 @@ title: Delveries
 
         document.addEventListener('keydown', function (event) {
             switch (event.key) {
-                case 'ArrowLeft':
+                case 'w':
+                    keyState.ArrowUp = true;
+                    break;
+                case 'a':
                     keyState.ArrowLeft = true;
                     break;
-                case 'ArrowRight':
+                case 'd':
                     keyState.ArrowRight = true;
-                    break;
-                case 'ArrowUp':
-                    keyState.ArrowUp = true;
                     break;
             }
         });
 
         document.addEventListener('keyup', function (event) {
             switch (event.key) {
-                case 'ArrowLeft':
+                case 'w':
+                    keyState.ArrowUp = false;
+                    break;
+                case 'a':
                     keyState.ArrowLeft = false;
                     break;
-                case 'ArrowRight':
+                case 'd':
                     keyState.ArrowRight = false;
-                    break;
-                case 'ArrowUp':
-                    keyState.ArrowUp = false;
                     break;
             }
         });

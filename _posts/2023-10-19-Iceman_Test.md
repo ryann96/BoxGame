@@ -78,17 +78,17 @@ courses: { compsci: {week: 1} }
                         this.frameX = 0;
                     }
 
-                    // Disappear and reappear the sprite 100 pixels forward
+                    // Update x position for horizontal movement
                     this.x += this.velocityX;
 
-                    // If the sprite goes beyond the canvas, make it reappear 100 pixels forward
-                    if (this.x < -100) {
-                        this.x = canvas.width + 100; // Reappear 100 pixels forward
-                    }
-
-                    // Randomly change the appearance interval
+                    // Check if it's time to perform the glitch
                     if (Math.random() < 0.05) {
-                        this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval
+                        // Glitch 100 pixels forward
+                        this.x += 100;
+                    }
+                    // If the sprite goes beyond the canvas, reset its position to the left edge
+                    if (this.x > canvas.width) {
+                        this.x = -this.width * this.scale;
                     }
                 }
 

@@ -57,8 +57,8 @@ courses: { compsci: {week: 1} }
                         this.frameY * this.spriteHeight,
                         this.spriteWidth,
                         this.spriteHeight,
-                        this.x + Math.random() * 10 - 5, // Add random x position offset
-                        this.y + Math.random() * 10 - 5, // Add random y position offset
+                        this.x + Math.random() * 5 - 2, // Add random x position offset
+                        this.y + Math.random() * 5 - 2, // Add random y position offset
                         this.width * this.scale + Math.random() * 4 - 2, // Add random width offset
                         this.height * this.scale + Math.random() * 4 - 2 // Add random height offset
                     );

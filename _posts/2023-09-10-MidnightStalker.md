@@ -14,7 +14,7 @@ type: hacks
             <img id="ninjaSprite" src="{{site.baseurl}}/images/midnightStalker.png"> 
         </canvas>
         <div id="controls"> <!--basic radio buttons which can be used to check whether each individual animation works -->
-            <input type="radio" name="animation" id="A">
+            <input type="radio" name="animation" id="A" checked>
             <label for="walking">Jumping</label><br>
             <input type="radio" name="animation" id="B">
             <label for="walking">Sword Fighting</label><br>
@@ -52,7 +52,7 @@ type: hacks
                     this.minFrame = 0;
                     this.maxFrame = FRAME_LIMIT;
                     this.frameX = 0;
-                    this.frameY = 0;
+                    this.frameY = 2;
                     this.velocityX = 6; // Horizontal velocity
                 }
                 // draw ninja object
@@ -91,28 +91,26 @@ type: hacks
                     this.radius = BOMB_RADIUS;
                     this.speed = BOMB_SPEED;
                     this.distanceTravelled = 0; // to track the distance the bomb has traveled
+                    this.color = 'black'; // Initial color
                 }
-                // draw bomb object
                 draw(context) {
                     context.beginPath();
                     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-                    context.fillStyle = 'black';
+                    context.fillStyle = this.color;
                     context.fill();
                     context.closePath();
                 }
-                // update bomb object
                 update() {
                     this.x += this.speed;
                     this.distanceTravelled += this.speed;
-                    // Check if the bomb has reached the explosion point
                     if (this.distanceTravelled >= BOMB_DISTANCE) {
-                        // Implement explosion logic here (you can add an explosion animation or effect)
-                        // Remove the bomb from the array
                         bombs.splice(bombs.indexOf(this), 1);
+                    } else if (this.distanceTravelled >= 180) {
+                        this.color = 'orange';
+                        this.radius = BOMB_RADIUS*2.5;
                     }
                 }
             }
-            // ninja object
             const ninja = new Ninja();
             // bombs array
             const bombs = [];

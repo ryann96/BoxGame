@@ -3,7 +3,7 @@ toc: true
 comments: false
 layout: post
 title: Iceman2 Animation
-description: idk
+description: in progress
 type: hacks
 courses: { compsci: {week: 1} }
 ---
@@ -43,8 +43,8 @@ courses: { compsci: {week: 1} }
                     this.spriteHeight = SPRITE_HEIGHT;
                     this.width = this.spriteWidth;
                     this.height = this.spriteHeight;
-                    this.x = Math.random() * (canvas.width - this.   width * SCALE_FACTOR); // Random X position
-                    this.y = Math.random() * (canvas.height - this.height * SCALE_FACTOR); // Random Y position
+                    this.x = canvas.width; // Start from the right edge of the canvas
+                    this.y = 0
                     this.scale = SCALE_FACTOR;
                     this.minFrame = 0;
                     this.maxFrame = FRAME_LIMIT;
@@ -55,7 +55,7 @@ courses: { compsci: {week: 1} }
                     this.lastAppearTime = 0;
                 }
 
-                // draw iceman object
+                // draw dog object
                 draw(context) {
                     context.drawImage(
                         this.image,
@@ -83,10 +83,8 @@ courses: { compsci: {week: 1} }
                     this.x += this.velocityX;
 
                 // Reset x position if it goes beyond the canvas
-                    if (tthis.x + this.width < 0) {
-                        this.x = canvas.width;
-                        this.y = Math.random() * (canvas.height - this.height * this.scale); // Random Y position
-                        }
+                    if (this.x > canvas.width) {
+                        this.x = -this.width * this.scale;
                 }
                 // Randomly change the appearance interval
                     if (Math.random() < 0.05) {
@@ -95,7 +93,7 @@ courses: { compsci: {week: 1} }
                 }
             }
 
-            // iceman object
+            // dog object
             const iceman = new Iceman();
 
             // Animation recursive control function

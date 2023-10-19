@@ -38,7 +38,7 @@ courses: { compsci: {week: 1} }
         icemanImage.onload = function () {
             class Iceman {
                 constructor() {
-                    this.image = dogImage; // Use the loaded image
+                    this.image = icemanImage; // Use the loaded image
                     this.spriteWidth = SPRITE_WIDTH;
                     this.spriteHeight = SPRITE_HEIGHT;
                     this.width = this.spriteWidth;

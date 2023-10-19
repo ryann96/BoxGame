@@ -70,24 +70,25 @@ courses: { compsci: {week: 1} }
                     );
                 }
 
-                // Define a glitch variable to control the glitch effect
-                let glitch = 0;
+                            // Define a glitch variable to control the glitch effect
+                    let glitch = 0;
 
-                update() {
-                    if (this.frameX < this.maxFrame) {
-                        this.frameX++;
-                    } else {
-                        this.frameX = 0;
-                    }
+                    // update frameX of object
+                    Iceman.prototype.update = function() {
+                        if (this.frameX < this.maxFrame) {
+                            this.frameX++;
+                        } else {
+                            this.frameX = 0;
+                        }
 
-                    // Disappear and reappear the sprite 100 pixels forward
-                    if (glitch > 0) {
-                        this.x += this.velocityX;
-                        glitch--;
-                    } else {
-                        this.x += this.velocityX;
-                    }
-
+                        // Disappear and reappear the sprite 100 pixels forward
+                        if (glitch > 0) {
+                            this.x += this.velocityX;
+                            glitch--;
+                        } else {
+                            this.x += this.velocityX;
+                        }
+                        
                     // If the sprite goes beyond the canvas, make it reappear 100 pixels forward
                     if (this.x < -100) {
                         this.x = canvas.width;

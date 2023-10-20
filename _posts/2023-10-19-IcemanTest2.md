@@ -2,18 +2,20 @@
 toc: true
 comments: false
 layout: post
-title: Iceman Test
-description: Testing New Code for Iceman
+title: Iceman234 Animation
+description: in progress
 type: hacks
 courses: { compsci: {week: 1} }
 ---
-
 <body>
     <div>
         <canvas id="spriteContainer"> <!-- Within the base div is a canvas. An HTML canvas is used only for graphics. It allows the user to access some basic functions related to the image created on the canvas (including animation) -->
         </canvas>
     </div>
 </body>
+
+
+<!-- Your HTML and Front Matter remain unchanged -->
 
 <script>
     // start on page load
@@ -23,9 +25,9 @@ courses: { compsci: {week: 1} }
         const SPRITE_WIDTH = 52.54;  // matches sprite pixel width
         const SPRITE_HEIGHT = 95; // matches sprite pixel height
         const SCALE_FACTOR = 2;  // control size of sprite on canvas
-        const FRAME_LIMIT = 22;  // number of frames per row, this code assume each row is same
+        const FRAME_LIMIT = 22;  // number of frames per row, this code assumes each row is the same
 
-        canvas.width = SPRITE_WIDTH * SCALE_FACTOR*8;
+        canvas.width = SPRITE_WIDTH * SCALE_FACTOR * 8;
         canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
 
         // Create an Image object
@@ -44,14 +46,14 @@ courses: { compsci: {week: 1} }
                     this.width = this.spriteWidth;
                     this.height = this.spriteHeight;
                     this.x = canvas.width; // Start from the right edge of the canvas
-                    this.y = 0
+                    this.y = 0;
                     this.scale = SCALE_FACTOR;
                     this.minFrame = 0;
                     this.maxFrame = FRAME_LIMIT;
                     this.frameX = 0;
                     this.frameY = 0;
                     this.velocityX = -7; // Negative value to move from right to left
-                     this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval in milliseconds
+                    this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval in milliseconds
                     this.lastAppearTime = 0;
                 }
 
@@ -70,29 +72,28 @@ courses: { compsci: {week: 1} }
                     );
                 }
 
-                            // Define a glitch variable to control the glitch effect
-                    let glitch = 0;
+                // update frameX of object
+                update() {
+                    // Check if 5 seconds have passed since the last appearance
+                    const currentTime = new Date().getTime();
+                    if (currentTime - this.lastAppearTime >= 5000) {
+                        // Make the iceman disappear and reappear 200 pixels after
+                        this.x = canvas.width + 200;
+                        this.lastAppearTime = currentTime;
+                    }
 
-                    // update frameX of object
-                    Iceman.prototype.update = function() {
-                        if (this.frameX < this.maxFrame) {
-                            this.frameX++;
-                        } else {
-                            this.frameX = 0;
-                        }
+                    if (this.frameX < this.maxFrame) {
+                        this.frameX++;
+                    } else {
+                        this.frameX = 0;
+                    }
 
-                        // Disappear and reappear the sprite 100 pixels forward
-                        if (glitch > 0) {
-                            this.x += this.velocityX;
-                            glitch--;
-                        } else {
-                            this.x += this.velocityX;
-                        }
-                        
-                    // If the sprite goes beyond the canvas, make it reappear 100 pixels forward
-                    if (this.x < -100) {
-                        this.x = canvas.width;
-                        glitch = 100; // Set the glitch variable to 100 to move it forward
+                    // Update x position for horizontal movement
+                    this.x += this.velocityX;
+
+                    // Reset x position if it goes beyond the canvas
+                    if (this.x > canvas.width) {
+                        this.x = -this.width * this.scale;
                     }
 
                     // Randomly change the appearance interval
@@ -100,6 +101,7 @@ courses: { compsci: {week: 1} }
                         this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval
                     }
                 }
+            }
 
             // dog object
             const iceman = new Iceman();

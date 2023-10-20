@@ -1,21 +1,28 @@
 ---
-layout: default
-title: Delveries
+toc: true
+comments: true
+layout: post
+title: index test1
+description: test for index
+courses: { compsci: {week: 1} }
+type: hacks
 ---
 
-<style>
-    .canvas-container {
-        display: flex;
-        background-image: url('images/Backy_Roundy.jpg');
-        background-size: repeat; 
-        background-attachment: fixed;
-        background-repeat: repeat;
-    }
-    canvas {
-        margin: 0;
-        border: 1px solid white;
-    }
-</style>
+<head>
+    <style>
+        .canvas-container {
+            display: flex;
+            background-image: url('images/Backy_Roundy.jpg');
+            background-size: repeat; 
+            background-attachment: fixed;
+            background-repeat: repeat;
+        }
+        canvas {
+            margin: 0;
+            border: 1px solid white;
+        }
+    </style>
+</head>
 
 <body>
     <div class="canvas-container">

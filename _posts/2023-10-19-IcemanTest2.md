@@ -2,20 +2,18 @@
 toc: true
 comments: false
 layout: post
-title: Iceman234 Animation
+title: Iceman2 Animation
 description: in progress
 type: hacks
 courses: { compsci: {week: 1} }
 ---
+
 <body>
     <div>
         <canvas id="spriteContainer"> <!-- Within the base div is a canvas. An HTML canvas is used only for graphics. It allows the user to access some basic functions related to the image created on the canvas (including animation) -->
         </canvas>
     </div>
 </body>
-
-
-<!-- Your HTML and Front Matter remain unchanged -->
 
 <script>
     // start on page load
@@ -25,7 +23,7 @@ courses: { compsci: {week: 1} }
         const SPRITE_WIDTH = 52.54;  // matches sprite pixel width
         const SPRITE_HEIGHT = 95; // matches sprite pixel height
         const SCALE_FACTOR = 2;  // control size of sprite on canvas
-        const FRAME_LIMIT = 22;  // number of frames per row, this code assumes each row is the same
+        const FRAME_LIMIT = 22;  // number of frames per row, this code assume each row is same
 
         canvas.width = SPRITE_WIDTH * SCALE_FACTOR * 8;
         canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
@@ -46,15 +44,14 @@ courses: { compsci: {week: 1} }
                     this.width = this.spriteWidth;
                     this.height = this.spriteHeight;
                     this.x = canvas.width; // Start from the right edge of the canvas
-                    this.y = 0;
+                    this.y = 0
                     this.scale = SCALE_FACTOR;
                     this.minFrame = 0;
                     this.maxFrame = FRAME_LIMIT;
                     this.frameX = 0;
                     this.frameY = 0;
                     this.velocityX = -7; // Negative value to move from right to left
-                    this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval in milliseconds
-                    this.lastAppearTime = 0;
+                    this.lastTeleportTime = 0;
                 }
 
                 // draw dog object
@@ -74,18 +71,18 @@ courses: { compsci: {week: 1} }
 
                 // update frameX of object
                 update() {
-                    // Check if 5 seconds have passed since the last appearance
-                    const currentTime = new Date().getTime();
-                    if (currentTime - this.lastAppearTime >= 5000) {
-                        // Make the iceman disappear and reappear 200 pixels after
-                        this.x = canvas.width + 200;
-                        this.lastAppearTime = currentTime;
-                    }
-
                     if (this.frameX < this.maxFrame) {
                         this.frameX++;
                     } else {
                         this.frameX = 0;
+                    }
+
+                    // Check if 5 seconds have passed since the last teleportation
+                    const currentTime = new Date().getTime();
+                    if (currentTime - this.lastTeleportTime >= 5000) {
+                        // Make the iceman disappear and reappear 100 pixels after
+                        this.x += 100;
+                        this.lastTeleportTime = currentTime;
                     }
 
                     // Update x position for horizontal movement
@@ -94,11 +91,6 @@ courses: { compsci: {week: 1} }
                     // Reset x position if it goes beyond the canvas
                     if (this.x > canvas.width) {
                         this.x = -this.width * this.scale;
-                    }
-
-                    // Randomly change the appearance interval
-                    if (Math.random() < 0.05) {
-                        this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval
                     }
                 }
             }

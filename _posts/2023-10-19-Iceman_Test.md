@@ -70,37 +70,33 @@ courses: { compsci: {week: 1} }
                     );
                 }
 
-                            // Define a glitch variable to control the glitch effect
-                    let glitch = 0;
+                class Iceman {
 
-                    // update frameX of object
-                    Iceman.prototype.update = function() {
-                        if (this.frameX < this.maxFrame) {
-                            this.frameX++;
-                        } else {
-                            this.frameX = 0;
-                        }
-
-                        // Disappear and reappear the sprite 100 pixels forward
-                        if (glitch > 0) {
-                            this.x += this.velocityX;
-                            glitch--;
-                        } else {
-                            this.x += this.velocityX;
-                        }
-                        
-                    // If the sprite goes beyond the canvas, make it reappear 100 pixels forward
-                    if (this.x < -100) {
-                        this.x = canvas.width;
-                        glitch = 100; // Set the glitch variable to 100 to move it forward
+                // update frameX of object
+                update() {
+                    if (this.frameX < this.maxFrame) {
+                        this.frameX++;
+                    } else {
+                        this.frameX = 0;
                     }
 
-                    // Randomly change the appearance interval
-                    if (Math.random() < 0.05) {
-                        this.appearInterval = Math.random() * 5000 + 1000; // Random appear interval
+                    // Check if it's time for the sprite to randomly appear
+                    const currentTime = new Date().getTime();
+                    if (currentTime - this.lastAppearTime > this.appearInterval) {
+                        if (this.isVisible) {
+                            // If the sprite is currently visible, make it disappear
+                            this.isVisible = false;
+                            this.x = -this.width * this.scale; // Move it off the canvas
+                        } else {
+                            // If the sprite is currently hidden, make it reappear
+                            this.isVisible = true;
+                            // Randomly set the sprite's x position within 100 pixels ahead
+                            this.x = canvas.width - (Math.random() * 100);
+                        }
+                        this.lastAppearTime = currentTime;
                     }
                 }
-
+            }
             // dog object
             const iceman = new Iceman();
 

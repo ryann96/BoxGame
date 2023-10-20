@@ -6,8 +6,11 @@ title: Delveries
 <style>
     .canvas-container {
         display: flex;
+        background-image: url('images/Backy_Roundy.jpg');
+        background-size: repeat; 
+        background-attachment: fixed;
+        background-repeat: repeat;
     }
-
     canvas {
         margin: 0;
         border: 1px solid white;

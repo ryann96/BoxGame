@@ -7,10 +7,10 @@ title: Delveries
     .canvas-container {
         display: flex;
         background-image: url('images/Backy_Roundy.jpg');
-        background-size: repeat; /* Adjust the background size as needed */
+        background-size: repeat;
         background-attachment: fixed;
+        background-repeat: repeat;
     }
-
     canvas {
         margin: 0;
         border: 1px solid white;
@@ -24,17 +24,29 @@ title: Delveries
 </div>
 
 <script>
-    
+
     window.addEventListener('load', function () {
         const canvas = document.getElementById('playerCanvas');
         const ctx = canvas.getContext('2d');
+        // Set the canvas size
+        canvas.width = SPRITE_WIDTH * SCALE_FACTOR*6;
+        canvas.height = SPRITE_HEIGHT * SCALE_FACTOR*3;
+
+        // Load the background image
+        const backgroundImage = new Image();
+        backgroundImage.src = 'images/Backy_Roundy.jpg';
+
+        backgroundImage.onload = function () {
+            const pattern = ctx.createPattern(backgroundImage, 'repeat');
+            ctx.fillStyle = pattern;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        
         const SPRITE_WIDTH = 71.75;
         const SPRITE_HEIGHT = 82.5;
         const SCALE_FACTOR = 2;
         const DESIRED_FRAME_RATE = 15;
         const FRAME_INTERVAL = 1000 / DESIRED_FRAME_RATE;
-        canvas.width = SPRITE_WIDTH * SCALE_FACTOR*6;
-        canvas.height = SPRITE_HEIGHT * SCALE_FACTOR*3;
 
         class Box {
             constructor() {

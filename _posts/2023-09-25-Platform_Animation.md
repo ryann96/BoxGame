@@ -4,7 +4,7 @@ comments: false
 layout: post
 title: platform go up
 description: complete
-type: hacks
+type: platforms
 courses: { compsci: {week: 1} }
 ---
 

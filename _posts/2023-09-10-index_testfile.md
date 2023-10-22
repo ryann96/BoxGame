@@ -5,7 +5,7 @@ layout: post
 title: index test1
 description: test for index
 courses: { compsci: {week: 1} }
-type: platforms
+type: hacks
 ---
 
 <style>
@@ -213,8 +213,6 @@ type: platforms
                 }
                 box.draw(ctx);
                 box.update();
-                platform.draw(ctx);
-                platform.update();
                 updateAnimations();
                 lastTimestamp = timestamp;
             }
@@ -222,5 +220,28 @@ type: platforms
         }
 
         animate();
-    });
+        let platformanimationHasRun = false;
+
+        platform.draw(ctx);
+        document.addEventListener('keydown', function (event) {
+            switch (event.key) {
+                case ' ':
+                    if (!animationHasRun) {
+                    platformanimationHasRun = true;
+                    animatePlatform();
+                }
+            }
+        });
+        function animatePlatform() {
+            if (platformanimationHasRun) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                platform.draw(ctx);
+                platform.update();
+            }
+            if (platform.frameX !== platform.maxFrame) {
+            setTimeout(function () {
+                requestAnimationFrame(animatePlatform);
+            }, 100); 
+        }
+    }});
 </script>

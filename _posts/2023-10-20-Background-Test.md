@@ -1,44 +1,63 @@
 ---
 toc: true
-comments: true
+comments: false
 layout: post
-title: Box Animation
-description: complete
-courses: { compsci: {week: 1} }
-type: sprites
+title: Background test
+description: New Code for Testing Background
+type: hacks
+courses: { compsci: {week: 2} }
 ---
 
+<style>
+    .canvas-container {
+        display: flex;
+        background-image: url('images/Backy_Roundy.jpg');
+        background-size: repeat; 
+        background-attachment: fixed;
+        background-repeat: repeat;
+    }
+    canvas {
+        margin: 0;
+        border: 1px solid white;
+    }
+</style>
+
 <body>
-    <div>
-        <canvas id="spriteContainer">
-            <img id="box" src="{{site.baseurl}}/images/box.png"> 
+    <div class="canvas-container">
+        <canvas id="playerCanvas">
+                <img id="box" src="{{site.baseurl}}/images/box.png">
+                <img id="platform" src="{{site.baseurl}}/images/platform.png"> 
         </canvas>
     </div>
 </body>
 
 <script>
-
+    
     window.addEventListener('load', function () {
-        const canvas = document.getElementById('spriteContainer');
+        const canvas = document.getElementById('playerCanvas');
         const ctx = canvas.getContext('2d');
-        const SPRITE_WIDTH = 71.75;
-        const SPRITE_HEIGHT = 82.5;
-        const SCALE_FACTOR = 2;
+        const BOX_SPRITE_WIDTH = 71.75;
+        const BOX_SPRITE_HEIGHT = 82.5;
+        const BOX_SCALE_FACTOR = 2;
         const DESIRED_FRAME_RATE = 15;
         const FRAME_INTERVAL = 1000 / DESIRED_FRAME_RATE;
-        canvas.width = SPRITE_WIDTH * SCALE_FACTOR * 7;
-        canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
+        const PLATFORM_SPRITE_WIDTH = 362.25; 
+        const PLATFORM_SPRITE_HEIGHT = 377;
+        const PLATFORM_SCALE_FACTOR = 0.25;  
+        const PLATFORM_FRAME_LIMIT = 3;  
+        canvas.width = BOX_SPRITE_WIDTH * BOX_SCALE_FACTOR*6;
+        canvas.height = BOX_SPRITE_HEIGHT * BOX_SCALE_FACTOR*3;
 
         class Box {
             constructor() {
                 this.image = document.getElementById("box");
-                this.spriteWidth = SPRITE_WIDTH;
-                this.spriteHeight = SPRITE_HEIGHT;
+                this.spriteWidth = BOX_SPRITE_WIDTH;
+                this.spriteHeight = BOX_SPRITE_HEIGHT;
                 this.width = this.spriteWidth;
                 this.height = this.spriteHeight;
                 this.x = 0;
-                this.y = 0;
-                this.scale = SCALE_FACTOR;
+                this.y = 300;
+                this.scale = BOX_SCALE_FACTOR;
                 this.minFrame = 0;
                 this.frameY = 0;
                 this.frameX = 0;
@@ -73,8 +92,47 @@ type: sprites
                 }
             }
         }
+        class Platform {
+            constructor() {
+                this.image = document.getElementById("platform");
+                this.spriteWidth = PLATFORM_SPRITE_WIDTH;
+                this.spriteHeight = PLATFORM_SPRITE_HEIGHT;
+                this.width = this.spriteWidth;
+                this.height = this.spriteHeight;
+                this.x = 200;
+                this.y = 400;
+                this.scale = PLATFORM_SCALE_FACTOR;
+                this.minFrame = 0;
+                this.maxFrame = PLATFORM_FRAME_LIMIT;
+                this.frameX = 0;
+                this.frameY = 0;
+            }
+
+            draw(context) {
+                context.drawImage(
+                    this.image,
+                    this.frameX * this.spriteWidth,
+                    this.frameY * this.spriteHeight,
+                    this.spriteWidth,
+                    this.spriteHeight,
+                    this.x,
+                    this.y,
+                    this.width * this.scale,
+                    this.height * this.scale
+                );
+            }
+
+            update() {
+                if (this.frameX < this.maxFrame) {
+                    this.frameX++;
+                } else {
+                    this.frameX = 0;
+                }
+            }
+        }
 
         const box = new Box();
+        const platform = new Platform();
 
         const keyState = {
             ArrowLeft: false,
@@ -84,28 +142,28 @@ type: sprites
 
         document.addEventListener('keydown', function (event) {
             switch (event.key) {
-                case 'ArrowLeft':
+                case 'w':
+                    keyState.ArrowUp = true;
+                    break;
+                case 'a':
                     keyState.ArrowLeft = true;
                     break;
-                case 'ArrowRight':
+                case 'd':
                     keyState.ArrowRight = true;
-                    break;
-                case 'ArrowUp':
-                    keyState.ArrowUp = true;
                     break;
             }
         });
 
         document.addEventListener('keyup', function (event) {
             switch (event.key) {
-                case 'ArrowLeft':
+                case 'w':
+                    keyState.ArrowUp = false;
+                    break;
+                case 'a':
                     keyState.ArrowLeft = false;
                     break;
-                case 'ArrowRight':
+                case 'd':
                     keyState.ArrowRight = false;
-                    break;
-                case 'ArrowUp':
-                    keyState.ArrowUp = false;
                     break;
             }
         });
@@ -132,6 +190,8 @@ type: sprites
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 box.draw(ctx);
                 box.update();
+                platform.draw(ctx);
+                platform.update();
                 updateAnimations();
                 lastTimestamp = timestamp;
             }

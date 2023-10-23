@@ -5,7 +5,7 @@ layout: post
 title: Midnight Stalker Animation
 description:  This is level 2 in our game. This is how it looks separately. This is Midnight Ninja.
 courses: { compsci: {week: 2} }
-type: hacks
+type: sprites
 ---
 
 <body>

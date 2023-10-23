@@ -4,7 +4,7 @@ comments: false
 layout: post
 title: Iceman2 Animation
 description: in progress
-type: sprites
+type: hacks
 courses: { compsci: {week: 1} }
 ---
 

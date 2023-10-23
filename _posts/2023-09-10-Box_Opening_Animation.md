@@ -4,7 +4,7 @@ comments: false
 layout: post
 title: Box Opening Animation
 description: complete
-type: sprites
+type: hacks
 courses: { compsci: {week: 1} }
 ---
 

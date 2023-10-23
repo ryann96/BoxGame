@@ -27,7 +27,6 @@ title: Delveries
 </body>
 
 <script>
-    
     window.addEventListener('load', function () {
         const canvas = document.getElementById('playerCanvas');
         const ctx = canvas.getContext('2d');
@@ -58,6 +57,8 @@ title: Delveries
                 this.frameX = 0;
                 this.maxFrame = 7;
                 this.speed = 10; 
+                this.gravity = 0.5; // Gravity value
+                this.onPlatform = false; // Flag to track if on platform
             }
             setFrameLimit(limit) {
                 this.maxFrame = limit;
@@ -85,6 +86,22 @@ title: Delveries
                 } else {
                     this.frameX = 0;
                 }
+
+                if (!this.onPlatform) {
+                    this.y += this.gravity; // Apply gravity
+                }
+            }
+            checkCollision(platform) {
+                const isColliding = (
+                    this.x < platform.x + platform.width * platform.scale &&
+                    this.x + this.width * this.scale > platform.x &&
+                    this.y < platform.y + platform.height * platform.scale &&
+                    this.y + this.height * this.scale > platform.y
+                );
+
+                this.onPlatform = isColliding; // Update onPlatform flag
+
+                return isColliding;
             }
         }
         class Platform {
@@ -183,6 +200,12 @@ title: Delveries
             const deltaTime = timestamp - lastTimestamp;
             if (deltaTime >= FRAME_INTERVAL) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+                if (box.checkCollision(platform)) {
+                    box.y = platform.y - box.height * box.scale;
+                    platform.y = box.y + box.height * box.scale;
+                } else {
+                    box.onPlatform = false; // Reset onPlatform flag when not on platform
+                }
                 box.draw(ctx);
                 box.update();
                 platform.draw(ctx);

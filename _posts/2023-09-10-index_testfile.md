@@ -5,7 +5,7 @@ layout: post
 title: index test1
 description: test for index
 courses: { compsci: {week: 1} }
-type: hacks
+type: platforms
 ---
 
 <style>

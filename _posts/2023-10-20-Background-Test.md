@@ -4,7 +4,7 @@ comments: false
 layout: post
 title: Background test
 description: New Code for Testing Background
-type: hacks
+type: background
 courses: { compsci: {week: 2} }
 ---
 

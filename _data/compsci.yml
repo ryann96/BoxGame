@@ -1,5 +1,10 @@
 Unit1:
-  title: Deliveries - game peices
-  description:  background, sprites, blocks 
+  title: Build a Lab Notebook
+  description:  Install Tools.  Design lab notebook.  Learn GitHub Pages. Work with Pair (pair name). 
   start: 0
   end: 3
+Unit2:
+  title: Learn Language
+  description: Learn (JavaScript|Python|Java).  Start Agile development process.
+  start: 4
+  end: 7

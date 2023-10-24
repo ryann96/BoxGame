@@ -4,7 +4,7 @@ comments: false
 layout: post
 title: goofy background
 description: in progress
-type: hacks
+type: background
 courses: { compsci: {week: 1} }
 ---
 

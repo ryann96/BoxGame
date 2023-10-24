@@ -4,7 +4,7 @@ comments: false
 layout: post
 title: Iceman2 Animation
 description: in progress
-type: hacks
+type: sprites
 courses: { compsci: {week: 1} }
 ---
 
@@ -93,29 +93,16 @@ courses: { compsci: {week: 1} }
                 }
             }
 
-            // dog object
             const iceman = new Iceman();
-
-            // Animation recursive control function
             function animate() {
-                // Clears the canvas to remove the previous frame.
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                // Draws the current frame of the sprite.
                 iceman.draw(ctx);
-
-                // Updates the `frameX` property to prepare for the next frame in the sprite sheet.
                 iceman.update();
-
-                // Use setTimeout to introduce a delay before the next frame
                 setTimeout(function () {
-                    // Uses `requestAnimationFrame` to synchronize the animation loop with the display's refresh rate,
-                    // ensuring smooth visuals. Call `animate` again to continue the animation loop.
                     requestAnimationFrame(animate);
-                }, 50); // Set the timeout delay in milliseconds (e.g., 100ms = 0.1 second)
+                }, 50); 
             }
 
-            // Start the animation loop
             animate();
         };
     });

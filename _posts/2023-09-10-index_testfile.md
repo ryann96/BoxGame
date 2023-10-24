@@ -217,8 +217,6 @@ type: hacks
                 }
                 box.draw(ctx);
                 box.update();
-                platform.draw(ctx);
-                platform.update();
                 updateAnimations();
                 lastTimestamp = timestamp;
             }
@@ -226,5 +224,28 @@ type: hacks
         }
 
         animate();
-    });
+        let platformanimationHasRun = false;
+
+        platform.draw(ctx);
+        document.addEventListener('keydown', function (event) {
+            switch (event.key) {
+                case ' ':
+                    if (!animationHasRun) {
+                    platformanimationHasRun = true;
+                    animatePlatform();
+                }
+            }
+        });
+        function animatePlatform() {
+            if (platformanimationHasRun) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                platform.draw(ctx);
+                platform.update();
+            }
+            if (platform.frameX !== platform.maxFrame) {
+            setTimeout(function () {
+                requestAnimationFrame(animatePlatform);
+            }, 100); 
+        }
+    }});
 </script>

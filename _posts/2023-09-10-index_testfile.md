@@ -5,7 +5,7 @@ layout: post
 title: index test1
 description: test for index
 courses: { compsci: {week: 1} }
-type: hacks
+type: background
 ---
 
 <style>
@@ -43,7 +43,7 @@ type: hacks
         const PLATFORM_SPRITE_WIDTH = 362.25; 
         const PLATFORM_SPRITE_HEIGHT = 377;
         const PLATFORM_SCALE_FACTOR = 0.25;  
-        const PLATFORM_FRAME_LIMIT = 3;  
+        const PLATFORM_FRAME_LIMIT = 4;  
         canvas.width = BOX_SPRITE_WIDTH * BOX_SCALE_FACTOR*6;
         canvas.height = BOX_SPRITE_HEIGHT * BOX_SCALE_FACTOR*3;
 
@@ -224,18 +224,21 @@ type: hacks
         }
 
         animate();
+
         let platformanimationHasRun = false;
 
-        platform.draw(ctx);
         document.addEventListener('keydown', function (event) {
             switch (event.key) {
                 case ' ':
-                    if (!animationHasRun) {
+                    if (!platformanimationHasRun) {
                     platformanimationHasRun = true;
                     animatePlatform();
                 }
             }
         });
+
+        platform.draw(ctx);
+
         function animatePlatform() {
             if (platformanimationHasRun) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -243,9 +246,11 @@ type: hacks
                 platform.update();
             }
             if (platform.frameX !== platform.maxFrame) {
-            setTimeout(function () {
-                requestAnimationFrame(animatePlatform);
-            }, 100); 
+                setTimeout(function () {
+                    requestAnimationFrame(animatePlatform);
+                }, 100);
+            }
         }
-    }});
+        platform.draw(ctx);
+    });
 </script>

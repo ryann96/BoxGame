@@ -11,10 +11,7 @@ type: background
 <style>
     .canvas-container {
         display: flex;
-        background-image: url('images/Backy_Roundy.jpg');
-        background-size: repeat; 
-        background-attachment: fixed;
-        background-repeat: repeat;
+        position: fixed;
     }
     canvas {
         margin: 0;
@@ -24,14 +21,67 @@ type: background
 
 <body>
     <div class="canvas-container">
+        <canvas id="BackyRoundyCanvas"></canvas>
         <canvas id="playerCanvas">
-                <img id="box" src="{{site.baseurl}}/images/box.png">
-                <img id="platform" src="{{site.baseurl}}/images/platform.png"> 
+            <img id="box" src="{{site.baseurl}}/images/box.png">
+            <img id="platform" src="{{site.baseurl}}/images/platform.png"> 
         </canvas>
     </div>
 </body>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const canvas = document.getElementById("BackyRoundyCanvas");
+        const ctx = canvas.getContext('2d');
+
+        const backgroundImg = new Image();
+        backgroundImg.src = '{{site.baseurl}}/images/Backy_Roundy.jpg';
+
+    backgroundImg.onload = function () {
+        const WIDTH = 1280; // Constant width
+        const HEIGHT = 1000; // Constant height
+        const ASPECT_RATIO = WIDTH / HEIGHT;
+
+        const canvasWidth = window.innerWidth;
+        const canvasHeight = canvasWidth / ASPECT_RATIO;
+
+        canvas.width = canvasWidth;
+        canvas.height = canvasHeight;
+        canvas.style.width = `${canvasWidth}px`;
+        canvas.style.height = `${canvasHeight}px`;
+
+        var gameSpeed = 2;
+
+        class Layer {
+            constructor(image, speedRatio, initialY) {
+                this.x = 0;
+                this.y = initialY; // Set a new initial value for y
+                this.width = WIDTH;
+                this.height = HEIGHT;
+                this.image = image;
+                this.speedRatio = speedRatio;
+                this.speed = gameSpeed * this.speedRatio;
+                this.frame = 0;
+            }
+            update() {
+                this.x = (this.x - this.speed) % this.width;
+            }
+            draw() {
+                ctx.drawImage(this.image, this.x, this.y);
+                ctx.drawImage(this.image, this.x + this.width, this.y);
+            }
+        }
+
+        var backgroundObj = new Layer(backgroundImg, 0.5, 0); // Set initial Y position to 200
+
+        function background() {
+            backgroundObj.update();
+            backgroundObj.draw();
+            requestAnimationFrame(background);
+        }
+        background();
+    };
+
     window.addEventListener('load', function () {
         const canvas = document.getElementById('playerCanvas');
         const ctx = canvas.getContext('2d');
@@ -46,7 +96,7 @@ type: background
         const PLATFORM_FRAME_LIMIT = 4;  
         canvas.width = BOX_SPRITE_WIDTH * BOX_SCALE_FACTOR*6;
         canvas.height = BOX_SPRITE_HEIGHT * BOX_SCALE_FACTOR*3;
-
+    });
         class Box {
             constructor() {
                 this.image = document.getElementById("box");

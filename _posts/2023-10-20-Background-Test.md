@@ -9,8 +9,6 @@ courses: { compsci: {week: 1} }
 ---
 
 <style>
-
-
     .canvas-container {
         display: flex;
         position: fixed;
@@ -18,55 +16,19 @@ courses: { compsci: {week: 1} }
     canvas {
         margin: 0;
         border: 1px solid white;
-        align-items: center;
-    }
-    #game-container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(50%, -100%);
-        text-align: center;
-        color: white;
-    }
-    #title {
-        font-family: 'Helvetica', sans-serif;
-        font-size: 100px;
-        color: brown; 
-    }
-    .button {
-        background-color: orange;
-        border: 2px solid white;
-        color: white;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 50px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 8px;
     }
 </style>
-
+     
 <!-- Prepare background DOM canvas -->
 <canvas id="BackyRoundyCanvas"></canvas>
-
-<div id="game-container">
-    <h1 id="title">Deliveries!</h1>
-    <button class="button" onclick="startGame('easy')">Easy</button>
-    <br>
-    <button class="button" onclick="startGame('medium')">Medium</button>
-    <br>
-    <button class="button" onclick="startGame('hard')">Hard</button>
-</div>
 
 <script>
     const canvas = document.getElementById("BackyRoundyCanvas");
     const ctx = canvas.getContext('2d');
 
     const backgroundImg = new Image();
-    backgroundImg.src = '{{site.baseurl}}/images/Background With Road.jpg';
-    
+    backgroundImg.src = '{{site.baseurl}}/images/Background With Road.png';
+
     backgroundImg.onload = function () {
         const WIDTH = 1280; // Constant width
         const HEIGHT = 1000; // Constant height
@@ -110,10 +72,5 @@ courses: { compsci: {week: 1} }
             requestAnimationFrame(background);
         }
         background();
-
-        function startGame(difficulty) {
-            // Add code to start the game based on the selected difficulty
-            console.log(`Starting game with difficulty: ${difficulty}`);
-        }
     };
 </script>

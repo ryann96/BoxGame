@@ -205,6 +205,10 @@ type: hacks
             const deltaTime = timestamp - lastTimestamp;
             if (deltaTime >= FRAME_INTERVAL) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+                // Apply gravity
+                if (!box.onPlatform) {
+                    box.y += box.gravity;
+                }
                 if (box.checkCollision(platform)) {
                     box.y = platform.y - box.height * box.scale;
                     platform.y = box.y + box.height * box.scale;

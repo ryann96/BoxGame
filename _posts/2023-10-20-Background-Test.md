@@ -31,7 +31,7 @@ courses: { compsci: {week: 1} }
 
     backgroundImg.onload = function () {
         const WIDTH = 1280; // Constant width
-        const HEIGHT = 1000; // Constant height
+        const HEIGHT = 1100; // Constant height
         const ASPECT_RATIO = WIDTH / HEIGHT;
 
         const canvasWidth = window.innerWidth;

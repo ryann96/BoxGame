@@ -36,7 +36,7 @@ courses: { compsci: {week: 1} }
                     this.spriteWidth = SPRITE_WIDTH;
                     this.spriteHeight = SPRITE_HEIGHT;
                     this.width = this.spriteWidth;
-                    this.height = this.spriteHeight; // Fixed the typo here
+                    this.height = this.spriteHeight;
                     this.x = 0;
                     this.y = 0;
                     this.scale = SCALE_FACTOR;
@@ -93,8 +93,7 @@ courses: { compsci: {week: 1} }
                 setTimeout(function () {
                     requestAnimationFrame(animate);
                 }, 100); 
-            }
-            
-        };
+                }
+            };
     }});
 </script>

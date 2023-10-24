@@ -262,7 +262,6 @@ type: background
         requestAnimationFrame(animate);
     }
 
-<<<<<<< HEAD
     animate();
 
     let animationHasRun = false;
@@ -291,36 +290,4 @@ type: background
             }, 100); 
         }
     }
-=======
-        animate();
-
-        let platformanimationHasRun = false;
-
-        document.addEventListener('keydown', function (event) {
-            switch (event.key) {
-                case ' ':
-                    if (!platformanimationHasRun) {
-                    platformanimationHasRun = true;
-                    animatePlatform();
-                }
-            }
-        });
-
-        platform.draw(ctx);
-
-        function animatePlatform() {
-            if (platformanimationHasRun) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                platform.draw(ctx);
-                platform.update();
-            }
-            if (platform.frameX !== platform.maxFrame) {
-                setTimeout(function () {
-                    requestAnimationFrame(animatePlatform);
-                }, 100);
-            }
-        }
-        platform.draw(ctx);
-    });
->>>>>>> 0fa89fcec413444477a59dba110e98b6444531b0
 </script>

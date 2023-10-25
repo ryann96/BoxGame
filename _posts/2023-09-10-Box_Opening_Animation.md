@@ -21,7 +21,7 @@ courses: { compsci: {week: 1} }
         const ctx = canvas.getContext('2d');
         const SPRITE_WIDTH = 53.67; 
         const SPRITE_HEIGHT = 81;
-        const SCALE_FACTOR = 2; 
+        const SCALE_FACTOR = 3; 
         const FRAME_LIMIT = 14;
 
         canvas.width = SPRITE_WIDTH * SCALE_FACTOR;

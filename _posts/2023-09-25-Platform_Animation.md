@@ -97,3 +97,4 @@ courses: { compsci: {week: 1} }
             };
     }});
 </script>
+Press Space bar to animate

@@ -18,12 +18,9 @@ type: background
     }
 </style>
 
-<div class="canvas-container">
-    <canvas id="BackyRoundyCanvas"></canvas>
-</div>
-
 <script>
-    const canvas = document.getElementById("BackyRoundyCanvas");
+    const canvas = document.createElement("canvas"); 
+    document.body.appendChild(canvas);
     const ctx = canvas.getContext('2d');
 
     const backgroundImg = new Image();
@@ -40,7 +37,7 @@ type: background
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
         canvas.style.width = `${canvasWidth}px`;
-        canvas.style.height = `${canvasHeight}px`;
+        canvas.style height = `${canvasHeight}px`;
 
         var gameSpeed = 2;
 
@@ -86,9 +83,23 @@ type: background
     canvas.width = BOX_SPRITE_WIDTH * BOX_SCALE_FACTOR * 6;
     canvas.height = BOX_SPRITE_HEIGHT * BOX_SCALE_FACTOR * 3;
 
+    const boxImg = new Image();
+    boxImg.src = '{{site.baseurl}}/images/box.png'; 
+
+    const platformImg = new Image();
+    platformImg.src = '{{site.baseurl}}/images/platform.png';
+
+    boxImg.onload = function () {
+        platformImg.onload = function () {
+            const box = new Box();
+            const platform = new Platform();
+            animate(box, platform); 
+        };
+    };
+
     class Box {
         constructor() {
-            this.image = document.getElementById("box");
+            this.image = boxImg;
             this.spriteWidth = BOX_SPRITE_WIDTH;
             this.spriteHeight = BOX_SPRITE_HEIGHT;
             this.width = this.spriteWidth;
@@ -151,7 +162,7 @@ type: background
 
     class Platform {
         constructor() {
-            this.image = document.getElementById("platform");
+            this.image = platformImg;
             this.spriteWidth = PLATFORM_SPRITE_WIDTH;
             this.spriteHeight = PLATFORM_SPRITE_HEIGHT;
             this.width = this.spriteWidth;
@@ -188,9 +199,6 @@ type: background
         }
     }
 
-    const box = new Box();
-    const platform = new Platform();
-
     const keyState = {
         ArrowLeft: false,
         ArrowRight: false,
@@ -225,7 +233,7 @@ type: background
         }
     });
 
-    function updateAnimations() {
+    function updateAnimations(box) {
         let selectedAnimation = 'A';
         box.frameY = 0;
         if (keyState.ArrowLeft) {
@@ -241,7 +249,7 @@ type: background
     }
 
     let lastTimestamp = 0;
-    function animate(timestamp) {
+    function animate(box, platform, timestamp) {
         const deltaTime = timestamp - lastTimestamp;
         if (deltaTime >= FRAME_INTERVAL) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -256,13 +264,13 @@ type: background
             }
             box.draw(ctx);
             box.update();
-            updateAnimations();
+            updateAnimations(box);
             lastTimestamp = timestamp;
         }
-        requestAnimationFrame(animate);
+        requestAnimationFrame((timestamp) => animate(box, platform, timestamp));
     }
 
-    animate();
+    animate(box, platform, 0);
 
     let animationHasRun = false;
 

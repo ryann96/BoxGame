@@ -73,4 +73,8 @@ courses: { compsci: {week: 1} }
         }
         background();
     };
+
+    function easy() {
+        console.log("It works")
+    }
 </script>

@@ -137,12 +137,12 @@ courses: { compsci: {week: 1} }
     let imageHills = new Image();
     image.src = 'https://ryann86.github.io/Boxgame/images/';
     imageTube.src = 'https://ryann96.github.io/Boxgame/images/platform.png';
-    imageBlock.src = 'https://samayass.github.io/samayaCSA/images/box.png';
+    imageBlock.src = 'https://samayass.github.io/samayaCSA/images/';
     //--
     // NEW CODE - IMAGE URLS FOR BACKGROUND IMAGES
     //--
-    imageBackground.src = 'https://samayass.github.io/samayaCSA/images/background.png';
-    imageHills.src = 'https://samayass.github.io/samayaCSA/images/hills.png';
+    imageBackground.src = 'https://samayass.github.io/samayaCSA/images/';
+    imageHills.src = 'https://samayass.github.io/samayaCSA/images/;
     // Create instances of platform, tube, block object, and generic objects
     let platform = new Platform(image);
     let tube = new Tube(imageTube);

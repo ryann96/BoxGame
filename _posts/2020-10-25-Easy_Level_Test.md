@@ -5,128 +5,122 @@ layout: post
 title: Easy Mode
 description: Just started.
 type: platforms
-courses: { compsci: {week: 2} }
+courses: { compsci: {week: 1} }
 ---
 
-const canvas = document.createElement('canvas');
-document.body.appendChild(canvas);
-const ctx = canvas.getContext('2d');
-const SPRITE_WIDTH = 71.75;
-const SPRITE_HEIGHT = 82.5;
-const SCALE_FACTOR = 2;
-const DESIRED_FRAME_RATE = 15;
-const FRAME_INTERVAL = 1000 / DESIRED_FRAME_RATE;
-canvas.width = SPRITE_WIDTH * SCALE_FACTOR * 7;
-canvas.height = SPRITE_HEIGHT * SCALE_FACTOR;
-
-class Box {
-    constructor() {
-        this.image = new Image();
-        this.image.src = 'box.png'; // Replace with the path to your box image
-        this.spriteWidth = SPRITE_WIDTH;
-        this.spriteHeight = SPRITE_HEIGHT;
-        this.width = this.spriteWidth;
-        this.height = this.spriteHeight;
-        this.x = 0;
-        this.y = 0;
-        this.scale = SCALE_FACTOR;
-        this.minFrame = 0;
-        this.frameY = 0;
-        this.frameX = 0;
-        this.maxFrame = 7;
-        this.speed = 10;
+<style>
+    #canvas {
+        margin: 0;
+        border: 1px solid white;
     }
-    setFrameLimit(limit) {
-        this.maxFrame = limit;
-    }
-    setPosition(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-    draw(context) {
-        context.drawImage(
-            this.image,
-            this.frameX * this.spriteWidth,
-            this.frameY * this.spriteHeight,
-            this.spriteWidth,
-            this.spriteHeight,
-            this.x,
-            this.y,
-            this.width * this.scale,
-            this.height * this.scale
-        );
-    }
-    update() {
-        if (this.frameX < this.maxFrame) {
-            this.frameX++;
-        } else {
-            this.frameX = 0;
+</style>
+<canvas id='canvas'></canvas>
+<script>
+    // Create empty canvas
+    let canvas = document.getElementById('canvas');
+    let c = canvas.getContext('2d');
+    // Set the canvas dimensions
+    canvas.width = 650;
+    canvas.height = 400;
+    // Define gravity value
+    let gravity = 1.5;
+    // Load the player sprite image
+    let playerImage = new Image();
+    playerImage.src = 'box.png'; // Replace 'player.png' with the path to your image
+    // Define the Player class
+    class Player {
+        constructor() {
+            // Initial position and velocity of the player
+            this.position = {
+                x: 100,
+                y: 200
+            };
+            this.velocity = {
+                x: 0,
+                y: 0
+            };
+            // Dimensions of the player
+            this.width = 50; // Adjust the width to match your image
+            this.height = 50; // Adjust the height to match your image
+        }
+        // Method to draw the player image on the canvas
+        draw() {
+            c.drawImage(playerImage, this.position.x, this.position.y, this.width, this.height);
+        }
+        // Method to update the player's position and velocity
+        update() {
+            this.draw();
+            this.position.y += this.velocity.y;
+            this.position.x += this.velocity.x;
+            if (this.position.y + this.height + this.velocity.y <= canvas.height)
+                this.velocity.y += gravity;
+            else
+                this.velocity.y = 0;
         }
     }
-}
-
-const box = new Box();
-
-const keyState = {
-    ArrowLeft: false,
-    ArrowRight: false,
-    ArrowUp: false,
-};
-
-document.addEventListener('keydown', function (event) {
-    switch (event.key) {
-        case 'ArrowLeft':
-            keyState.ArrowLeft = true;
-            break;
-        case 'ArrowRight':
-            keyState.ArrowRight = true;
-            break;
-        case 'ArrowUp':
-            keyState.ArrowUp = true;
-            break;
+    // Create a player object
+    player = new Player();
+    // Define keyboard keys and their states
+    let keys = {
+        right: {
+            pressed: false
+        },
+        left: {
+            pressed: false
+        }
+    };
+    // Animation function to continuously update and render the canvas
+    function animate() {
+        requestAnimationFrame(animate);
+        c.clearRect(0, 0, canvas.width, canvas.height);
+        player.update();
+        if (keys.right.pressed && player.position.x + player.width <= canvas.width - 50) {
+            player.velocity.x = 15;
+        } else if (keys.left.pressed && player.position.x >= 50) {
+            player.velocity.x = -15;
+        } else {
+            player.velocity.x = 0;
+        }
     }
-});
-
-document.addEventListener('keyup', function (event) {
-    switch (event.key) {
-        case 'ArrowLeft':
-            keyState.ArrowLeft = false;
-            break;
-        case 'ArrowRight':
-            keyState.ArrowRight = false;
-            break;
-        case 'ArrowUp':
-            keyState.ArrowUp = false;
-            break;
-    }
-});
-
-function updateAnimations() {
-    let selectedAnimation = 'A';
-    box.frameY = 0;
-    if (keyState.ArrowLeft) {
-        box.x -= box.speed;
-    }
-    if (keyState.ArrowRight) {
-        box.x += box.speed;
-    }
-    if (keyState.ArrowUp) {
-        selectedAnimation = 'B';
-        box.frameY = 1;
-    }
-}
-
-let lastTimestamp = 0;
-function animate(timestamp) {
-    const deltaTime = timestamp - lastTimestamp;
-    if (deltaTime >= FRAME_INTERVAL) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        box.draw(ctx);
-        box.update();
-        updateAnimations();
-        lastTimestamp = timestamp;
-    }
-    requestAnimationFrame(animate);
-}
-
-animate();
+    animate();
+    // Event listener for keydown events
+    addEventListener('keydown', ({ keyCode }) => {
+        switch (keyCode) {
+            case 65:
+                console.log('left');
+                keys.left.pressed = true;
+                break;
+            case 83:
+                console.log('down');
+                break;
+            case 68:
+                console.log('right');
+                keys.right.pressed = true;
+                break;
+            case 87:
+                console.log('up');
+                player.velocity.y -= 20;
+                break;
+        }
+    });
+    // Event listener for keyup events
+    addEventListener('keyup', ({ keyCode }) => {
+        switch (keyCode) {
+            case 65:
+                console.log('left');
+                keys.left.pressed = false;
+                break;
+            case 83:
+                console.log('down');
+                break;
+            case 68:
+                console.log('right');
+                keys.right.pressed = false;
+                break;
+            case 87:
+                console.log('up');
+                player.velocity.y = -20;
+                break;
+        }
+    });
+</script>

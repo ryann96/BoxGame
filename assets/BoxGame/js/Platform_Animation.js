@@ -49,6 +49,14 @@ window.addEventListener('load', function () {
                 } else {
                     this.frameX = 0;
                 }
+
+                const event = new CustomEvent('platformUpdated', {
+                    detail: {
+                        platformX: this.x,
+                        platformY: this.y
+                    }
+                });
+                document.dispatchEvent(event);
             }
         }
 
@@ -81,4 +89,3 @@ window.addEventListener('load', function () {
         };
     }
 });
-//Press Space bar to animate

@@ -24,6 +24,9 @@ courses: { compsci: {week: 1} }
     canvas.height = 400;
     // Define gravity value
     let gravity = 1.5;
+    // Load the player sprite image
+    let playerImage = new Image();
+    playerImage.src = 'box.png'; // Replace 'player.png' with the path to your image
     // Define the Player class
     class Player {
         constructor() {
@@ -37,15 +40,14 @@ courses: { compsci: {week: 1} }
                 y: 0
             };
             // Dimensions of the player
-            this.width = 30;
-            this.height = 30;
+            this.width = 50; // Adjust the width to match your image
+            this.height = 50; // Adjust the height to match your image
         }
-        // Method to draw the player on the canvas
+        // Method to draw the player image on the canvas
         draw() {
-            c.fillStyle = 'red';
-            c.fillRect(this.position.x, this.position.y, this.width, this.height);
+            c.drawImage(playerImage, this.position.x, this.position.y, this.width, this.height);
         }
-        // Method to update the players position and velocity
+        // Method to update the player's position and velocity
         update() {
             this.draw();
             this.position.y += this.velocity.y;

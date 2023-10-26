@@ -93,6 +93,35 @@ window.addEventListener('load', function () {
                 break;
         }
     });
+    document.addEventListener('DOMContentLoaded', function () {
+        const box = document.getElementById('box');
+
+        document.addEventListener('platformUpdated', function (event) {
+            const platformX = event.detail.platformX;
+            const platformY = event.detail.platformY;
+
+            // Update box position based on platform position
+            box.style.left = `${platformX}px`;
+            box.style.top = `${platformY}px`;
+        });
+
+        document.addEventListener('keydown', function (event) {
+            switch (event.key) {
+                case 'ArrowLeft':
+                    box.style.left = `${parseInt(box.style.left, 10) - 10}px`;
+                    break;
+                case 'ArrowRight':
+                    box.style.left = `${parseInt(box.style.left, 10) + 10}px`;
+                    break;
+                case 'ArrowUp':
+                    box.style.top = `${parseInt(box.style.top, 10) - 10}px`;
+                    break;
+                case 'ArrowDown':
+                    box.style.top = `${parseInt(box.style.top, 10) + 10}px`;
+                    break;
+            }
+        });
+    });
 
     function updateAnimations() {
         let selectedAnimation = 'A';

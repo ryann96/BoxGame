@@ -5,7 +5,7 @@ layout: post
 title: Easy Mode
 description: Just started.
 type: platforms
-courses: { compsci: {week: 1} }
+courses: { compsci: {week: 2} }
 ---
 
 <style>
@@ -24,6 +24,9 @@ courses: { compsci: {week: 1} }
     canvas.height = 400;
     // Define gravity value
     let gravity = 1.5;
+    // Load the player sprite image
+    let playerImage = new Image();
+    playerImage.src = 'box.png'; // Replace 'player.png' with the path to your image
     // Define the Player class
     class Player {
         constructor() {
@@ -41,10 +44,9 @@ courses: { compsci: {week: 1} }
             this.height = 30;
         }
         // Method to draw the player on the canvas
-        draw() {
-            c.fillStyle = 'red';
-            c.fillRect(this.position.x, this.position.y, this.width, this.height);
-        }
+         draw() {
+        c.drawImage(playerImage, this.position.x, this.position.y, this.width, this.height);
+    }
         // Method to update the players position and velocity
         update() {
             this.draw();

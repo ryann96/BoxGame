@@ -1,5 +1,3 @@
-
-
 <body>
     <div>
         <canvas id="spriteContainer">

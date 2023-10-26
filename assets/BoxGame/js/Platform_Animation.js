@@ -1,13 +1,3 @@
----
-toc: true
-comments: false
-layout: post
-title: platform go up
-description: complete
-type: platforms
-courses: { compsci: {week: 1} }
----
-
 <body>
     <div>
         <canvas id="spriteContainer"></canvas>

@@ -26,101 +26,104 @@ courses: { compsci: {week: 1} }
     let gravity = 1.5;
     // Load the player sprite image
     let playerImage = new Image();
-    playerImage.src = 'box.png'; // Replace 'player.png' with the path to your image
-    // Define the Player class
-    class Player {
-        constructor() {
-            // Initial position and velocity of the player
-            this.position = {
-                x: 100,
-                y: 200
-            };
-            this.velocity = {
-                x: 0,
-                y: 0
-            };
-            // Dimensions of the player
-            this.width = 50; // Adjust the width to match your image
-            this.height = 50; // Adjust the height to match your image
+    playerImage.src = 'TestBox.png'; // Replace 'TestBox.png' with the correct path to your image
+    // Ensure the image is fully loaded before drawing
+    playerImage.onload = function() {
+        // Define the Player class
+        class Player {
+            constructor() {
+                // Initial position and velocity of the player
+                this.position = {
+                    x: 100,
+                    y: 200
+                };
+                this.velocity = {
+                    x: 0,
+                    y: 0
+                };
+                // Dimensions of the player
+                this.width = 50; // Adjust the width to match your image
+                this.height = 50; // Adjust the height to match your image
+            }
+            // Method to draw the player image on the canvas
+            draw() {
+                c.drawImage(playerImage, this.position.x, this.position.y, this.width, this.height);
+            }
+            // Method to update the player's position and velocity
+            update() {
+                this.draw();
+                this.position.y += this.velocity.y;
+                this.position.x += this.velocity.x;
+                if (this.position.y + this.height + this.velocity.y <= canvas.height)
+                    this.velocity.y += gravity;
+                else
+                    this.velocity.y = 0;
+            }
         }
-        // Method to draw the player image on the canvas
-        draw() {
-            c.drawImage(playerImage, this.position.x, this.position.y, this.width, this.height);
+        // Create a player object
+        player = new Player();
+        // Define keyboard keys and their states
+        let keys = {
+            right: {
+                pressed: false
+            },
+            left: {
+                pressed: false
+            }
+        };
+        // Animation function to continuously update and render the canvas
+        function animate() {
+            requestAnimationFrame(animate);
+            c.clearRect(0, 0, canvas.width, canvas.height);
+            player.update();
+            if (keys.right.pressed && player.position.x + player.width <= canvas.width - 50) {
+                player.velocity.x = 15;
+            } else if (keys.left.pressed && player.position.x >= 50) {
+                player.velocity.x = -15;
+            } else {
+                player.velocity.x = 0;
+            }
         }
-        // Method to update the player's position and velocity
-        update() {
-            this.draw();
-            this.position.y += this.velocity.y;
-            this.position.x += this.velocity.x;
-            if (this.position.y + this.height + this.velocity.y <= canvas.height)
-                this.velocity.y += gravity;
-            else
-                this.velocity.y = 0;
-        }
-    }
-    // Create a player object
-    player = new Player();
-    // Define keyboard keys and their states
-    let keys = {
-        right: {
-            pressed: false
-        },
-        left: {
-            pressed: false
-        }
+        animate();
+        // Event listener for keydown events
+        addEventListener('keydown', ({ keyCode }) => {
+            switch (keyCode) {
+                case 65:
+                    console.log('left');
+                    keys.left.pressed = true;
+                    break;
+                case 83:
+                    console.log('down');
+                    break;
+                case 68:
+                    console.log('right');
+                    keys.right.pressed = true;
+                    break;
+                case 87:
+                    console.log('up');
+                    player.velocity.y -= 20;
+                    break;
+            }
+        });
+        // Event listener for keyup events
+        addEventListener('keyup', ({ keyCode }) => {
+            switch (keyCode) {
+                case 65:
+                    console.log('left');
+                    keys.left.pressed = false;
+                    break;
+                case 83:
+                    console.log('down');
+                    break;
+                case 68:
+                    console.log('right');
+                    keys.right.pressed = false;
+                    break;
+                case 87:
+                    console.log('up');
+                    player.velocity.y = -20;
+                    break;
+            }
+        });
     };
-    // Animation function to continuously update and render the canvas
-    function animate() {
-        requestAnimationFrame(animate);
-        c.clearRect(0, 0, canvas.width, canvas.height);
-        player.update();
-        if (keys.right.pressed && player.position.x + player.width <= canvas.width - 50) {
-            player.velocity.x = 15;
-        } else if (keys.left.pressed && player.position.x >= 50) {
-            player.velocity.x = -15;
-        } else {
-            player.velocity.x = 0;
-        }
-    }
-    animate();
-    // Event listener for keydown events
-    addEventListener('keydown', ({ keyCode }) => {
-        switch (keyCode) {
-            case 65:
-                console.log('left');
-                keys.left.pressed = true;
-                break;
-            case 83:
-                console.log('down');
-                break;
-            case 68:
-                console.log('right');
-                keys.right.pressed = true;
-                break;
-            case 87:
-                console.log('up');
-                player.velocity.y -= 20;
-                break;
-        }
-    });
-    // Event listener for keyup events
-    addEventListener('keyup', ({ keyCode }) => {
-        switch (keyCode) {
-            case 65:
-                console.log('left');
-                keys.left.pressed = false;
-                break;
-            case 83:
-                console.log('down');
-                break;
-            case 68:
-                console.log('right');
-                keys.right.pressed = false;
-                break;
-            case 87:
-                console.log('up');
-                player.velocity.y = -20;
-                break;
-        }
-    });
 </script>

@@ -8,33 +8,32 @@ courses: { compsci: {week: 1} }
 type: background
 ---
 
-<html>
-<head>
-    <style>
-        .canvas-container {
-            display: flex;
-        }
-        canvas {
-            margin: 0;
-            border: 1px solid white;
-        }
-    </style>
-</head>
-<body>
-    <div class="canvas-container">
-        <canvas id="BackyRoundyCanvas"></canvas>
-    </div>
+<style>
+    .canvas-container {
+        display: flex;
+    }
+    canvas {
+        margin: 0;
+        border: 1px solid white;
+    }
+</style>
+<div class="canvas-container">
+    <canvas id="BackyRoundyCanvas"></canvas>
+</div>
 
 <script>
     const canvas = document.getElementById("BackyRoundyCanvas");
     const ctx = canvas.getContext('2d');
 
+    const offscreenCanvas = document.createElement('canvas');
+    const offscreenCtx = offscreenCanvas.getContext('2d');
+
     const backgroundImg = new Image();
-    backgroundImg.src = '{{site.baseurl}}/images/Backy_Roundy.jpg';
+    backgroundImg.src = '{{site.baseurl}}/images/Backy_Roundy.jpg'; 
 
     backgroundImg.onload = function () {
-        const WIDTH = 1280;
-        const HEIGHT = 1000;
+        const WIDTH = 6000;
+        const HEIGHT = 4000;
         const ASPECT_RATIO = WIDTH / HEIGHT;
 
         const canvasWidth = window.innerWidth;
@@ -45,7 +44,7 @@ type: background
         canvas.style.width = `${canvasWidth}px`;
         canvas.style.height = `${canvasHeight}px`;
 
-        var gameSpeed = 2;
+        const gameSpeed = 2;
 
         class Layer {
             constructor(image, speedRatio, initialY) {
@@ -56,22 +55,24 @@ type: background
                 this.image = image;
                 this.speedRatio = speedRatio;
                 this.speed = gameSpeed * this.speedRatio;
-                this.frame = 0;
             }
             update() {
                 this.x = (this.x - this.speed) % this.width;
             }
             draw() {
-                ctx.drawImage(this.image, this.x, this.y);
-                ctx.drawImage(this.image, this.x + this.width, this.y);
+                offscreenCtx.drawImage(this.image, this.x, this.y);
+                offscreenCtx.drawImage(this.image, this.x + this.width, this.y);
             }
         }
 
-        var backgroundObj = new Layer(backgroundImg, 0.5, 0);
+        const backgroundObj = new Layer(backgroundImg, 0.5, 0);
 
         function background() {
             backgroundObj.update();
+            offscreenCtx.fillStyle = "white"; 
+            offscreenCtx.fillRect(0, 0, canvasWidth, canvasHeight);
             backgroundObj.draw();
+            ctx.drawImage(offscreenCanvas, 0, 0);
             requestAnimationFrame(background);
         }
         background();
@@ -82,14 +83,13 @@ type: background
     const BOX_SCALE_FACTOR = 2;
     const DESIRED_FRAME_RATE = 15;
     const FRAME_INTERVAL = 1000 / DESIRED_FRAME_RATE;
-    const PLATFORM_SPRITE_WIDTH = 362.25; 
+    const PLATFORM_SPRITE_WIDTH = 362.25;
     const PLATFORM_SPRITE_HEIGHT = 377;
-    const PLATFORM_SCALE_FACTOR = 0.25;  
+    const PLATFORM_SCALE_FACTOR = 0.25;
     const PLATFORM_FRAME_LIMIT = 3;
     canvas.width = BOX_SPRITE_WIDTH * BOX_SCALE_FACTOR * 6;
     canvas.height = BOX_SPRITE_HEIGHT * BOX_SCALE_FACTOR * 3;
 
-    // Load the images for box and platform
     const boxImg = new Image();
     boxImg.src = '{{site.baseurl}}/images/box.png';
 
@@ -98,10 +98,9 @@ type: background
 
     boxImg.onload = function () {
         platformImg.onload = function () {
-            // Once both images are loaded, you can create the Box and Platform objects and start the animation.
             const box = new Box(boxImg);
             const platform = new Platform(platformImg);
-            animate(box, platform); // Start the animation loop
+            animate(box, platform)
         };
     };
 
@@ -119,17 +118,20 @@ type: background
             this.frameY = 0;
             this.frameX = 0;
             this.maxFrame = 7;
-            this.speed = 10; 
+            this.speed = 10;
             this.gravity = 0.5;
             this.onPlatform = false;
         }
+
         setFrameLimit(limit) {
             this.maxFrame = limit;
         }
+
         setPosition(x, y) {
             this.x = x;
             this.y = y;
         }
+
         draw(context) {
             context.drawImage(
                 this.image,
@@ -143,6 +145,7 @@ type: background
                 this.height * this.scale
             );
         }
+
         update() {
             if (this.frameX < this.maxFrame) {
                 this.frameX++;
@@ -154,6 +157,7 @@ type: background
                 this.y += this.gravity;
             }
         }
+
         checkCollision(platform) {
             const isColliding = (
                 this.x < platform.x + platform.width * platform.scale &&
@@ -253,10 +257,11 @@ type: background
         if (keyState.ArrowUp) {
             selectedAnimation = 'B';
             box.frameY = 1;
-        } 
+        }
     }
 
     let lastTimestamp = 0;
+
     function animate(box, platform, timestamp) {
         const deltaTime = timestamp - lastTimestamp;
         if (deltaTime >= FRAME_INTERVAL) {
@@ -303,7 +308,7 @@ type: background
         if (platform.frameX !== platform.maxFrame) {
             setTimeout(function () {
                 requestAnimationFrame(animatePlatform);
-            }, 100); 
+            }, 100);
         }
     }
 </script>

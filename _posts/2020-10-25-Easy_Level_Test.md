@@ -24,9 +24,9 @@ courses: { compsci: {week: 1} }
     canvas.height = 400;
     // Define gravity value
     let gravity = 1.5;
-    // Load the player sprite image
-    let playerImage = new Image();
-    playerImage.src = 'box.png'; // Replace 'player.png' with the path to your image
+    // Load the box image
+    let boxImage = new Image();
+    boxImage.src = 'box.png'; // Replace 'box.png' with the path to your box image
     // Define the Player class
     class Player {
         constructor() {
@@ -45,7 +45,7 @@ courses: { compsci: {week: 1} }
         }
         // Method to draw the player image on the canvas
         draw() {
-            c.drawImage(playerImage, this.position.x, this.position.y, this.width, this.height);
+            c.drawImage(boxImage, this.position.x, this.position.y, this.width, this.height);
         }
         // Method to update the player's position and velocity
         update() {
@@ -67,6 +67,12 @@ courses: { compsci: {week: 1} }
         },
         left: {
             pressed: false
+        },
+        up: {
+            pressed: false
+        },
+        down: {
+            pressed: false
         }
     };
     // Animation function to continuously update and render the canvas
@@ -75,51 +81,52 @@ courses: { compsci: {week: 1} }
         c.clearRect(0, 0, canvas.width, canvas.height);
         player.update();
         if (keys.right.pressed && player.position.x + player.width <= canvas.width - 50) {
-            player.velocity.x = 15;
+            player.velocity.x = 5; // Adjust the movement speed
         } else if (keys.left.pressed && player.position.x >= 50) {
-            player.velocity.x = -15;
+            player.velocity.x = -5; // Adjust the movement speed
         } else {
             player.velocity.x = 0;
+        }
+        if (keys.down.pressed && player.position.y + player.height <= canvas.height - 50) {
+            player.velocity.y = 5; // Adjust the movement speed
+        } else if (keys.up.pressed && player.position.y >= 50) {
+            player.velocity.y = -5; // Adjust the movement speed
+        } else {
+            player.velocity.y = 0;
         }
     }
     animate();
     // Event listener for keydown events
     addEventListener('keydown', ({ keyCode }) => {
         switch (keyCode) {
-            case 65:
-                console.log('left');
+            case 37: // Left arrow key
                 keys.left.pressed = true;
                 break;
-            case 83:
-                console.log('down');
+            case 38: // Up arrow key
+                keys.up.pressed = true;
                 break;
-            case 68:
-                console.log('right');
+            case 39: // Right arrow key
                 keys.right.pressed = true;
                 break;
-            case 87:
-                console.log('up');
-                player.velocity.y -= 20;
+            case 40: // Down arrow key
+                keys.down.pressed = true;
                 break;
         }
     });
     // Event listener for keyup events
     addEventListener('keyup', ({ keyCode }) => {
         switch (keyCode) {
-            case 65:
-                console.log('left');
+            case 37:
                 keys.left.pressed = false;
                 break;
-            case 83:
-                console.log('down');
+            case 38:
+                keys.up.pressed = false;
                 break;
-            case 68:
-                console.log('right');
+            case 39:
                 keys.right.pressed = false;
                 break;
-            case 87:
-                console.log('up');
-                player.velocity.y = -20;
+            case 40:
+                keys.down.pressed = false;
                 break;
         }
     });

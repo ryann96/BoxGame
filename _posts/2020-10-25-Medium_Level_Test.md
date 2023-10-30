@@ -3,9 +3,15 @@ toc: true
 comments: false
 layout: post
 title: Medium Mode
+<<<<<<< HEAD
 description: Just started.
 type: platforms
 courses: { compsci: {week: 5} }
+=======
+description: in progress
+type: background
+courses: { compsci: {week: 1} }
+>>>>>>> b3ef39c50b4fbf4652b6f75bad22007f88841cef
 ---
 
 <style>

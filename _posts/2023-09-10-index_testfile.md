@@ -138,12 +138,6 @@ type: platforms
                 );
             }
             update() {
-<<<<<<< HEAD
-                if (this.frameX < this.maxFrame) {
-                    this.frameX++;
-                } else {
-                    this.frameX = 0;
-=======
                 this.x = (this.x - this.speed) % this.width;
             }
             draw() {
@@ -373,7 +367,6 @@ type: platforms
                 if (!animationHasRun) {
                     animationHasRun = true;
                     animatePlatform();
->>>>>>> 30cc5b2ae022e46fd081eb00d3d71b1322435358
                 }
 
                 if (!this.onPlatform) {

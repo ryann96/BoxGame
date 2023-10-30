@@ -4,7 +4,7 @@ comments: true
 layout: post
 title: index test2 
 description: test for index
-courses: { compsci: {week: 1} }
+courses: { compsci: {week: 6} }
 type: background
 ---
 

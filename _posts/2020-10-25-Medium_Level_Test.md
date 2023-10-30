@@ -5,7 +5,7 @@ layout: post
 title: Medium Mode
 description: Just started.
 type: platforms
-courses: { compsci: {week: 2} }
+courses: { compsci: {week: 5} }
 ---
 
 <style>

@@ -94,3 +94,5 @@ function startGame(difficulty) {
     console.log(`Starting game with difficulty: ${difficulty}`);
     // Call your other functions or game logic here
 }
+
+export default _____;

@@ -5,10 +5,10 @@ layout: post
 title: background test
 description: in progress
 type: background
-courses: { compsci: {week: 1} }
+courses: { compsci: {week: 2} }
 ---
 
-<style>
+<style>gitf
     .canvas-container {
         display: flex;
         position: fixed;

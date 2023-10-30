@@ -5,7 +5,7 @@ layout: post
 title: platform go up
 description: complete
 type: platforms
-courses: { compsci: {week: 1} }
+courses: { compsci: {week: 3} }
 ---
 
 <body>

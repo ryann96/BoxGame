@@ -5,7 +5,7 @@ layout: post
 title: Easy Mode
 description: Just started.
 type: platforms
-courses: { compsci: {week: 1} }
+courses: { compsci: {week: 5} }
 ---
 
 <style>

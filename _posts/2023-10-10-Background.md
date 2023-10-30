@@ -5,7 +5,7 @@ layout: post
 title: goofy background
 description: in progress
 type: background
-courses: { compsci: {week: 1} }
+courses: { compsci: {week: 2} }
 ---
 
 <style>

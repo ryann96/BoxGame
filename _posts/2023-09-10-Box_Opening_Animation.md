@@ -5,7 +5,7 @@ layout: post
 title: Box Opening Animation
 description: complete
 type: sprites
-courses: { compsci: {week: 1} }
+courses: { compsci: {week: 2} }
 ---
 
 <body>

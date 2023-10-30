@@ -5,7 +5,7 @@ layout: post
 title: background test
 description: in progress
 type: background
-courses: { compsci: {week: 1} }
+courses: { compsci: {week: 2} }
 ---
 
 <style>
@@ -18,7 +18,7 @@ courses: { compsci: {week: 1} }
         border: 1px solid white;
     }
 </style>
-     
+
 <!-- Prepare background DOM canvas -->
 <canvas id="BackyRoundyCanvas"></canvas>
 
@@ -27,27 +27,28 @@ courses: { compsci: {week: 1} }
     const ctx = canvas.getContext('2d');
 
     const backgroundImg = new Image();
-    backgroundImg.src = '{{site.baseurl}}/images/Background With Road.png';
+    backgroundImg.src = '{{site.baseurl}}/images/BackgroundWithRoad3.png';
 
     backgroundImg.onload = function () {
-        const WIDTH = 1280; // Constant width
-        const HEIGHT = 900; // Constant height
+        const WIDTH = 2820; // Constant width
+        const HEIGHT = 1584; // Constant height
         const ASPECT_RATIO = WIDTH / HEIGHT;
 
+        // Calculate canvas dimensions based on the window size
         const canvasWidth = window.innerWidth;
         const canvasHeight = canvasWidth / ASPECT_RATIO;
 
+        // Set canvas dimensions
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
-        canvas.style.width = `${canvasWidth}px`;
-        canvas.style.height = `${canvasHeight}px`;
 
+        // Define game speed
         var gameSpeed = 2;
 
         class Layer {
             constructor(image, speedRatio, initialY) {
                 this.x = 0;
-                this.y = initialY; // Set a new initial value for y
+                this.y = initialY;
                 this.width = WIDTH;
                 this.height = HEIGHT;
                 this.image = image;
@@ -60,11 +61,11 @@ courses: { compsci: {week: 1} }
             }
             draw() {
                 ctx.drawImage(this.image, this.x, this.y);
-                ctx.drawImage(this.image, this.x + this.width, this.y);
+                ctx.drawImage(this.image, this.x - this.width, this.y); // Draw an additional image to cover the whole canvas
             }
         }
 
-        var backgroundObj = new Layer(backgroundImg, 0.5, 0); // Set initial Y position to 200
+        var backgroundObj = new Layer(backgroundImg, 0.5, 0);
 
         function background() {
             backgroundObj.update();

@@ -4,7 +4,7 @@ comments: true
 layout: post
 title: index test1
 description: test for index
-courses: { compsci: {week: 1} }
+courses: { compsci: {week: 6} }
 type: platforms
 ---
 
@@ -19,15 +19,9 @@ type: platforms
 </style>
 
 <script>
-<<<<<<< HEAD
-    document.addEventListener('DOMContentLoaded', function () {
-        const canvas = document.getElementById("BackyRoundyCanvas");
-        const ctx = canvas.getContext('2d');
-=======
     const canvas = document.createElement("canvas"); 
     document.body.appendChild(canvas);
     const ctx = canvas.getContext('2d');
->>>>>>> 30cc5b2ae022e46fd081eb00d3d71b1322435358
 
         const backgroundImg = new Image();
         backgroundImg.src = '{{site.baseurl}}/images/Backy_Roundy.jpg';
@@ -138,12 +132,6 @@ type: platforms
                 );
             }
             update() {
-<<<<<<< HEAD
-                if (this.frameX < this.maxFrame) {
-                    this.frameX++;
-                } else {
-                    this.frameX = 0;
-=======
                 this.x = (this.x - this.speed) % this.width;
             }
             draw() {
@@ -373,7 +361,6 @@ type: platforms
                 if (!animationHasRun) {
                     animationHasRun = true;
                     animatePlatform();
->>>>>>> 30cc5b2ae022e46fd081eb00d3d71b1322435358
                 }
 
                 if (!this.onPlatform) {

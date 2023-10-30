@@ -9,12 +9,27 @@ courses: { compsci: {week: 5} }
 ---
 
 <style>
-    #canvas {
+    .canvas-container {
+        display: flex;
+        background-image: url('images/Backy_Roundy.jpg');
+        background-size: repeat; 
+        background-attachment: fixed;
+        background-repeat: repeat;
+    }
+    canvas {
         margin: 0;
         border: 1px solid white;
     }
 </style>
-<canvas id='canvas'></canvas>
+
+<body>
+    <div class="canvas-container">
+        <canvas id="playerCanvas">
+                <img id="box" src="{{site.baseurl}}/images/box.png">
+        </canvas>
+    </div>
+</body>
+
 <script>
     // Create empty canvas
     let canvas = document.getElementById('canvas');

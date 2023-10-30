@@ -27,10 +27,10 @@ type: background
     const canvas = document.getElementById("BackyRoundyCanvas");
     const ctx = canvas.getContext('2d');
     const backgroundImg = new Image();
-    backgroundImg.src = '{{site.baseurl}}/images/Background With Road.png';
+    backgroundImg.src = '{{site.baseurl}}/images/BackgroundWithRoad3.png';
     backgroundImg.onload = function () {
-        const WIDTH = 2544;
-        const HEIGHT = 1432;
+        const WIDTH = 2820;
+        const HEIGHT = 1584;
         const ASPECT_RATIO = WIDTH / HEIGHT;
         const canvasWidth = WIDTH;
         const canvasHeight = canvasWidth / ASPECT_RATIO;

@@ -132,4 +132,3 @@ function animate(timestamp) {
 }
 
 export default Ninja;
-export default Bomb;

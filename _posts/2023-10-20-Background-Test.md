@@ -27,11 +27,11 @@ courses: { compsci: {week: 1} }
     const ctx = canvas.getContext('2d');
 
     const backgroundImg = new Image();
-    backgroundImg.src = '{{site.baseurl}}/images/Background With Road.png';
+    backgroundImg.src = '{{site.baseurl}}/images/BackgroundWithRoad3.png';
 
     backgroundImg.onload = function () {
-        const WIDTH = 1280; // Constant width
-        const HEIGHT = 1000; // Constant height
+        const WIDTH = 2820; // Constant width
+        const HEIGHT = 1584; // Constant height
         const ASPECT_RATIO = WIDTH / HEIGHT;
 
         const canvasWidth = window.innerWidth;

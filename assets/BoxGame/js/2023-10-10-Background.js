@@ -48,3 +48,5 @@ backgroundImg.onload = function () {
     }
     background();
 };
+
+export default Layer;

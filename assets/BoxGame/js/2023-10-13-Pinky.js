@@ -146,3 +146,5 @@ controls.addEventListener('click', function (event) {
         }
     }
 });
+
+export default Pinky;

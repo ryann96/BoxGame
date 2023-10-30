@@ -3,15 +3,9 @@ toc: true
 comments: false
 layout: post
 title: Medium Mode
-<<<<<<< HEAD
-description: in progress
-type: background
-courses: { compsci: {week: 1} }
-=======
 description: Just started.
 type: platforms
 courses: { compsci: {week: 5} }
->>>>>>> 6a6bb8cfe7addc268a3ac421575ae406ac686e7e
 ---
 
 <style>
@@ -37,7 +31,7 @@ courses: { compsci: {week: 5} }
 
     backgroundImg.onload = function () {
         const WIDTH = 1280; // Constant width
-        const HEIGHT = 650; // Constant height
+        const HEIGHT = 550; // Constant height
         const ASPECT_RATIO = WIDTH / HEIGHT;
 
         const canvasWidth = window.innerWidth;

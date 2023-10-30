@@ -19,15 +19,9 @@ type: platforms
 </style>
 
 <script>
-<<<<<<< HEAD
-    document.addEventListener('DOMContentLoaded', function () {
-        const canvas = document.getElementById("BackyRoundyCanvas");
-        const ctx = canvas.getContext('2d');
-=======
     const canvas = document.createElement("canvas"); 
     document.body.appendChild(canvas);
     const ctx = canvas.getContext('2d');
->>>>>>> 30cc5b2ae022e46fd081eb00d3d71b1322435358
 
         const backgroundImg = new Image();
         backgroundImg.src = '{{site.baseurl}}/images/Backy_Roundy.jpg';

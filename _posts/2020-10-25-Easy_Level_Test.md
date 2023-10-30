@@ -2,8 +2,8 @@
 toc: true
 comments: false
 layout: post
-title: Medium Mode
-description: Just started.
+title: Easy Mode
+description: Just started!
 type: platforms
 courses: { compsci: {week: 5} }
 ---

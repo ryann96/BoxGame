@@ -1,25 +1,31 @@
 ---
 hide: true
 layout: base
-image: /images/alien_planet.jpg
+image: images/Backy_Roundy.jpg
 images:
   background:
-    src: /images/alien_planet2.jpg
-  platform:
+    src: /images/Background With Road.png
+  platformAnimation:
     src: /images/platform.png
-  dog:
-    src: /images/dogSprite.png
-  monkey:
-    src: /images/monkeySprite.png
-  vader:
-    src: /images/vaderSprite.png
+  box:
+    src: /images/box.png
+  pinky:
+    src: /images/pinky.png
+  ninja:
+    src: /images/midnightStalker.png
+  iceman:
+    src: /images/Iceman-flipped.png
+  boxBreak:
+    src: /images/boxBreak.png
 ---
 <!-- Liquid code, run by Jekyll, used to define location of asset(s) -->
 {% assign backgroundFile = site.baseurl | append: page.images.background.src %}
-{% assign platformFile = site.baseurl | append: page.images.platform.src %}
-{% assign dogSpriteImage = site.baseurl | append: page.images.dog.src %}
-{% assign monkeySpriteImage = site.baseurl | append: page.images.monkey.src %}
-{% assign vaderSpriteImage = site.baseurl | append: page.images.vader.src %}
+{% assign platformAnimationFile = site.baseurl | append: page.images.platformAnimation.src %}
+{% assign boxImage = site.baseurl | append: page.images.box.src %}
+{% assign pinkyImage = site.baseurl | append: page.images.pinky.src %}
+{% assign ninjaImage = site.baseurl | append: page.images.ninja.src %}
+{% assign icemanImage = site.baseurl | append: page.images.iceam.src %}
+{% assign boxBreakImage = site.baseurl | append: page.images.boxBreak.src %}
 
 <style>
     #controls {

@@ -1,6 +1,6 @@
 import GameObject from "./GameObject.js";
 
-export class Platform extends GameObject{
+export class Platformx extends GameObject{
     constructor(x, y, width, height){
         this.x = x;
         this.y = y;
@@ -13,4 +13,4 @@ export class Platform extends GameObject{
     }
 }
 
-export default Platform;
+export default Platformx;

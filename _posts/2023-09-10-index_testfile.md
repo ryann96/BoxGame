@@ -34,17 +34,10 @@ type: platforms
             const canvasWidth = window.innerWidth;
             const canvasHeight = canvasWidth / ASPECT_RATIO;
 
-<<<<<<< HEAD
-            canvas.width = canvasWidth;
-            canvas.height = canvasHeight;
-            canvas.style.width = `${canvasWidth}px`;
-            canvas.style.height = `${canvasHeight}px`;
-=======
         canvas.width = canvasWidth;
         canvas.height = canvasHeight;
         canvas.style.width = `${canvasWidth}px`;
         canvas.style height = `${canvasHeight}px`;
->>>>>>> 30cc5b2ae022e46fd081eb00d3d71b1322435358
 
             var gameSpeed = 2;
 

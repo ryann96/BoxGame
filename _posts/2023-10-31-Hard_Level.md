@@ -1,12 +1,13 @@
 ---
 toc: true
-comments: true
+comments: false
 layout: post
-title: medium
-description: test for index
-courses: { compsci: {week: 6} }
-type: background
+title: Hard Mode
+description: Just started!
+type: platforms
+courses: { compsci: {week: 5} }
 ---
+
 <head>
     <style>
         .canvas-container {

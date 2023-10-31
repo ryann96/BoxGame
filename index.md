@@ -38,7 +38,7 @@ title: Delveries
         const PLATFORM_SPRITE_WIDTH = 362.25; 
         const PLATFORM_SPRITE_HEIGHT = 377;
         const PLATFORM_SCALE_FACTOR = 0.25;  
-        const PLATFORM_FRAME_LIMIT = 3;  
+        const PLATFORM_FRAME_LIMIT = 4;  
         canvas.width = BOX_SPRITE_WIDTH * BOX_SCALE_FACTOR*6;
         canvas.height = BOX_SPRITE_HEIGHT * BOX_SCALE_FACTOR*3;
 
@@ -199,23 +199,55 @@ title: Delveries
         function animate(timestamp) {
             const deltaTime = timestamp - lastTimestamp;
             if (deltaTime >= FRAME_INTERVAL) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.clearRect(box.x, box.y, box.width * box.scale, box.height * box.scale);
+
                 if (box.checkCollision(platform)) {
                     box.y = platform.y - box.height * box.scale;
                     platform.y = box.y + box.height * box.scale;
                 } else {
-                    box.onPlatform = false; // Reset onPlatform flag when not on platform
+                    box.onPlatform = false; 
                 }
+
                 box.draw(ctx);
                 box.update();
-                platform.draw(ctx);
-                platform.update();
                 updateAnimations();
                 lastTimestamp = timestamp;
             }
+
             requestAnimationFrame(animate);
         }
-
         animate();
+        let animationHasRun = false;
+        let platformAnimationFinished = false;
+
+        function animatePlatform() {
+            if (!platformAnimationFinished) {
+                ctx.clearRect(platform.x, platform.y, platform.width, platform.height);
+                platform.draw(ctx);
+                platform.update();
+
+                if (platform.frameX === platform.maxFrame) {
+                    platformAnimationFinished = true;
+                }
+
+                if (!platformAnimationFinished) {
+                    setTimeout(function () {
+                        requestAnimationFrame(animatePlatform);
+                    }, 100); 
+                }
+            }
+        }
+
+        document.addEventListener('keydown', function (event) {
+            switch (event.key) {
+                case ' ':
+                    if (!animationHasRun) {
+                        animationHasRun = true;
+                        platformAnimationFinished = false;
+                        animatePlatform();
+                    }
+            }
+        });
+        platform.draw(ctx);
     });
 </script>

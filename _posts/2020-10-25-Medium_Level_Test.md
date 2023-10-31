@@ -3,16 +3,22 @@ toc: true
 comments: true
 layout: post
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> ca676c9300f55e16044f98f4249ecdea4b20bee9
 title: Medium Mode
 description: in progress
 type: background
 courses: { compsci: {week: 1} }
+<<<<<<< HEAD
+=======
 =======
 title: medium
 description: test for index
 courses: { compsci: {week: 6} }
 type: background
 >>>>>>> 16a4335722092c03c8ba917f52b4f54f93e70dae
+>>>>>>> ca676c9300f55e16044f98f4249ecdea4b20bee9
 ---
 <head>
     <style>

@@ -2,7 +2,7 @@
 toc: true
 comments: false
 layout: post
-title: Easy Mode
+title: Hard Mode
 description: Just started!
 type: platforms
 courses: { compsci: {week: 5} }

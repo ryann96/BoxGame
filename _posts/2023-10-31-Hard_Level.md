@@ -1,12 +1,13 @@
 ---
 toc: true
-comments: true
+comments: false
 layout: post
-title: medium
-description: test for index
-courses: { compsci: {week: 6} }
-type: background
+title: Hard Mode
+description: Just started!
+type: platforms
+courses: { compsci: {week: 5} }
 ---
+
 <head>
     <style>
         .canvas-container {
@@ -27,10 +28,10 @@ type: background
     const canvas = document.getElementById("BackyRoundyCanvas");
     const ctx = canvas.getContext('2d');
     const backgroundImg = new Image();
-    backgroundImg.src = '{{site.baseurl}}/images/BackgroundWithRoad3.png';
+    backgroundImg.src = '{{site.baseurl}}/images/Background5.0.png';
     backgroundImg.onload = function () {
-        const WIDTH = 2820;
-        const HEIGHT = 1584;
+        const WIDTH = 1352;
+        const HEIGHT = 760;
         const ASPECT_RATIO = WIDTH / HEIGHT;
         const canvasWidth = WIDTH;
         const canvasHeight = canvasWidth / ASPECT_RATIO;

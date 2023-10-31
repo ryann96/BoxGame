@@ -237,17 +237,13 @@ title: Delveries
                 }
             }
         }
-
-        document.addEventListener('keydown', function (event) {
-            switch (event.key) {
-                case ' ':
-                    if (!animationHasRun) {
-                        animationHasRun = true;
-                        platformAnimationFinished = false;
-                        animatePlatform();
-                    }
+        if (box.frameX*box.scale == 0){
+            if (!animationHasRun) {
+                animationHasRun = true;
+                platformAnimationFinished = false;
+                animatePlatform();
             }
-        });
+        }
         platform.draw(ctx);
     });
 </script>

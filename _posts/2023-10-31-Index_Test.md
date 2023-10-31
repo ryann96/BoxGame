@@ -2,15 +2,19 @@
 toc: true
 comments: false
 layout: post
-title: box test
+title: need this
 description: in progress
-type: platforms
-courses: { compsci: {week: 3} }
+type: sprites
+courses: { compsci: {week: 1} }
 ---
 
 <style>
     .canvas-container {
         display: flex;
+        background-image: url('images/Backy_Roundy.jpg');
+        background-size: repeat; 
+        background-attachment: fixed;
+        background-repeat: repeat;
     }
     canvas {
         margin: 0;
@@ -20,12 +24,14 @@ courses: { compsci: {week: 3} }
 
 <body>
     <div class="canvas-container">
-        <canvas id="playerCanvas"></canvas>
+        <canvas id="playerCanvas">
+                <img id="box" src="{{site.baseurl}}/images/box.png">
+                <img id="platform" src="{{site.baseurl}}/images/platform.png"> 
+        </canvas>
     </div>
 </body>
 
 <script>
-    let gravityEnabled = true;
     window.addEventListener('load', function () {
         const canvas = document.getElementById('playerCanvas');
         const ctx = canvas.getContext('2d');
@@ -43,25 +49,21 @@ courses: { compsci: {week: 3} }
 
         class Box {
             constructor() {
-                this.image = new Image();
-                this.image.src = "{{site.baseurl}}/images/box.png";
-                this.image.onload = () => {
-                    this.spriteWidth = BOX_SPRITE_WIDTH;
-                    this.spriteHeight = BOX_SPRITE_HEIGHT;
-                    this.width = this.spriteWidth;
-                    this.height = this.spriteHeight;
-                    this.x = 0;
-                    this.y = 300;
-                    this.scale = BOX_SCALE_FACTOR;
-                    this.minFrame = 0;
-                    this.frameY = 0;
-                    this.frameX = 0;
-                    this.maxFrame = 7;
-                    this.speed = 5; 
-                    this.gravity = 0; // Gravity value
-                    this.onPlatform = false; // Flag to track if on platform
-                    this.currentPlatform = null; // Reference to current platform
-                }
+                this.image = document.getElementById("box");
+                this.spriteWidth = BOX_SPRITE_WIDTH;
+                this.spriteHeight = BOX_SPRITE_HEIGHT;
+                this.width = this.spriteWidth;
+                this.height = this.spriteHeight;
+                this.x = 0;
+                this.y = 300;
+                this.scale = BOX_SCALE_FACTOR;
+                this.minFrame = 0;
+                this.frameY = 0;
+                this.frameX = 0;
+                this.maxFrame = 7;
+                this.speed = 10; 
+                this.gravity = 0.5; // Gravity value
+                this.onPlatform = false; // Flag to track if on platform
             }
             setFrameLimit(limit) {
                 this.maxFrame = limit;
@@ -69,9 +71,6 @@ courses: { compsci: {week: 3} }
             setPosition(x, y) {
                 this.x = x;
                 this.y = y;
-            }
-            setPlatform(platform) {
-                this.currentPlatform = platform;
             }
             draw(context) {
                 context.drawImage(
@@ -96,52 +95,34 @@ courses: { compsci: {week: 3} }
                 if (!this.onPlatform) {
                     this.y += this.gravity; // Apply gravity
                 }
-
-                if (this.currentPlatform) {
-                    // Adjust box position based on platform's movement
-                    const platformMovement = this.currentPlatform.y - this.currentPlatform.prevY;
-                    this.y += platformMovement;
-                    this.currentPlatform = null; // Reset current platform if not colliding
-                }
             }
-
             checkCollision(platform) {
                 const isColliding = (
-                    this.x < platform.x + platform.width &&
+                    this.x < platform.x + platform.width * platform.scale &&
                     this.x + this.width * this.scale > platform.x &&
-                    this.y < platform.y + platform.height &&
+                    this.y < platform.y + platform.height * platform.scale &&
                     this.y + this.height * this.scale > platform.y
                 );
 
-                if (isColliding) {
-                    this.onPlatform = true; // Update onPlatform flag
-                    this.setPlatform(platform); // Set the current platform
-                } else {
-                    this.onPlatform = false; // Update onPlatform flag
-                    this.setPlatform(null); // Reset current platform if not colliding
-                }
+                this.onPlatform = isColliding; // Update onPlatform flag
 
                 return isColliding;
             }
-
         }
-
         class Platform {
             constructor() {
-                this.image = new Image();
-                this.image.src = "{{site.baseurl}}/images/platform.png";
+                this.image = document.getElementById("platform");
                 this.spriteWidth = PLATFORM_SPRITE_WIDTH;
                 this.spriteHeight = PLATFORM_SPRITE_HEIGHT;
-                this.width = this.spriteWidth * PLATFORM_SCALE_FACTOR;
-                this.height = this.spriteHeight * PLATFORM_SCALE_FACTOR;
-                this.x = 0;
-                this.y = 200; // Adjust the initial position as needed
+                this.width = this.spriteWidth;
+                this.height = this.spriteHeight;
+                this.x = 200;
+                this.y = 400;
                 this.scale = PLATFORM_SCALE_FACTOR;
                 this.minFrame = 0;
                 this.maxFrame = PLATFORM_FRAME_LIMIT;
                 this.frameX = 0;
                 this.frameY = 0;
-                this.prevY = this.y; // Add prevY property to track previous position
             }
 
             draw(context) {
@@ -153,8 +134,8 @@ courses: { compsci: {week: 3} }
                     this.spriteHeight,
                     this.x,
                     this.y,
-                    this.width,
-                    this.height
+                    this.width * this.scale,
+                    this.height * this.scale
                 );
             }
 
@@ -164,55 +145,11 @@ courses: { compsci: {week: 3} }
                 } else {
                     this.frameX = 0;
                 }
-
-                const event = new CustomEvent('platformUpdated', {
-                    detail: {
-                        platformX: this.x,
-                        platformY: this.y
-                    }
-                });
-                document.dispatchEvent(event);
-
-                // Update prevY to track previous position
-                this.prevY = this.y;
-
-                if (gravityEnabled && !this.onPlatform) {
-                    // Apply gravity if enabled and not on platform
-                    this.y += this.gravity;
-                } else {
-                    // Anchor the box to the bottom when not on platform
-                    this.y = canvas.height - this.height * this.scale;
-                }
             }
         }
-        const platform = new Platform();
-
-        let animationHasRun = false;
-
-        document.addEventListener('keydown', function (event) {
-            switch (event.key) {
-                case ' ':
-                    if (!animationHasRun) {
-                        animationHasRun = true;
-                        animate();
-                    }
-            }
-        });
-
-        function animate() {
-            if (animationHasRun) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                platform.draw(ctx);
-                platform.update();
-            }
-            if (platform.frameX !== platform.maxFrame) {
-                setTimeout(function () {
-                    requestAnimationFrame(animate);
-                }, 100);
-            }
-        };
 
         const box = new Box();
+        const platform = new Platform();
 
         const keyState = {
             ArrowLeft: false,
@@ -271,15 +208,7 @@ courses: { compsci: {week: 3} }
                 if (box.checkCollision(platform)) {
                     box.y = platform.y - box.height * box.scale;
                     platform.y = box.y + box.height * box.scale;
-                    box.onPlatform = true; // Make sure onPlatform is true when on platform
-                    box.setPlatform(platform); // Set the current platform
                 } else {
-                    if (box.currentPlatform) {
-                        // Adjust box position based on platform's movement
-                        const platformMovement = platform.y - platform.prevY;
-                        box.y += platformMovement;
-                        box.currentPlatform = null; // Reset current platform if not colliding
-                    }
                     box.onPlatform = false; // Reset onPlatform flag when not on platform
                 }
                 box.draw(ctx);
@@ -291,6 +220,7 @@ courses: { compsci: {week: 3} }
             }
             requestAnimationFrame(animate);
         }
+
         animate();
     });
 </script>

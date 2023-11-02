@@ -6,7 +6,7 @@ title: Delveries
 <style>
     .canvas-container {
         display: flex;
-        background-image: url('images/Background With Road 6.1.jpg');
+        background-image: url('{{site.baseurl}}images/Background With Road 6.1.jpg');
         background-size: repeat; 
         background-attachment: fixed;
         background-repeat: repeat;

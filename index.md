@@ -22,6 +22,7 @@ title: Delveries
         <canvas id="playerCanvas">
                 <img id="box" src="{{site.baseurl}}/images/box.png">
                 <img id="platform" src="{{site.baseurl}}/images/platform.png"> 
+                <img id="ninjaSprite" src="{{site.baseurl}}/images/midnightStalker.png">
         </canvas>
     </div>
 </body>
@@ -39,6 +40,16 @@ title: Delveries
         const PLATFORM_SPRITE_HEIGHT = 377;
         const PLATFORM_SCALE_FACTOR = 0.25;  
         const PLATFORM_FRAME_LIMIT = 4;  
+        const NINJA_SPRITE_WIDTH = 30;
+        const NINJA_SPRITE_HEIGHT = 30;
+        const NINJA_SCALE_FACTOR = 4;
+        const NINJA_FRAME_LIMIT = 5;
+        const NINJA_DESIRED_FRAME_RATE = 8;
+        const NINJA_FRAME_INTERVAL = 1000 / NINJA_DESIRED_FRAME_RATE;
+        const BOMB_RADIUS = 5;
+        const BOMB_SPEED = 20;
+        const BOMB_DISTANCE = 200;
+        const BOMB_THROW_INTERVAL = 5000; // 5 seconds
         canvas.width = BOX_SPRITE_WIDTH * BOX_SCALE_FACTOR*6;
         canvas.height = BOX_SPRITE_HEIGHT * BOX_SCALE_FACTOR*3;
 
@@ -142,7 +153,102 @@ title: Delveries
                 }
             }
         }
-
+        class Ninja {
+            constructor() {
+                this.image = document.getElementById("ninjaSprite");
+                this.spriteWidth = NINJA_SPRITE_WIDTH;
+                this.spriteHeight = NINJA_SPRITE_HEIGHT;
+                this.width = this.spriteWidth;
+                this.height = this.spriteHeight;
+                this.x = 0;
+                this.y = 350;
+                this.scale = NINJA_SCALE_FACTOR;
+                this.minFrame = 0;
+                this.maxFrame = NINJA_FRAME_LIMIT;
+                this.frameX = 0;
+                this.frameY = 2;
+                this.velocityX = 6;
+                this.animationCounter = 0;
+                this.animationLimit = 2; // Change this to control the number of times each animation should run
+            }
+            draw(context) {
+                context.drawImage(
+                    this.image,
+                    this.frameX * this.spriteWidth,
+                    this.frameY * this.spriteHeight,
+                    this.spriteWidth,
+                    this.spriteHeight,
+                    this.x,
+                    this.y,
+                    this.width * this.scale,
+                    this.height * this.scale
+                );
+            }
+            update() {
+                if (this.frameX < this.maxFrame) {
+                    this.frameX++;
+                } else {
+                    this.frameX = 0;
+                    this.animationCounter++;
+                    if (this.animationCounter >= this.animationLimit) {
+                        this.animationCounter = 0;
+                        switch (this.frameY) {
+                            case 2:
+                                this.frameY = 5; // Switch to Sword Fighting
+                                break;
+                            case 5:
+                                this.frameY = 6; // Switch to Sword Strikes
+                                break;
+                            case 6:
+                                this.frameY = 2; // Switch back to Jumping
+                                break;
+                        }
+                    }
+                }
+                this.x += this.velocityX;
+                if (this.x > canvas.width) {
+                    this.x = -this.width * this.scale;
+                }
+            }
+        }
+        class Bomb {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = BOMB_RADIUS;
+                this.speed = BOMB_SPEED;
+                this.distanceTravelled = 0;
+                this.color = 'black';
+            }
+            draw(context) {
+                context.beginPath();
+                context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+                context.fillStyle = this.color;
+                context.fill();
+                context.closePath();
+            }
+            update() {
+                this.x += this.speed;
+                this.distanceTravelled += this.speed;
+                if (this.distanceTravelled >= BOMB_DISTANCE) {
+                    bombs.splice(bombs.indexOf(this), 1);
+                } else if (this.distanceTravelled >= 180) {
+                    this.color = 'orange';
+                    this.radius = BOMB_RADIUS * 2.5;
+                }
+            }
+        }
+        const ninja = new Ninja();
+        const bombs = [];
+        function throwBomb() {
+            const bomb = new Bomb(ninja.x + ninja.width * ninja.scale, ninja.y + ninja.height * ninja.scale / 2);
+            bombs.push(bomb);
+        }
+        function automaticBombThrow() {
+            throwBomb(); // Throw a bomb initially
+            setInterval(throwBomb, BOMB_THROW_INTERVAL);
+        }
+        automaticBombThrow(); // Start the automatic bomb throwing
         const box = new Box();
         const platform = new Platform();
 
@@ -200,7 +306,7 @@ title: Delveries
             const deltaTime = timestamp - lastTimestamp;
             if (deltaTime >= FRAME_INTERVAL) {
                 ctx.clearRect(box.x, box.y, box.width * box.scale, box.height * box.scale);
-
+                ctx.clearRect(ninja.x, ninja.y, ninja.width * ninja.scale, ninja.height * ninja.scale);
                 if (box.checkCollision(platform)) {
                     box.y = platform.y - box.height * box.scale;
                     platform.y = box.y + box.height * box.scale;
@@ -211,6 +317,12 @@ title: Delveries
                 box.draw(ctx);
                 box.update();
                 updateAnimations();
+                ninja.draw(ctx);
+                ninja.update();
+                bombs.forEach(bomb => {
+                    bomb.draw(ctx);
+                    bomb.update();
+                });
                 lastTimestamp = timestamp;
             }
 
@@ -244,6 +356,5 @@ title: Delveries
                 animatePlatform();
             }
         }
-        platform.draw(ctx);
     });
 </script>

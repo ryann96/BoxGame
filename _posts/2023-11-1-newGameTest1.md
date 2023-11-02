@@ -2,11 +2,12 @@
 toc: true
 comments: false
 layout: post
-title: New Game1
+title: Test
 description: in progress
-type: background
-courses: { compsci: {week: 4} }
+type: sprites
+courses: { compsci: {week: 1} }
 ---
+
 <style>
     #canvas {
         margin: 0;
@@ -17,8 +18,8 @@ courses: { compsci: {week: 4} }
 <script>
     let canvas = document.getElementById('canvas');
     let c = canvas.getContext('2d');
-    canvas.width = 1500;
-    canvas.height = 380;
+    canvas.width = 650;
+    canvas.height = 400;
     let gravity = 1.5;
     class Player {
         constructor() {
@@ -30,11 +31,11 @@ courses: { compsci: {week: 4} }
                 x: 0,
                 y: 0
             };
-            this.width = 50;
+            this.width = 30;
             this.height = 30;
         }
         draw() {
-            c.fillStyle = 'brown';
+            c.fillStyle = 'red';
             c.fillRect(this.position.x, this.position.y, this.width, this.height);
         }
         update() {
@@ -54,7 +55,7 @@ courses: { compsci: {week: 4} }
                 y: 300
             }
             this.image = image;
-            this.width = 1500;
+            this.width = 650;
             this.height = 100;
         }
         draw() {
@@ -64,7 +65,7 @@ courses: { compsci: {week: 4} }
     class Tube {
         constructor(image) {
             this.position = {
-                x: 1390,
+                x: 500,
                 y: 180
             }
             this.image = image;
@@ -92,16 +93,12 @@ courses: { compsci: {week: 4} }
     //--
     // NEW CODE - CREATE GOOMBA CLASS
     //--
-</body>
     class Goomba {
         constructor(image) {
             this.position = {
                 x: 250,
                 y: 245
             };
-            this.image = new Image(); // Create a new Image element
-            this.image.src = '{{site.baseurl}}/images/iceman-flipped.png'; // Set the source attribute
-            this.image.id = 'IceMan'; // Set the id attribute
             this.image = image;
             this.width = 55;
             this.height = 55;
@@ -121,9 +118,9 @@ courses: { compsci: {week: 4} }
     let image = new Image()
     let imageTube = new Image()
     let imageBlock = new Image()
-    image.src = '{{site.baseurl}}/images/Road.png'
-    imageTube.src = '{{site.baseurl}}/images/house.png'
-    imageBlock.src = '{{site.baseurl}}/images/balcony.png';
+    image.src = 'https://samayass.github.io/samayaCSA/images/platform.png'
+    imageTube.src = 'https://samayass.github.io/samayaCSA/images/tube.png'
+    imageBlock.src = 'https://samayass.github.io/samayaCSA/images/box.png';
     //--
     // NEW CODE - ADD GOOMBA IMAGE
     //--
@@ -241,7 +238,7 @@ courses: { compsci: {week: 4} }
             player.position.x <= goomba.position.x + goomba.width
         )
         {
-            player.velocity.y = -5;
+            player.velocity.y = -20;
         }
         if (
             goomba.position.x >= platform.position.x &&

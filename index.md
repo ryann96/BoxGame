@@ -6,7 +6,7 @@ title: Delveries
 <style>
     .canvas-container {
         display: flex;
-        background-image: url('images/Backy_Roundy.jpg');
+        background-image: url('{{site.baseurl}}/images/Backy_Roundy.jpg');
         background-size: repeat; 
         background-attachment: fixed;
         background-repeat: repeat;
@@ -14,20 +14,72 @@ title: Delveries
     canvas {
         margin: 0;
         border: 1px solid white;
+        z-index: 2; /* Ensure canvas is on top */
+    }
+    .sprite-container {
+        position: absolute;
+        z-index: 3; /* Ensure sprites are on top */
     }
 </style>
 
 <body>
     <div class="canvas-container">
-        <canvas id="playerCanvas">
-                <img id="box" src="{{site.baseurl}}/images/box.png">
-                <img id="platform" src="{{site.baseurl}}/images/platform.png"> 
-                <img id="ninjaSprite" src="{{site.baseurl}}/images/midnightStalker.png">
-        </canvas>
+        <canvas id="backgroundCanvas"></canvas>
+    </div>
+    <div class="sprite-container">
+        <img id="box" src="{{site.baseurl}}/images/box.png">
+        <img id="platform" src="{{site.baseurl}}/images/platform.png"> 
+        <img id="ninjaSprite" src="{{site.baseurl}}/images/midnightStalker.png">
     </div>
 </body>
 
 <script>
+    function handleBoxPlatformCollision(box, platform) {
+        const boxRight = box.x + box.width * box.scale;
+        const boxBottom = box.y + box.height * box.scale;
+
+        const platformRight = platform.x + platform.width * platform.scale;
+        const platformBottom = platform.y + platform.height * platform.scale;
+
+        if (
+            boxRight >= platform.x &&
+            box.x <= platformRight &&
+            boxBottom >= platform.y &&
+            box.y <= platformBottom
+        ) {
+            // Collision detected, handle accordingly
+            box.onPlatform = true;
+            box.applyGravity = false;
+        } else {
+            // No collision, enable gravity
+            box.onPlatform = false;
+            box.applyGravity = true;
+        }
+    }
+
+    function handleNinjaPlatformCollision(ninja, platform) {
+        const ninjaRight = ninja.x + ninja.width * ninja.scale;
+        const ninjaBottom = ninja.y + ninja.height * ninja.scale;
+
+        const platformRight = platform.x + platform.width * platform.scale;
+        const platformBottom = platform.y + platform.height * platform.scale;
+
+        if (
+            ninjaRight >= platform.x &&
+            ninja.x <= platformRight &&
+            ninjaBottom >= platform.y &&
+            ninja.y <= platformBottom
+        ) {
+            // Collision detected, handle accordingly
+            ninja.onPlatform = true;
+            ninja.applyGravity = false;
+        } else {
+            // No collision, enable gravity
+            ninja.onPlatform = false;
+            ninja.applyGravity = true;
+        }
+    }
+
     window.addEventListener('load', function () {
         const canvas = document.getElementById('playerCanvas');
         const ctx = canvas.getContext('2d');
@@ -40,18 +92,8 @@ title: Delveries
         const PLATFORM_SPRITE_HEIGHT = 377;
         const PLATFORM_SCALE_FACTOR = 0.25;  
         const PLATFORM_FRAME_LIMIT = 4;  
-        const NINJA_SPRITE_WIDTH = 30;
-        const NINJA_SPRITE_HEIGHT = 30;
-        const NINJA_SCALE_FACTOR = 4;
-        const NINJA_FRAME_LIMIT = 5;
-        const NINJA_DESIRED_FRAME_RATE = 8;
-        const NINJA_FRAME_INTERVAL = 1000 / NINJA_DESIRED_FRAME_RATE;
-        const BOMB_RADIUS = 5;
-        const BOMB_SPEED = 20;
-        const BOMB_DISTANCE = 200;
-        const BOMB_THROW_INTERVAL = 5000;
-        canvas.width = BOX_SPRITE_WIDTH * BOX_SCALE_FACTOR*6;
-        canvas.height = BOX_SPRITE_HEIGHT * BOX_SCALE_FACTOR*3;
+        canvas.width = 1911;
+        canvas.height = 535;
 
         class Box {
             constructor() {
@@ -68,8 +110,9 @@ title: Delveries
                 this.frameX = 0;
                 this.maxFrame = 7;
                 this.speed = 10; 
-                this.gravity = 0; 
+                this.gravity = 5; 
                 this.onPlatform = false; 
+                this.applyGravity = true;
             }
             setFrameLimit(limit) {
                 this.maxFrame = limit;
@@ -98,7 +141,13 @@ title: Delveries
                     this.frameX = 0;
                 }
 
-                if (!this.onPlatform) {
+                if (this.onPlatform || this.y >= canvas.height - this.height * this.scale) {
+                    this.applyGravity = false; // Disable gravity on platform or at bottom
+                } else {
+                    this.applyGravity = true; // Enable gravity when not on platform and not at bottom
+                }
+
+                if (this.applyGravity) { 
                     this.y += this.gravity; 
                 }
             }
@@ -110,11 +159,21 @@ title: Delveries
                     this.y + this.height * this.scale > platform.y
                 );
 
-                this.onPlatform = isColliding;
+                this.onPlatform = isColliding; 
+                if (isColliding) {
+                    this.onPlatform = true;
+                    this.toggleGravity(); 
+                } else {
+                    this.onPlatform = false;
+                }
 
                 return isColliding;
             }
+            toggleGravity() {
+                this.applyGravity = !this.applyGravity;
+            }
         }
+
         class Platform {
             constructor() {
                 this.image = document.getElementById("platform");
@@ -153,6 +212,7 @@ title: Delveries
                 }
             }
         }
+
         class Ninja {
             constructor() {
                 this.image = document.getElementById("ninjaSprite");
@@ -170,6 +230,8 @@ title: Delveries
                 this.velocityX = 6;
                 this.animationCounter = 0;
                 this.animationLimit = 2; 
+                this.onPlatform = false;
+                this.applyGravity = true;
             }
             draw(context) {
                 context.drawImage(
@@ -209,8 +271,40 @@ title: Delveries
                 if (this.x > canvas.width) {
                     this.x = -this.width * this.scale;
                 }
+
+                if (this.onPlatform || this.y >= canvas.height - this.height * this.scale) {
+                    this.applyGravity = false; // Disable gravity on platform or at bottom
+                } else {
+                    this.applyGravity = true; // Enable gravity when not on platform and not at bottom
+                }
+
+                if (this.applyGravity) { 
+                    this.y += this.gravity; 
+                }
+            }
+            checkCollision(platform) {
+                const isColliding = (
+                    this.x < platform.x + platform.width * platform.scale &&
+                    this.x + this.width * this.scale > platform.x &&
+                    this.y < platform.y + platform.height * platform.scale &&
+                    this.y + this.height * this.scale > platform.y
+                );
+
+                this.onPlatform = isColliding; 
+                if (isColliding) {
+                    this.onPlatform = true;
+                    this.toggleGravity(); 
+                } else {
+                    this.onPlatform = false;
+                }
+
+                return isColliding;
+            }
+            toggleGravity() {
+                this.applyGravity = !this.applyGravity;
             }
         }
+
         class Bomb {
             constructor(x, y) {
                 this.x = x;
@@ -238,17 +332,22 @@ title: Delveries
                 }
             }
         }
+
         const ninja = new Ninja();
         const bombs = [];
+
         function throwBomb() {
             const bomb = new Bomb(ninja.x + ninja.width * ninja.scale, ninja.y + ninja.height * ninja.scale / 2);
             bombs.push(bomb);
         }
+
         function automaticBombThrow() {
             throwBomb(); 
             setInterval(throwBomb, BOMB_THROW_INTERVAL);
         }
+
         automaticBombThrow(); 
+
         const box = new Box();
         const platform = new Platform();
 
@@ -306,28 +405,25 @@ title: Delveries
             const deltaTime = timestamp - lastTimestamp;
             if (deltaTime >= FRAME_INTERVAL) {
                 ctx.clearRect(box.x, box.y, box.width * box.scale, box.height * box.scale);
-                ctx.clearRect(ninja.x, ninja.y, ninja.width * ninja.scale, ninja.height * ninja.scale);
+
                 if (box.checkCollision(platform)) {
                     box.y = platform.y - box.height * box.scale;
                     platform.y = box.y + box.height * box.scale;
                 } else {
                     box.onPlatform = false; 
                 }
+
                 box.draw(ctx);
                 box.update();
                 updateAnimations();
-                ninja.draw(ctx);
-                ninja.update();
-                bombs.forEach(bomb => {
-                    bomb.draw(ctx);
-                    bomb.update();
-                });
                 lastTimestamp = timestamp;
             }
 
             requestAnimationFrame(animate);
         }
+
         animate();
+
         let animationHasRun = false;
         let platformAnimationFinished = false;
 
@@ -348,12 +444,18 @@ title: Delveries
                 }
             }
         }
-        if (box.frameX*box.scale == 0){
-            if (!animationHasRun) {
-                animationHasRun = true;
-                platformAnimationFinished = false;
-                animatePlatform();
+
+        document.addEventListener('keydown', function (event) {
+            switch (event.key) {
+                case ' ':
+                    if (!animationHasRun) {
+                        animationHasRun = true;
+                        platformAnimationFinished = false;
+                        animatePlatform();
+                    }
             }
-        }
+        });
+
+        platform.draw(ctx);
     });
 </script>

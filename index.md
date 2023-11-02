@@ -4,458 +4,289 @@ title: Delveries
 ---
 
 <style>
-    .canvas-container {
-        display: flex;
-        background-image: url('{{site.baseurl}}/images/Backy_Roundy.jpg');
-        background-size: repeat; 
-        background-attachment: fixed;
-        background-repeat: repeat;
-    }
-    canvas {
+    #canvas {
         margin: 0;
         border: 1px solid white;
-        z-index: 2; /* Ensure canvas is on top */
-    }
-    .sprite-container {
-        position: absolute;
-        z-index: 3; /* Ensure sprites are on top */
     }
 </style>
-
-<body>
-    <div class="canvas-container">
-        <canvas id="backgroundCanvas"></canvas>
-    </div>
-    <div class="sprite-container">
-        <img id="box" src="{{site.baseurl}}/images/box.png">
-        <img id="platform" src="{{site.baseurl}}/images/platform.png"> 
-        <img id="ninjaSprite" src="{{site.baseurl}}/images/midnightStalker.png">
-    </div>
-</body>
-
+<canvas id='canvas'></canvas>
 <script>
-    function handleBoxPlatformCollision(box, platform) {
-        const boxRight = box.x + box.width * box.scale;
-        const boxBottom = box.y + box.height * box.scale;
-
-        const platformRight = platform.x + platform.width * platform.scale;
-        const platformBottom = platform.y + platform.height * platform.scale;
-
-        if (
-            boxRight >= platform.x &&
-            box.x <= platformRight &&
-            boxBottom >= platform.y &&
-            box.y <= platformBottom
-        ) {
-            // Collision detected, handle accordingly
-            box.onPlatform = true;
-            box.applyGravity = false;
-        } else {
-            // No collision, enable gravity
-            box.onPlatform = false;
-            box.applyGravity = true;
+    let canvas = document.getElementById('canvas');
+    let c = canvas.getContext('2d');
+    canvas.width = 1500;
+    canvas.height = 400;
+    let gravity = 1.5;
+    class Player {
+        constructor() {
+            this.position = {
+                x: 100,
+                y: 200
+            };
+            this.velocity = {
+                x: 0,
+                y: 0
+            };
+            this.width = 50;
+            this.height = 30;
+        }
+        draw() {
+            c.fillStyle = 'brown';
+            c.fillRect(this.position.x, this.position.y, this.width, this.height);
+        }
+        update() {
+            this.draw();
+            this.position.y += this.velocity.y;
+            this.position.x += this.velocity.x;
+            if (this.position.y + this.height + this.velocity.y <= canvas.height)
+                this.velocity.y += gravity;
+            else
+                this.velocity.y = 0;
         }
     }
-
-    function handleNinjaPlatformCollision(ninja, platform) {
-        const ninjaRight = ninja.x + ninja.width * ninja.scale;
-        const ninjaBottom = ninja.y + ninja.height * ninja.scale;
-
-        const platformRight = platform.x + platform.width * platform.scale;
-        const platformBottom = platform.y + platform.height * platform.scale;
-
-        if (
-            ninjaRight >= platform.x &&
-            ninja.x <= platformRight &&
-            ninjaBottom >= platform.y &&
-            ninja.y <= platformBottom
-        ) {
-            // Collision detected, handle accordingly
-            ninja.onPlatform = true;
-            ninja.applyGravity = false;
-        } else {
-            // No collision, enable gravity
-            ninja.onPlatform = false;
-            ninja.applyGravity = true;
+    class Platform {
+        constructor(image) {
+            this.position = {
+                x: 0,
+                y: 300
+            }
+            this.image = image;
+            this.width = 1500;
+            this.height = 100;
+        }
+        draw() {
+            c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
         }
     }
-
-    window.addEventListener('load', function () {
-        const canvas = document.getElementById('playerCanvas');
-        const ctx = canvas.getContext('2d');
-        const BOX_SPRITE_WIDTH = 71.75;
-        const BOX_SPRITE_HEIGHT = 82.5;
-        const BOX_SCALE_FACTOR = 2;
-        const DESIRED_FRAME_RATE = 15;
-        const FRAME_INTERVAL = 1000 / DESIRED_FRAME_RATE;
-        const PLATFORM_SPRITE_WIDTH = 362.25; 
-        const PLATFORM_SPRITE_HEIGHT = 377;
-        const PLATFORM_SCALE_FACTOR = 0.25;  
-        const PLATFORM_FRAME_LIMIT = 4;  
-        canvas.width = 1911;
-        canvas.height = 535;
-
-        class Box {
-            constructor() {
-                this.image = document.getElementById("box");
-                this.spriteWidth = BOX_SPRITE_WIDTH;
-                this.spriteHeight = BOX_SPRITE_HEIGHT;
-                this.width = this.spriteWidth;
-                this.height = this.spriteHeight;
-                this.x = 0;
-                this.y = 300;
-                this.scale = BOX_SCALE_FACTOR;
-                this.minFrame = 0;
-                this.frameY = 0;
-                this.frameX = 0;
-                this.maxFrame = 7;
-                this.speed = 10; 
-                this.gravity = 5; 
-                this.onPlatform = false; 
-                this.applyGravity = true;
+    class Tube {
+        constructor(image) {
+            this.position = {
+                x: 900,
+                y: 180
             }
-            setFrameLimit(limit) {
-                this.maxFrame = limit;
-            }
-            setPosition(x, y) {
-                this.x = x;
-                this.y = y;
-            }
-            draw(context) {
-                context.drawImage(
-                    this.image,
-                    this.frameX * this.spriteWidth,
-                    this.frameY * this.spriteHeight,
-                    this.spriteWidth,
-                    this.spriteHeight,
-                    this.x,
-                    this.y,
-                    this.width * this.scale,
-                    this.height * this.scale
-                );
-            }
-            update() {
-                if (this.frameX < this.maxFrame) {
-                    this.frameX++;
-                } else {
-                    this.frameX = 0;
-                }
-
-                if (this.onPlatform || this.y >= canvas.height - this.height * this.scale) {
-                    this.applyGravity = false; // Disable gravity on platform or at bottom
-                } else {
-                    this.applyGravity = true; // Enable gravity when not on platform and not at bottom
-                }
-
-                if (this.applyGravity) { 
-                    this.y += this.gravity; 
-                }
-            }
-            checkCollision(platform) {
-                const isColliding = (
-                    this.x < platform.x + platform.width * platform.scale &&
-                    this.x + this.width * this.scale > platform.x &&
-                    this.y < platform.y + platform.height * platform.scale &&
-                    this.y + this.height * this.scale > platform.y
-                );
-
-                this.onPlatform = isColliding; 
-                if (isColliding) {
-                    this.onPlatform = true;
-                    this.toggleGravity(); 
-                } else {
-                    this.onPlatform = false;
-                }
-
-                return isColliding;
-            }
-            toggleGravity() {
-                this.applyGravity = !this.applyGravity;
+            this.image = image;
+            this.width = 100;
+            this.height = 120;
+        }
+        draw() {
+            c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+        }
+    }
+    class BlockObject {
+        constructor(image) {
+            this.position = {
+                x: 200,
+                y: 100
+            };
+            this.image = image;
+            this.width = 158;
+            this.height = 79;
+        }
+        draw() {
+            c.drawImage(this.image, this.position.x, this.position.y);
+        }
+    }
+    //--
+    // NEW CODE - CREATE GOOMBA CLASS
+    //--
+    class Goomba {
+        constructor(image) {
+            this.position = {
+                x: 250,
+                y: 245
+            };
+            this.image = image;
+            this.width = 55;
+            this.height = 55;
+            this.velocity = {
+                x: -2,
+                y: 0
             }
         }
-
-        class Platform {
-            constructor() {
-                this.image = document.getElementById("platform");
-                this.spriteWidth = PLATFORM_SPRITE_WIDTH;
-                this.spriteHeight = PLATFORM_SPRITE_HEIGHT;
-                this.width = this.spriteWidth;
-                this.height = this.spriteHeight;
-                this.x = 200;
-                this.y = 400;
-                this.scale = PLATFORM_SCALE_FACTOR;
-                this.minFrame = 0;
-                this.maxFrame = PLATFORM_FRAME_LIMIT;
-                this.frameX = 0;
-                this.frameY = 0;
-            }
-
-            draw(context) {
-                context.drawImage(
-                    this.image,
-                    this.frameX * this.spriteWidth,
-                    this.frameY * this.spriteHeight,
-                    this.spriteWidth,
-                    this.spriteHeight,
-                    this.x,
-                    this.y,
-                    this.width * this.scale,
-                    this.height * this.scale
-                );
-            }
-
-            update() {
-                if (this.frameX < this.maxFrame) {
-                    this.frameX++;
-                } else {
-                    this.frameX = 0;
-                }
-            }
+        draw() {
+            c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
         }
-
-        class Ninja {
-            constructor() {
-                this.image = document.getElementById("ninjaSprite");
-                this.spriteWidth = NINJA_SPRITE_WIDTH;
-                this.spriteHeight = NINJA_SPRITE_HEIGHT;
-                this.width = this.spriteWidth;
-                this.height = this.spriteHeight;
-                this.x = 0;
-                this.y = 350;
-                this.scale = NINJA_SCALE_FACTOR;
-                this.minFrame = 0;
-                this.maxFrame = NINJA_FRAME_LIMIT;
-                this.frameX = 0;
-                this.frameY = 2;
-                this.velocityX = 6;
-                this.animationCounter = 0;
-                this.animationLimit = 2; 
-                this.onPlatform = false;
-                this.applyGravity = true;
+        update() {
+            this.position.x += this.velocity.x;
+            this.draw();
+        }
+    }
+    let image = new Image()
+    let imageTube = new Image()
+    let imageBlock = new Image()
+    image.src = 'https://samayass.github.io/samayaCSA/images/platform.png'
+    imageTube.src = 'https://samayass.github.io/samayaCSA/images/tube.png'
+    imageBlock.src = 'https://samayass.github.io/samayaCSA/images/box.png';
+    //--
+    // NEW CODE - ADD GOOMBA IMAGE
+    //--
+    let imageGoomba = new Image()
+    imageGoomba.src = 'https://samayass.github.io/samayaCSA/images/goomba.png';
+    let platform = new Platform(image)
+    let tube = new Tube(imageTube)
+    let blockObject = new BlockObject(imageBlock)
+    let goomba = new Goomba(imageGoomba)
+    player = new Player()
+    let keys = {
+        right: {
+            pressed: false
+        },
+        left: {
+            pressed: false
+        }
+    }
+    function animate() {
+        requestAnimationFrame(animate);
+        c.clearRect(0, 0, canvas.width, canvas.height);
+        platform.draw();
+        player.update();
+        tube.draw();
+        blockObject.draw();
+        //--
+        // NEW CODE - UPDATE GOOMBA ANIMATION
+        //--
+        goomba.update();
+        if (
+            player.position.y + player.height <= blockObject.position.y &&
+            player.position.y + player.height + player.velocity.y >= blockObject.position.y &&
+            player.position.x + player.width >= blockObject.position.x &&
+            player.position.x <= blockObject.position.x + blockObject.width
+        )
+        {
+            player.velocity.y = 0;
+        }
+        if (keys.right.pressed && player.position.x + player.width <= canvas.width - 50) {
+            player.velocity.x = 15;
+        } else if (keys.left.pressed && player.position.x >= 50) {
+            player.velocity.x = -15;
+        } else {
+            player.velocity.x = 0;
+        }
+        if (
+                player.position.y + player.height <= platform.position.y &&
+                player.position.y + player.height + player.velocity.y >= platform.position.y &&
+                player.position.x + player.width >= platform.position.x &&
+                player.position.x <= platform.position.x + platform.width
+            )
+            {
+                player.velocity.y = 0;
             }
-            draw(context) {
-                context.drawImage(
-                    this.image,
-                    this.frameX * this.spriteWidth,
-                    this.frameY * this.spriteHeight,
-                    this.spriteWidth,
-                    this.spriteHeight,
-                    this.x,
-                    this.y,
-                    this.width * this.scale,
-                    this.height * this.scale
-                );
+        if (
+                player.position.y + player.height <= tube.position.y &&
+                player.position.y + player.height + player.velocity.y >= tube.position.y &&
+                player.position.x + player.width >= tube.position.x &&
+                player.position.x <= tube.position.x + tube.width
+            ) {
+                player.velocity.y = 0;
+                player.position.y += 0.1
+                player.velocity.y = 0.0001
+                gravity = 0.2
             }
-            update() {
-                if (this.frameX < this.maxFrame) {
-                    this.frameX++;
-                } else {
-                    this.frameX = 0;
-                    this.animationCounter++;
-                    if (this.animationCounter >= this.animationLimit) {
-                        this.animationCounter = 0;
-                        switch (this.frameY) {
-                            case 2:
-                                this.frameY = 5; 
-                                break;
-                            case 5:
-                                this.frameY = 6; 
-                                break;
-                            case 6:
-                                this.frameY = 2; 
-                                break;
-                        }
+            if (player.position.y + player.height == tube.position.y + tube.height ||
+                    player.position.y + player.height <= tube.position.y ||
+                    player.position.x + player.width <= tube.position.x ||
+                    player.position.x >= tube.position.x + tube.width) {
+                        gravity = 1.5
                     }
-                }
-                this.x += this.velocityX;
-                if (this.x > canvas.width) {
-                    this.x = -this.width * this.scale;
-                }
-
-                if (this.onPlatform || this.y >= canvas.height - this.height * this.scale) {
-                    this.applyGravity = false; // Disable gravity on platform or at bottom
-                } else {
-                    this.applyGravity = true; // Enable gravity when not on platform and not at bottom
-                }
-
-                if (this.applyGravity) { 
-                    this.y += this.gravity; 
-                }
+        if (
+                player.position.x + player.width<= tube.position.x &&
+                player.position.x + player.width + player.velocity.x >= tube.position.x &&
+                player.position.y + player.height >= tube.position.y &&
+                player.position.y <= tube.position.y + tube.height
+            )
+            {
+                player.velocity.x = 0;
             }
-            checkCollision(platform) {
-                const isColliding = (
-                    this.x < platform.x + platform.width * platform.scale &&
-                    this.x + this.width * this.scale > platform.x &&
-                    this.y < platform.y + platform.height * platform.scale &&
-                    this.y + this.height * this.scale > platform.y
-                );
-
-                this.onPlatform = isColliding; 
-                if (isColliding) {
-                    this.onPlatform = true;
-                    this.toggleGravity(); 
-                } else {
-                    this.onPlatform = false;
-                }
-
-                return isColliding;
+        if (
+                player.position.x >= tube.position.x + tube.width &&
+                player.position.x + player.velocity.x <= tube.position.x + tube.width &&
+                player.position.y + player.height >= tube.position.y &&
+                player.position.y <= tube.position.y + tube.height
+            )
+            {
+                player.velocity.x = 0;
             }
-            toggleGravity() {
-                this.applyGravity = !this.applyGravity;
+        if (
+                player.position.x >= tube.position.x &&
+                player.position.x + player.velocity.x <= tube.position.x &&
+                player.position.y + player.height >= tube.position.y &&
+                player.position.y <= tube.position.y + tube.height
+            )
+            {
+                player.velocity.x = 0;
             }
+        if (
+                player.position.x + player.width <= tube.position.x + tube.width &&
+                player.position.x + player.width + player.velocity.x >= tube.position.x + tube.width &&
+                player.position.y + player.height >= tube.position.y &&
+                player.position.y <= tube.position.y + tube.height
+            )
+            {
+                player.velocity.x = 0;
+            }
+            //--
+            // NEW CODE - GOOMBA COLLISION DETECTION
+            //--
+        if(
+            player.position.y + player.height <= goomba.position.y &&
+            player.position.y + player.height + player.velocity.y >= goomba.position.y &&
+            player.position.x + player.width >= goomba.position.x &&
+            player.position.x <= goomba.position.x + goomba.width
+        )
+        {
+            player.velocity.y = -20;
         }
-
-        class Bomb {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.radius = BOMB_RADIUS;
-                this.speed = BOMB_SPEED;
-                this.distanceTravelled = 0;
-                this.color = 'black';
-            }
-            draw(context) {
-                context.beginPath();
-                context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-                context.fillStyle = this.color;
-                context.fill();
-                context.closePath();
-            }
-            update() {
-                this.x += this.speed;
-                this.distanceTravelled += this.speed;
-                if (this.distanceTravelled >= BOMB_DISTANCE) {
-                    bombs.splice(bombs.indexOf(this), 1);
-                } else if (this.distanceTravelled >= 180) {
-                    this.color = 'orange';
-                    this.radius = BOMB_RADIUS * 2.5;
-                }
-            }
+        if (
+            goomba.position.x >= platform.position.x &&
+            goomba.position.x <= platform.position.x
+        )
+        {
+            goomba.velocity.x = 2;
         }
-
-        const ninja = new Ninja();
-        const bombs = [];
-
-        function throwBomb() {
-            const bomb = new Bomb(ninja.x + ninja.width * ninja.scale, ninja.y + ninja.height * ninja.scale / 2);
-            bombs.push(bomb);
+        if (
+            goomba.position.x + goomba.width <= tube.position.x &&
+            goomba.position.x + goomba.width + goomba.velocity.x >= tube.position.x
+        )
+        {
+            goomba.velocity.x = -2;
         }
-
-        function automaticBombThrow() {
-            throwBomb(); 
-            setInterval(throwBomb, BOMB_THROW_INTERVAL);
+    }
+    animate();
+    addEventListener('keydown', ({ keyCode }) => {
+        switch (keyCode) {
+            case 65:
+                console.log('left');
+                keys.left.pressed = true;
+                break;
+            case 83:
+                console.log('down');
+                break;
+            case 68:
+                console.log('right');
+                keys.right.pressed = true;
+                break;
+            case 87:
+                console.log('up');
+                player.velocity.y -= 20;
+                break;
         }
-
-        automaticBombThrow(); 
-
-        const box = new Box();
-        const platform = new Platform();
-
-        const keyState = {
-            ArrowLeft: false,
-            ArrowRight: false,
-            ArrowUp: false,
-        };
-
-        document.addEventListener('keydown', function (event) {
-            switch (event.key) {
-                case 'w':
-                    keyState.ArrowUp = true;
-                    break;
-                case 'a':
-                    keyState.ArrowLeft = true;
-                    break;
-                case 'd':
-                    keyState.ArrowRight = true;
-                    break;
-            }
-        });
-
-        document.addEventListener('keyup', function (event) {
-            switch (event.key) {
-                case 'w':
-                    keyState.ArrowUp = false;
-                    break;
-                case 'a':
-                    keyState.ArrowLeft = false;
-                    break;
-                case 'd':
-                    keyState.ArrowRight = false;
-                    break;
-            }
-        });
-
-        function updateAnimations() {
-            let selectedAnimation = 'A';
-            box.frameY = 0;
-            if (keyState.ArrowLeft) {
-                box.x -= box.speed;
-            }
-            if (keyState.ArrowRight) {
-                box.x += box.speed;
-            }
-            if (keyState.ArrowUp) {
-                selectedAnimation = 'B';
-                box.frameY = 1;
-            } 
-        }
-
-        let lastTimestamp = 0;
-        function animate(timestamp) {
-            const deltaTime = timestamp - lastTimestamp;
-            if (deltaTime >= FRAME_INTERVAL) {
-                ctx.clearRect(box.x, box.y, box.width * box.scale, box.height * box.scale);
-
-                if (box.checkCollision(platform)) {
-                    box.y = platform.y - box.height * box.scale;
-                    platform.y = box.y + box.height * box.scale;
-                } else {
-                    box.onPlatform = false; 
-                }
-
-                box.draw(ctx);
-                box.update();
-                updateAnimations();
-                lastTimestamp = timestamp;
-            }
-
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-
-        let animationHasRun = false;
-        let platformAnimationFinished = false;
-
-        function animatePlatform() {
-            if (!platformAnimationFinished) {
-                ctx.clearRect(platform.x, platform.y, platform.width, platform.height);
-                platform.draw(ctx);
-                platform.update();
-
-                if (platform.frameX === platform.maxFrame) {
-                    platformAnimationFinished = true;
-                }
-
-                if (!platformAnimationFinished) {
-                    setTimeout(function () {
-                        requestAnimationFrame(animatePlatform);
-                    }, 100); 
-                }
-            }
-        }
-
-        document.addEventListener('keydown', function (event) {
-            switch (event.key) {
-                case ' ':
-                    if (!animationHasRun) {
-                        animationHasRun = true;
-                        platformAnimationFinished = false;
-                        animatePlatform();
-                    }
-            }
-        });
-
-        platform.draw(ctx);
     });
+    addEventListener('keyup', ({ keyCode }) => {
+        switch (keyCode) {
+            case 65:
+                console.log('left');
+                keys.left.pressed = false;
+                break;
+            case 83:
+                console.log('down');
+                break;
+            case 68:
+                console.log('right');
+                keys.right.pressed = false;
+                break;
+            case 87:
+                console.log('up');
+                player.velocity.y = -20;
+                break;
+        }
+    })
 </script>

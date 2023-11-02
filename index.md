@@ -42,7 +42,66 @@ title: Delveries
             else
                 this.velocity.y = 0;
         }
+
+        var backgroundObj = new Layer(backgroundImg, 0.5, 0);
+        
+
+        function background() {
+            backgroundObj.update();
+            backgroundObj.draw();
+            requestAnimationFrame(background);
+        }
+        background();
+
+        function startGame(difficulty) {
+            // Add code to start the game based on the selected difficulty
+            console.log(`Starting game with difficulty: ${difficulty}`);
+            // Call your other functions or game logic here
+        }
+    
+
+    };
+
+     function easy() {
+        // Change the background image for "Easy" difficulty
+        backgroundImg.src = '{{site.baseurl}}/images/pinkyPage.png';
+
+        // Adjust canvas width and height
+        const newCanvasWidth = 725; // set your desired width
+        const newCanvasHeight = 409; // set your desired height
+
+        // Stop the background animation
+        animateBackground = false;
+
+        // Resize and position the canvas
+        canvas.width = newCanvasWidth;
+        canvas.height = newCanvasHeight;
+        canvas.style.width = `${newCanvasWidth}px`;
+        canvas.style.height = `${newCanvasHeight}px`;
+
+        // Remove the "Easy" button
+        document.querySelector('#button1').style.display = 'none';
+        document.querySelector('#button2').style.display = 'none';
+        document.querySelector('#button3').style.display = 'none';
+
+        // Remove Title
+        document.getElementById('title').style.display = 'none';
+
+        // Create and display the "Start" button
+        const startButton = document.createElement('button');
+        startButton.className = 'button';
+        startButton.textContent = 'Start';
+        startButton.style.position = 'absolute'; // Set button position to absolute
+        startButton.style.top = '90%'; // Set top position in percentage
+        startButton.style.left = '50%'; // Set left position in percentage
+        startButton.style.transform = 'translate(80%, 250%)'; // Center the button
+        startButton.onclick = function () {
+            startGame('easy');
+    };
+
+        document.getElementById('game-container').appendChild(startButton);
     }
+<<<<<<< HEAD
     class Platform {
         constructor(image) {
             this.position = {
@@ -290,3 +349,107 @@ title: Delveries
         }
     })
 </script>
+=======
+
+    function startGame(difficulty) {
+        // Add code to start the game based on the selected difficulty
+        console.log(`Starting game with difficulty: ${difficulty}`);
+        // Call your other functions or game logic here
+    }
+
+    function medium() {
+        // Change the background image for "Easy" difficulty
+        backgroundImg.src = '{{site.baseurl}}/images/midnightStalker_characterCard.png';
+
+        // Adjust canvas width and height
+        const newCanvasWidth = 726; // set your desired width
+        const newCanvasHeight = 403; // set your desired height
+
+        // Stop the background animation
+        animateBackground = false;
+
+        // Resize and position the canvas
+        canvas.width = newCanvasWidth;
+        canvas.height = newCanvasHeight;
+        canvas.style.width = `${newCanvasWidth}px`;
+        canvas.style.height = `${newCanvasHeight}px`;
+
+        // Remove the "Easy" button
+        document.querySelector('#button1').style.display = 'none';
+        document.querySelector('#button2').style.display = 'none';
+        document.querySelector('#button3').style.display = 'none';
+
+        // Remove Title
+        document.getElementById('title').style.display = 'none';
+
+        // Create and display the "Start" button
+        const startButton = document.createElement('button');
+        startButton.className = 'button';
+        startButton.textContent = 'Start';
+        startButton.style.backgroundColor = "black"
+        startButton.style.position = 'absolute'; // Set button position to absolute
+        startButton.style.top = '90%'; // Set top position in percentage
+        startButton.style.left = '50%'; // Set left position in percentage
+        startButton.style.transform = 'translate(80%, 250%)'; // Center the button
+        startButton.onclick = function () {
+            startGame('medium');
+    };
+
+        document.getElementById('game-container').appendChild(startButton);
+    }
+
+    function startGame(difficulty) {
+        // Add code to start the game based on the selected difficulty
+        console.log(`Starting game with difficulty: ${difficulty}`);
+        // Call your other functions or game logic here
+    } 
+    function hard() {
+        // Change the background image for "Easy" difficulty
+        backgroundImg.src = '{{site.baseurl}}/images/Icemancard.png';
+
+        // Adjust canvas width and height
+        const newCanvasWidth = 725; // set your desired width
+        const newCanvasHeight = 403; // set your desired height
+
+        // Stop the background animation
+        animateBackground = false;
+
+        // Resize and position the canvas
+        canvas.width = newCanvasWidth;
+        canvas.height = newCanvasHeight;
+        canvas.style.width = `${newCanvasWidth}px`;
+        canvas.style.height = `${newCanvasHeight}px`;
+
+        // Remove the "Easy" button
+        document.querySelector('#button1').style.display = 'none';
+        document.querySelector('#button2').style.display = 'none';
+        document.querySelector('#button3').style.display = 'none';
+
+        // Remove Title
+        document.getElementById('title').style.display = 'none';
+
+        // Create and display the "Start" button
+        const startButton = document.createElement('button');
+        startButton.className = 'button';
+        startButton.textContent = 'Start';
+        startButton.style.backgroundColor = "blue"
+        startButton.style.position = 'absolute'; // Set button position to absolute
+        startButton.style.top = '90%'; // Set top position in percentage
+        startButton.style.left = '50%'; // Set left position in percentage
+        startButton.style.transform = 'translate(80%, 250%)'; // Center the button
+        startButton.onclick = function () {
+            startGame('hard');
+    };
+
+        document.getElementById('game-container').appendChild(startButton);
+    }
+
+    function startGame(difficulty) {
+        // Add code to start the game based on the selected difficulty
+        console.log(`Starting game with difficulty: ${difficulty}`);
+    }
+
+    
+</script>
+    
+>>>>>>> 13aa6fa239ca24812ecf233209ef4d1c62014a42

@@ -57,11 +57,11 @@ courses: { compsci: {week: 2} }
         constructor(image) {
             this.position = {
                 x: 0,
-                y: 300
+                y: 100
             }
             this.image = image;
             this.width = 1500;
-            this.height = 100;
+            this.height = 200;
         }
         draw() {
             c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
@@ -87,14 +87,14 @@ courses: { compsci: {week: 2} }
         constructor(image) {
             this.position = {
                 x: 200,
-                y: 100
+                y: -40
             };
             this.image = image;
-            this.width = 158;
-            this.height = 79;
+            this.width = 53;
+            this.height = 26;
         }
         draw() {
-            c.drawImage(this.image, this.position.x, this.position.y);
+            c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
         }
     }
 
@@ -124,9 +124,9 @@ courses: { compsci: {week: 2} }
     let image = new Image()
     let imageTube = new Image()
     let imageBlock = new Image()
-    image.src = 'https://samayass.github.io/samayaCSA/images/platform.png'
+    image.src = '{{site.baseurl}}/images/other_road.png'
     imageTube.src = 'https://samayass.github.io/samayaCSA/images/tube.png'
-    imageBlock.src = 'https://samayass.github.io/samayaCSA/images/box.png';
+    imageBlock.src = '{{site.baseurl}}/images/Cloud.png';
     let imageGoomba = new Image()
     imageGoomba.src = 'https://samayass.github.io/samayaCSA/images/goomba.png';
     let platform = new Platform(image)

@@ -57,7 +57,7 @@ title: Delveries
                 this.frameX = 0;
                 this.maxFrame = 7;
                 this.speed = 10; 
-                this.gravity = 0.5; // Gravity value
+                this.gravity = 0; // Gravity value
                 this.onPlatform = false; // Flag to track if on platform
             }
             setFrameLimit(limit) {

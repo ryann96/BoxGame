@@ -8,5 +8,3 @@ VARNIKA:
 //git commit -m "meSsage"
 //I have commitment issues :c
 me too girlie
-
-TEST CHANGE

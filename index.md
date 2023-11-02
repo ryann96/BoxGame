@@ -3,459 +3,267 @@ layout: default
 title: Delveries
 ---
 
-<style>
-    .canvas-container {
-        display: flex;
-        background-image: url('{{site.baseurl}}/images/Backy_Roundy.jpg');
-        background-size: repeat; 
-        background-attachment: fixed;
-        background-repeat: repeat;
-    }
-    canvas {
-        margin: 0;
-        border: 1px solid white;
-        z-index: 2; /* Ensure canvas is on top */
-    }
-    .sprite-container {
-        position: absolute;
-        z-index: 3; /* Ensure sprites are on top */
-    }
-</style>
-
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HomePage</title>
+    <style>
+        .canvas-container {
+            display: flex;
+            position: fixed;
+        }
+        canvas {
+            margin: 0;
+            border: 1px solid white;
+            align-items: center;
+        }
+        #game-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(50%, -50%);
+            text-align: center;
+            color: white;
+        }
+        #title {
+            font-family: 'Helvetica', sans-serif;
+            font-size: 100px;
+            color: orange; 
+        }
+        .button {
+            background-color: #CD5C5C;
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 50px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+    </style>
+</head>
 <body>
-    <div class="canvas-container">
-        <canvas id="backgroundCanvas"></canvas>
-    </div>
-    <div class="sprite-container">
-        <img id="box" src="{{site.baseurl}}/images/box.png">
-        <img id="platform" src="{{site.baseurl}}/images/platform.png"> 
-        <img id="ninjaSprite" src="{{site.baseurl}}/images/midnightStalker.png">
-    </div>
-</body>
+
+<!-- Prepare background DOM canvas -->
+<canvas id="BackyRoundyCanvas"></canvas>
+
+<!-- PINKY CHARECTER PAGE --> 
+<div id="game-container">
+    <h1 id="title">DELIVERIES!</h1>
+    <button id="button1" class="button" onclick="easy()">Easy</button>
+    <br>
+    <button id="button2" class="button" onclick="medium()">Medium</button>
+    <br>
+    <button id="button3" class="button" onclick="hard()">Hard</button>
+</div>
+
 
 <script>
-    function handleBoxPlatformCollision(box, platform) {
-        const boxRight = box.x + box.width * box.scale;
-        const boxBottom = box.y + box.height * box.scale;
+    const canvas = document.getElementById("BackyRoundyCanvas");
+    const ctx = canvas.getContext('2d');
 
-        const platformRight = platform.x + platform.width * platform.scale;
-        const platformBottom = platform.y + platform.height * platform.scale;
+    const backgroundImg = new Image();
+    backgroundImg.src = '{{site.baseurl}}/images/Backy_Roundy.jpg';
 
-        if (
-            boxRight >= platform.x &&
-            box.x <= platformRight &&
-            boxBottom >= platform.y &&
-            box.y <= platformBottom
-        ) {
-            // Collision detected, handle accordingly
-            box.onPlatform = true;
-            box.applyGravity = false;
-        } else {
-            // No collision, enable gravity
-            box.onPlatform = false;
-            box.applyGravity = true;
+    const WIDTH = 1280; // Constant width
+    const HEIGHT = 670; // Constant height
+    const ASPECT_RATIO = WIDTH / HEIGHT;
+    const canvasWidth = window.innerWidth;
+    const canvasHeight = canvasWidth / ASPECT_RATIO;
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    canvas.style.width = `${canvasWidth}px`;
+    canvas.style.height = `${canvasHeight}px`;
+    animateBackground = true
+
+        var gameSpeed = 2;
+    
+    backgroundImg.onload = function () {
+
+        class Layer {
+            constructor(image, speedRatio, initialY) {
+                this.x = 0;
+                this.y = initialY;
+                this.width = WIDTH;
+                this.height = HEIGHT;
+                this.image = image;
+                this.speedRatio = speedRatio;
+                this.speed = gameSpeed * this.speedRatio;
+                this.frame = 0;
+            }
+            update() {
+                if (animateBackground === true) {
+                this.x = (this.x - this.speed) % this.width;
+                }
+            }
+            draw() {
+                ctx.drawImage(this.image, this.x, this.y);
+                ctx.drawImage(this.image, this.x + this.width, this.y);
+            }
         }
+
+        var backgroundObj = new Layer(backgroundImg, 0.5, 0);
+        
+
+        function background() {
+            backgroundObj.update();
+            backgroundObj.draw();
+            requestAnimationFrame(background);
+        }
+        background();
+
+        function startGame(difficulty) {
+            // Add code to start the game based on the selected difficulty
+            console.log(`Starting game with difficulty: ${difficulty}`);
+            // Call your other functions or game logic here
+        }
+    
+
+    };
+
+     function easy() {
+        // Change the background image for "Easy" difficulty
+        backgroundImg.src = '{{site.baseurl}}/images/pinkyPage.png';
+
+        // Adjust canvas width and height
+        const newCanvasWidth = 725; // set your desired width
+        const newCanvasHeight = 409; // set your desired height
+
+        // Stop the background animation
+        animateBackground = false;
+
+        // Resize and position the canvas
+        canvas.width = newCanvasWidth;
+        canvas.height = newCanvasHeight;
+        canvas.style.width = `${newCanvasWidth}px`;
+        canvas.style.height = `${newCanvasHeight}px`;
+
+        // Remove the "Easy" button
+        document.querySelector('#button1').style.display = 'none';
+        document.querySelector('#button2').style.display = 'none';
+        document.querySelector('#button3').style.display = 'none';
+
+        // Remove Title
+        document.getElementById('title').style.display = 'none';
+
+        // Create and display the "Start" button
+        const startButton = document.createElement('button');
+        startButton.className = 'button';
+        startButton.textContent = 'Start';
+        startButton.style.position = 'absolute'; // Set button position to absolute
+        startButton.style.top = '90%'; // Set top position in percentage
+        startButton.style.left = '50%'; // Set left position in percentage
+        startButton.style.transform = 'translate(80%, 250%)'; // Center the button
+        startButton.onclick = function () {
+            startGame('easy');
+    };
+
+        document.getElementById('game-container').appendChild(startButton);
     }
 
-    function handleNinjaPlatformCollision(ninja, platform) {
-        const ninjaRight = ninja.x + ninja.width * ninja.scale;
-        const ninjaBottom = ninja.y + ninja.height * ninja.scale;
-
-        const platformRight = platform.x + platform.width * platform.scale;
-        const platformBottom = platform.y + platform.height * platform.scale;
-
-        if (
-            ninjaRight >= platform.x &&
-            ninja.x <= platformRight &&
-            ninjaBottom >= platform.y &&
-            ninja.y <= platformBottom
-        ) {
-            // Collision detected, handle accordingly
-            ninja.onPlatform = true;
-            ninja.applyGravity = false;
-        } else {
-            // No collision, enable gravity
-            ninja.onPlatform = false;
-            ninja.applyGravity = true;
-        }
+    function startGame(difficulty) {
+        // Add code to start the game based on the selected difficulty
+        console.log(`Starting game with difficulty: ${difficulty}`);
+        // Call your other functions or game logic here
     }
 
-    window.addEventListener('load', function () {
-        const canvas = document.getElementById('playerCanvas');
-        const ctx = canvas.getContext('2d');
-        const BOX_SPRITE_WIDTH = 71.75;
-        const BOX_SPRITE_HEIGHT = 82.5;
-        const BOX_SCALE_FACTOR = 2;
-        const DESIRED_FRAME_RATE = 15;
-        const FRAME_INTERVAL = 1000 / DESIRED_FRAME_RATE;
-        const PLATFORM_SPRITE_WIDTH = 362.25; 
-        const PLATFORM_SPRITE_HEIGHT = 377;
-        const PLATFORM_SCALE_FACTOR = 0.25;  
-        const PLATFORM_FRAME_LIMIT = 4;  
-        canvas.width = 1911;
-        canvas.height = 535;
+    function medium() {
+        // Change the background image for "Easy" difficulty
+        backgroundImg.src = '{{site.baseurl}}/images/midnightStalker_characterCard.png';
 
-        class Box {
-            constructor() {
-                this.image = document.getElementById("box");
-                this.spriteWidth = BOX_SPRITE_WIDTH;
-                this.spriteHeight = BOX_SPRITE_HEIGHT;
-                this.width = this.spriteWidth;
-                this.height = this.spriteHeight;
-                this.x = 0;
-                this.y = 300;
-                this.scale = BOX_SCALE_FACTOR;
-                this.minFrame = 0;
-                this.frameY = 0;
-                this.frameX = 0;
-                this.maxFrame = 7;
-                this.speed = 10; 
-                this.gravity = 5; 
-                this.onPlatform = false; 
-                this.applyGravity = true;
-            }
-            setFrameLimit(limit) {
-                this.maxFrame = limit;
-            }
-            setPosition(x, y) {
-                this.x = x;
-                this.y = y;
-            }
-            draw(context) {
-                context.drawImage(
-                    this.image,
-                    this.frameX * this.spriteWidth,
-                    this.frameY * this.spriteHeight,
-                    this.spriteWidth,
-                    this.spriteHeight,
-                    this.x,
-                    this.y,
-                    this.width * this.scale,
-                    this.height * this.scale
-                );
-            }
-            update() {
-                if (this.frameX < this.maxFrame) {
-                    this.frameX++;
-                } else {
-                    this.frameX = 0;
-                }
+        // Adjust canvas width and height
+        const newCanvasWidth = 726; // set your desired width
+        const newCanvasHeight = 403; // set your desired height
 
-                if (this.onPlatform || this.y >= canvas.height - this.height * this.scale) {
-                    this.applyGravity = false; // Disable gravity on platform or at bottom
-                } else {
-                    this.applyGravity = true; // Enable gravity when not on platform and not at bottom
-                }
+        // Stop the background animation
+        animateBackground = false;
 
-                if (this.applyGravity) { 
-                    this.y += this.gravity; 
-                }
-            }
-            checkCollision(platform) {
-                const isColliding = (
-                    this.x < platform.x + platform.width * platform.scale &&
-                    this.x + this.width * this.scale > platform.x &&
-                    this.y < platform.y + platform.height * platform.scale &&
-                    this.y + this.height * this.scale > platform.y
-                );
+        // Resize and position the canvas
+        canvas.width = newCanvasWidth;
+        canvas.height = newCanvasHeight;
+        canvas.style.width = `${newCanvasWidth}px`;
+        canvas.style.height = `${newCanvasHeight}px`;
 
-                this.onPlatform = isColliding; 
-                if (isColliding) {
-                    this.onPlatform = true;
-                    this.toggleGravity(); 
-                } else {
-                    this.onPlatform = false;
-                }
+        // Remove the "Easy" button
+        document.querySelector('#button1').style.display = 'none';
+        document.querySelector('#button2').style.display = 'none';
+        document.querySelector('#button3').style.display = 'none';
 
-                return isColliding;
-            }
-            toggleGravity() {
-                this.applyGravity = !this.applyGravity;
-            }
-        }
+        // Remove Title
+        document.getElementById('title').style.display = 'none';
 
-        class Platform {
-            constructor() {
-                this.image = document.getElementById("platform");
-                this.spriteWidth = PLATFORM_SPRITE_WIDTH;
-                this.spriteHeight = PLATFORM_SPRITE_HEIGHT;
-                this.width = this.spriteWidth;
-                this.height = this.spriteHeight;
-                this.x = 200;
-                this.y = 400;
-                this.scale = PLATFORM_SCALE_FACTOR;
-                this.minFrame = 0;
-                this.maxFrame = PLATFORM_FRAME_LIMIT;
-                this.frameX = 0;
-                this.frameY = 0;
-            }
+        // Create and display the "Start" button
+        const startButton = document.createElement('button');
+        startButton.className = 'button';
+        startButton.textContent = 'Start';
+        startButton.style.backgroundColor = "black"
+        startButton.style.position = 'absolute'; // Set button position to absolute
+        startButton.style.top = '90%'; // Set top position in percentage
+        startButton.style.left = '50%'; // Set left position in percentage
+        startButton.style.transform = 'translate(80%, 250%)'; // Center the button
+        startButton.onclick = function () {
+            startGame('medium');
+    };
 
-            draw(context) {
-                context.drawImage(
-                    this.image,
-                    this.frameX * this.spriteWidth,
-                    this.frameY * this.spriteHeight,
-                    this.spriteWidth,
-                    this.spriteHeight,
-                    this.x,
-                    this.y,
-                    this.width * this.scale,
-                    this.height * this.scale
-                );
-            }
+        document.getElementById('game-container').appendChild(startButton);
+    }
 
-            update() {
-                if (this.frameX < this.maxFrame) {
-                    this.frameX++;
-                } else {
-                    this.frameX = 0;
-                }
-            }
-        }
+    function startGame(difficulty) {
+        // Add code to start the game based on the selected difficulty
+        console.log(`Starting game with difficulty: ${difficulty}`);
+        // Call your other functions or game logic here
+    } 
+    function hard() {
+        // Change the background image for "Easy" difficulty
+        backgroundImg.src = '{{site.baseurl}}/images/Icemancard.png';
 
-        class Ninja {
-            constructor() {
-                this.image = document.getElementById("ninjaSprite");
-                this.spriteWidth = NINJA_SPRITE_WIDTH;
-                this.spriteHeight = NINJA_SPRITE_HEIGHT;
-                this.width = this.spriteWidth;
-                this.height = this.spriteHeight;
-                this.x = 0;
-                this.y = 350;
-                this.scale = NINJA_SCALE_FACTOR;
-                this.minFrame = 0;
-                this.maxFrame = NINJA_FRAME_LIMIT;
-                this.frameX = 0;
-                this.frameY = 2;
-                this.velocityX = 6;
-                this.animationCounter = 0;
-                this.animationLimit = 2; 
-                this.onPlatform = false;
-                this.applyGravity = true;
-            }
-            draw(context) {
-                context.drawImage(
-                    this.image,
-                    this.frameX * this.spriteWidth,
-                    this.frameY * this.spriteHeight,
-                    this.spriteWidth,
-                    this.spriteHeight,
-                    this.x,
-                    this.y,
-                    this.width * this.scale,
-                    this.height * this.scale
-                );
-            }
-            update() {
-                if (this.frameX < this.maxFrame) {
-                    this.frameX++;
-                } else {
-                    this.frameX = 0;
-                    this.animationCounter++;
-                    if (this.animationCounter >= this.animationLimit) {
-                        this.animationCounter = 0;
-                        switch (this.frameY) {
-                            case 2:
-                                this.frameY = 5; 
-                                break;
-                            case 5:
-                                this.frameY = 6; 
-                                break;
-                            case 6:
-                                this.frameY = 2; 
-                                break;
-                        }
-                    }
-                }
-                this.x += this.velocityX;
-                if (this.x > canvas.width) {
-                    this.x = -this.width * this.scale;
-                }
+        // Adjust canvas width and height
+        const newCanvasWidth = 725; // set your desired width
+        const newCanvasHeight = 403; // set your desired height
 
-                if (this.onPlatform || this.y >= canvas.height - this.height * this.scale) {
-                    this.applyGravity = false; // Disable gravity on platform or at bottom
-                } else {
-                    this.applyGravity = true; // Enable gravity when not on platform and not at bottom
-                }
+        // Stop the background animation
+        animateBackground = false;
 
-                if (this.applyGravity) { 
-                    this.y += this.gravity; 
-                }
-            }
-            checkCollision(platform) {
-                const isColliding = (
-                    this.x < platform.x + platform.width * platform.scale &&
-                    this.x + this.width * this.scale > platform.x &&
-                    this.y < platform.y + platform.height * platform.scale &&
-                    this.y + this.height * this.scale > platform.y
-                );
+        // Resize and position the canvas
+        canvas.width = newCanvasWidth;
+        canvas.height = newCanvasHeight;
+        canvas.style.width = `${newCanvasWidth}px`;
+        canvas.style.height = `${newCanvasHeight}px`;
 
-                this.onPlatform = isColliding; 
-                if (isColliding) {
-                    this.onPlatform = true;
-                    this.toggleGravity(); 
-                } else {
-                    this.onPlatform = false;
-                }
+        // Remove the "Easy" button
+        document.querySelector('#button1').style.display = 'none';
+        document.querySelector('#button2').style.display = 'none';
+        document.querySelector('#button3').style.display = 'none';
 
-                return isColliding;
-            }
-            toggleGravity() {
-                this.applyGravity = !this.applyGravity;
-            }
-        }
+        // Remove Title
+        document.getElementById('title').style.display = 'none';
 
-        class Bomb {
-            constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.radius = BOMB_RADIUS;
-                this.speed = BOMB_SPEED;
-                this.distanceTravelled = 0;
-                this.color = 'black';
-            }
-            draw(context) {
-                context.beginPath();
-                context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-                context.fillStyle = this.color;
-                context.fill();
-                context.closePath();
-            }
-            update() {
-                this.x += this.speed;
-                this.distanceTravelled += this.speed;
-                if (this.distanceTravelled >= BOMB_DISTANCE) {
-                    bombs.splice(bombs.indexOf(this), 1);
-                } else if (this.distanceTravelled >= 180) {
-                    this.color = 'orange';
-                    this.radius = BOMB_RADIUS * 2.5;
-                }
-            }
-        }
+        // Create and display the "Start" button
+        const startButton = document.createElement('button');
+        startButton.className = 'button';
+        startButton.textContent = 'Start';
+        startButton.style.backgroundColor = "blue"
+        startButton.style.position = 'absolute'; // Set button position to absolute
+        startButton.style.top = '90%'; // Set top position in percentage
+        startButton.style.left = '50%'; // Set left position in percentage
+        startButton.style.transform = 'translate(80%, 250%)'; // Center the button
+        startButton.onclick = function () {
+            startGame('hard');
+    };
 
-        const ninja = new Ninja();
-        const bombs = [];
+        document.getElementById('game-container').appendChild(startButton);
+    }
 
-        function throwBomb() {
-            const bomb = new Bomb(ninja.x + ninja.width * ninja.scale, ninja.y + ninja.height * ninja.scale / 2);
-            bombs.push(bomb);
-        }
+    function startGame(difficulty) {
+        // Add code to start the game based on the selected difficulty
+        console.log(`Starting game with difficulty: ${difficulty}`);
+    }
 
-        function automaticBombThrow() {
-            throwBomb(); 
-            setInterval(throwBomb, BOMB_THROW_INTERVAL);
-        }
-
-        automaticBombThrow(); 
-
-        const box = new Box();
-        const platform = new Platform();
-
-        const keyState = {
-            ArrowLeft: false,
-            ArrowRight: false,
-            ArrowUp: false,
-        };
-
-        document.addEventListener('keydown', function (event) {
-            switch (event.key) {
-                case 'w':
-                    keyState.ArrowUp = true;
-                    break;
-                case 'a':
-                    keyState.ArrowLeft = true;
-                    break;
-                case 'd':
-                    keyState.ArrowRight = true;
-                    break;
-            }
-        });
-
-        document.addEventListener('keyup', function (event) {
-            switch (event.key) {
-                case 'w':
-                    keyState.ArrowUp = false;
-                    break;
-                case 'a':
-                    keyState.ArrowLeft = false;
-                    break;
-                case 'd':
-                    keyState.ArrowRight = false;
-                    break;
-            }
-        });
-
-        function updateAnimations() {
-            let selectedAnimation = 'A';
-            box.frameY = 0;
-            if (keyState.ArrowLeft) {
-                box.x -= box.speed;
-            }
-            if (keyState.ArrowRight) {
-                box.x += box.speed;
-            }
-            if (keyState.ArrowUp) {
-                selectedAnimation = 'B';
-                box.frameY = 1;
-            } 
-        }
-
-        let lastTimestamp = 0;
-        function animate(timestamp) {
-            const deltaTime = timestamp - lastTimestamp;
-            if (deltaTime >= FRAME_INTERVAL) {
-                ctx.clearRect(box.x, box.y, box.width * box.scale, box.height * box.scale);
-
-                if (box.checkCollision(platform)) {
-                    box.y = platform.y - box.height * box.scale;
-                    platform.y = box.y + box.height * box.scale;
-                } else {
-                    box.onPlatform = false; 
-                }
-
-                box.draw(ctx);
-                box.update();
-                updateAnimations();
-                lastTimestamp = timestamp;
-            }
-
-            requestAnimationFrame(animate);
-        }
-
-        animate();
-
-        let animationHasRun = false;
-        let platformAnimationFinished = false;
-
-        function animatePlatform() {
-            if (!platformAnimationFinished) {
-                ctx.clearRect(platform.x, platform.y, platform.width, platform.height);
-                platform.draw(ctx);
-                platform.update();
-
-                if (platform.frameX === platform.maxFrame) {
-                    platformAnimationFinished = true;
-                }
-
-                if (!platformAnimationFinished) {
-                    setTimeout(function () {
-                        requestAnimationFrame(animatePlatform);
-                    }, 100); 
-                }
-            }
-        }
-
-        document.addEventListener('keydown', function (event) {
-            switch (event.key) {
-                case ' ':
-                    if (!animationHasRun) {
-                        animationHasRun = true;
-                        platformAnimationFinished = false;
-                        animatePlatform();
-                    }
-            }
-        });
-
-        platform.draw(ctx);
-    });
+    
 </script>
+    

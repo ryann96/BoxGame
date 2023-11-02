@@ -25,6 +25,9 @@ courses: { compsci: {week: 2} }
     canvas.height = 400;
     let gravity = 1.5;
 
+    let playerImage = new Image();
+    playerImage.src = '{{site.baseurl}}/images/amazonBOX.png';
+
     class Player {
         constructor() {
             this.position = {
@@ -37,10 +40,10 @@ courses: { compsci: {week: 2} }
             };
             this.width = 50;
             this.height = 30;
+            this.image = playerImage;
         }
         draw() {
-            c.fillStyle = 'brown';
-            c.fillRect(this.position.x, this.position.y, this.width, this.height);
+            c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
         }
         update() {
             this.draw();
@@ -57,7 +60,7 @@ courses: { compsci: {week: 2} }
         constructor(image) {
             this.position = {
                 x: 0,
-                y: 300
+                y: 310
             }
             this.image = image;
             this.width = 1500;
@@ -71,8 +74,8 @@ courses: { compsci: {week: 2} }
     class Tube {
         constructor(image) {
             this.position = {
-                x: 900,
-                y: 180
+                x: 1200,
+                y: 190
             }
             this.image = image;
             this.width = 100;
@@ -102,7 +105,7 @@ courses: { compsci: {week: 2} }
         constructor(image) {
             this.position = {
                 x: 250,
-                y: 245
+                y: 260
             };
             this.image = image;
             this.width = 55;
@@ -125,7 +128,7 @@ courses: { compsci: {week: 2} }
     let imageTube = new Image()
     let imageBlock = new Image()
     image.src = '{{site.baseurl}}/images/other_road.png'
-    imageTube.src = 'https://samayass.github.io/samayaCSA/images/tube.png'
+    imageTube.src = '{{site.baseurl}}/images/house.png'
     imageBlock.src = '{{site.baseurl}}/images/Cloud.png';
     let imageGoomba = new Image()
     imageGoomba.src = 'https://samayass.github.io/samayaCSA/images/goomba.png';

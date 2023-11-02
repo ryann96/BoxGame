@@ -29,7 +29,7 @@ courses: { compsci: {week: 5} }
 const canvas = document.getElementById("BackyRoundyCanvas");
     const ctx = canvas.getContext('2d');
     const backgroundImg = new Image();
-    backgroundImg.src = '{{site.baseurl}}/images/Background5.0.png';
+    backgroundImg.src = '{{site.baseurl}}/images/Background With Road 6.png';
     backgroundImg.onload = function () {
         const WIDTH = 956;
         const HEIGHT = 538;

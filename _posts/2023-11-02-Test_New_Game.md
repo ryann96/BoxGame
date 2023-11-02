@@ -57,11 +57,11 @@ courses: { compsci: {week: 2} }
         constructor(image) {
             this.position = {
                 x: 0,
-                y: 100
+                y: 300
             }
             this.image = image;
             this.width = 1500;
-            this.height = 200;
+            this.height = 300;
         }
         draw() {
             c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
@@ -87,11 +87,11 @@ courses: { compsci: {week: 2} }
         constructor(image) {
             this.position = {
                 x: 200,
-                y: -40
+                y: 50
             };
             this.image = image;
-            this.width = 53;
-            this.height = 26;
+            this.width = 300;
+            this.height = 160;
         }
         draw() {
             c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);

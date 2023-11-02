@@ -101,28 +101,104 @@ courses: { compsci: {week: 2} }
         }
     }
 
-    class Goomba {
-        constructor(image) {
-            this.position = {
-                x: 250,
-                y: 260
-            };
-            this.image = image;
-            this.width = 55;
-            this.height = 55;
-            this.velocity = {
-                x: -2,
-                y: 0
-            }
+    class Ninja {
+        constructor() {
+            this.image = '{{site.baseurl}}/images/midnightStalker.png';
+            this.spriteWidth = 30;
+            this.spriteHeight = 30;
+            this.width = this.spriteWidth;
+            this.height = this.spriteHeight;
+            this.x = 0;
+            this.y = 0;
+            this.scale = 3;
+            this.minFrame = 0;
+            this.maxFrame = 5;
+            this.frameX = 0;
+            this.frameY = 2;
+            this.velocityX = 6;
+            this.animationCounter = 0;
+            this.animationLimit = 2;
         }
         draw() {
-            c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+            c.drawImage(
+                this.image,
+                this.frameX * this.spriteWidth,
+                this.frameY * this.spriteHeight,
+                this.spriteWidth,
+                this.spriteHeight,
+                this.x,
+                this.y,
+                this.width * this.scale,
+                this.height * this.scale
+            );
         }
         update() {
-            this.position.x += this.velocity.x;
-            this.draw();
+            if (this.frameX < this.maxFrame) {
+                this.frameX++;
+            } else {
+                this.frameX = 0;
+                this.animationCounter++;
+                if (this.animationCounter >= this.animationLimit) {
+                    this.animationCounter = 0;
+                    switch (this.frameY) {
+                        case 2:
+                            this.frameY = 5;
+                            break;
+                        case 5:
+                            this.frameY = 6;
+                            break;
+                        case 6:
+                            this.frameY = 2;
+                            break;
+                    }
+                }
+            }
+            this.x += this.velocityX;
+            if (this.x > canvas.width) {
+                this.x = -this.width * this.scale;
+            }
         }
     }
+
+    class Bomb {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.radius = 5;
+            this.speed = 20;
+            this.distanceTravelled = 0;
+            this.color = 'black';
+        }
+        draw() {
+            c.beginPath();
+            c.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+            c.fillStyle = this.color;
+            c.fill();
+            c.closePath();
+        }
+        update() {
+            this.x += this.speed;
+            this.distanceTravelled += this.speed;
+            if (this.distanceTravelled >= 200) {
+                bombs.splice(bombs.indexOf(this), 1);
+            } else if (this.distanceTravelled >= 180) {
+                this.color = 'orange';
+                this.radius = 12.5;
+            }
+        }
+    }
+
+    let ninja = new Ninja();
+    let bombs = [];
+    function throwBomb() {
+        let bomb = new Bomb(ninja.x + ninja.width * ninja.scale, ninja.y + ninja.height * ninja.scale / 2);
+        bombs.push(bomb);
+    }
+    function automaticBombThrow() {
+        throwBomb();
+        setInterval(throwBomb, 5000);
+    }
+    automaticBombThrow();
 
     let image = new Image()
     let imageTube = new Image()
@@ -130,12 +206,9 @@ courses: { compsci: {week: 2} }
     image.src = '{{site.baseurl}}/images/other_road.png'
     imageTube.src = '{{site.baseurl}}/images/house.png'
     imageBlock.src = '{{site.baseurl}}/images/Cloud.png';
-    let imageGoomba = new Image()
-    imageGoomba.src = 'https://samayass.github.io/samayaCSA/images/goomba.png';
     let platform = new Platform(image)
     let tube = new Tube(imageTube)
     let blockObject = new BlockObject(imageBlock)
-    let goomba = new Goomba(imageGoomba)
     player = new Player()
     let keys = {
         right: {
@@ -186,7 +259,7 @@ courses: { compsci: {week: 2} }
         tube.draw();
         blockObject.draw();
 
-        goomba.update();
+        ninja.update();
         if (
             player.position.y + player.height <= blockObject.position.y + 50 && // Add desired value to lower the player
             player.position.y + player.height + player.velocity.y >= blockObject.position.y &&
@@ -276,29 +349,29 @@ courses: { compsci: {week: 2} }
             }
 
         if(
-            player.position.y + player.height <= goomba.position.y &&
-            player.position.y + player.height + player.velocity.y >= goomba.position.y &&
-            player.position.x + player.width >= goomba.position.x &&
-            player.position.x <= goomba.position.x + goomba.width
+            player.position.y + player.height <= ninja.position.y &&
+            player.position.y + player.height + player.velocity.y >= ninja.position.y &&
+            player.position.x + player.width >= ninja.position.x &&
+            player.position.x <= ninja.position.x + ninja.width
         )
         {
             player.velocity.y = -20;
         }
 
         if (
-            goomba.position.x >= platform.position.x &&
-            goomba.position.x <= platform.position.x
+            ninja.position.x >= platform.position.x &&
+            ninja.position.x <= platform.position.x
         )
         {
-            goomba.velocity.x = 2;
+            ninja.velocity.x = 2;
         }
 
         if (
-            goomba.position.x + goomba.width <= tube.position.x &&
-            goomba.position.x + goomba.width + goomba.velocity.x >= tube.position.x
+            ninja.position.x + ninja.width <= tube.position.x &&
+            ninja.position.x + ninja.width + ninja.velocity.x >= tube.position.x
         )
         {
-            goomba.velocity.x = -2;
+            ninja.velocity.x = -2;
         }
     }
 

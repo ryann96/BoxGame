@@ -185,13 +185,14 @@ courses: { compsci: {week: 2} }
 
         goomba.update();
         if (
-            player.position.y + player.height <= blockObject.position.y &&
+            player.position.y + player.height <= blockObject.position.y + 50 && // Add desired value to lower the player
             player.position.y + player.height + player.velocity.y >= blockObject.position.y &&
-            player.position.x + player.width >= blockObject.position.x &&
-            player.position.x <= blockObject.position.x + blockObject.width
+            player.position.x + player.width >= blockObject.position.x + 50 && // Add desired value to shorten the collision width
+            player.position.x <= blockObject.position.x + blockObject.width - 50 // Subtract desired value to shorten the collision width
         )
         {
             player.velocity.y = 0;
+            player.position.y = blockObject.position.y - player.height + 50; // Adjust the player's position
         }
 
         if (keys.right.pressed && player.position.x + player.width <= canvas.width - 50) {

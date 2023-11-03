@@ -2,7 +2,7 @@
 toc: true
 comments: false
 layout: post
-title: testin background
+title: test
 description: in progress
 type: background
 courses: { compsci: {week: 2} }

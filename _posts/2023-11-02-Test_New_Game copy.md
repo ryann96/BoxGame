@@ -16,7 +16,6 @@ courses: { compsci: {week: 2} }
 </style>
 
 <canvas id='canvas'>
-    <img id="box" src="{{site.baseurl}}/images/box.png"> 
 </canvas>
 
 <script>
@@ -29,28 +28,43 @@ courses: { compsci: {week: 2} }
 
     class Player {
         constructor() {
-            this.image = document.getElementById("box");
-            this.spriteWidth = 71.75;
-            this.spriteHeight = 82.5;
-            this.width = this.spriteWidth;
-            this.height = this.spriteHeight;
-            this.scale = 0.75;
-            this.maxFrame = 7;
-            this.frameX = 0;
-            this.position = {
-                x: 100,
-                y: 200
-            };
-            this.velocity = {
-                x: -10,
-                y: 0
+            this.image = new Image();
+            this.image.src = '{{site.baseurl}}/images/box.png'; 
+            this.image.onload = () => {
+                this.spriteWidth = 71.75;
+                this.spriteHeight = 82.5;
+                this.width = this.spriteWidth;
+                this.height = this.spriteHeight;
+                this.scale = 0.75;
+                this.maxFrame = 7;
+                this.frameX = 0;
+                this.position = {
+                    x: 100,
+                    y: 200
+                };
+                this.velocity = {
+                    x: -10,
+                    y: 0
+                };
+                this.setFrameLimit(7); 
+                this.draw();
             };
         }
         setFrameLimit(limit) {
             this.maxFrame = limit;
         }
-        draw(context) {
-            context.drawImage(this.image, this.position.x, this.position.y, this.width*this.scale, this.height*this.scale,this.frameX * this.spriteWidth,this.spriteWidth,this.spriteHeight,);
+        draw(c){
+            c.drawImage(
+            this.image,
+            this.frameX * this.spriteWidth,
+            0, 
+            this.spriteWidth,
+            this.spriteHeight,
+            this.position.x,
+            this.position.y,
+            this.width * this.scale,
+            this.height * this.scale
+        );
         }
         update() {
             this.draw();
@@ -68,20 +82,6 @@ courses: { compsci: {week: 2} }
         }
     }
     player = new Player()
-    let lastTimestamp = 0;
-    function animateBox(timestamp) {
-        const deltaTime = timestamp - lastTimestamp;
-        if (deltaTime >= 66.66667) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            player.draw(ctx);
-            player.update();
-            updateAnimations();
-            lastTimestamp = timestamp;
-        }
-        requestAnimationFrame(animate);
-    }
-
-    animateBox();
 
     class Platform {
         constructor(image) {
@@ -199,16 +199,26 @@ courses: { compsci: {week: 2} }
 
     let genericObjects = [background];
 
-    function animate() {
+    let lastTimestamp = 0;
+
+    function animate(timestamp) {
         requestAnimationFrame(animate);
         c.clearRect(0, 0, canvas.width, canvas.height);
 
         genericObjects.forEach(genericObject => {
             genericObject.draw()
         });
+        const deltaTime = timestamp - lastTimestamp;
+        if (deltaTime >= 66.66667) {
+            c.clearRect(0, 0, canvas.width, canvas.height);
+            player.draw(c);
+            player.update();
+            updateAnimations();
+            lastTimestamp = timestamp;
+        }
+        requestAnimationFrame(animate);
 
         platform.draw();
-        player.update();
         tube.draw();
         blockObject.draw();
 
@@ -348,8 +358,13 @@ courses: { compsci: {week: 2} }
             case 68:
                 keys.right.pressed = true;
                 break;
-            case 87:
-                player.velocity.y -= 20;
+            case 87: 
+                if (player.velocity.y >= 0) { 
+                    player.velocity.y = -20; 
+                    setTimeout(() => {
+                        player.velocity.y = 20; 
+                    }, 200); 
+                }
                 break;
         }
     });

@@ -92,7 +92,7 @@ type: background
                     this.frameY = 0;
                     this.frameX = 0;
                     this.maxFrame = 7;
-                    this.speed = 10;
+                    this.speed = 150;
                 }
                 setFrameLimit(limit) {
                     this.maxFrame = limit;
@@ -172,7 +172,7 @@ type: background
             function animate(timestamp) {
                 const deltaTime = timestamp - lastTimestamp;
                 if (deltaTime >= FRAME_INTERVAL) {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.clearRect(box.x, box.y, box.width * box.scale, box.height * box.scale);
                     backgroundObj.draw();
                     box.draw();
                     box.update();

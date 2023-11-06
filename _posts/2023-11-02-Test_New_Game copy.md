@@ -2,40 +2,69 @@
 toc: true
 comments: false
 layout: post
-title: New Game1
+title: test2
 description: in progress
 type: background
-courses: { compsci: {week: 4} }
+courses: { compsci: {week: 2} }
 ---
+
 <style>
     #canvas {
         margin: 0;
         border: 1px solid white;
     }
 </style>
-<canvas id='canvas'></canvas>
+
+<canvas id='canvas'>
+</canvas>
+
 <script>
+    
     let canvas = document.getElementById('canvas');
     let c = canvas.getContext('2d');
     canvas.width = 1500;
-    canvas.height = 380;
+    canvas.height = 400;
     let gravity = 1.5;
+
     class Player {
         constructor() {
-            this.position = {
-                x: 100,
-                y: 200
+            this.image = new Image();
+            this.image.src = '{{site.baseurl}}/images/box.png'; 
+            this.image.onload = () => {
+                this.spriteWidth = 71.75;
+                this.spriteHeight = 82.5;
+                this.width = this.spriteWidth;
+                this.height = this.spriteHeight;
+                this.scale = 0.75;
+                this.maxFrame = 7;
+                this.frameX = 0;
+                this.position = {
+                    x: 100,
+                    y: 200
+                };
+                this.velocity = {
+                    x: -10,
+                    y: 0
+                };
+                this.setFrameLimit(7); 
+                this.draw();
             };
-            this.velocity = {
-                x: 0,
-                y: 0
-            };
-            this.width = 50;
-            this.height = 30;
         }
-        draw() {
-            c.fillStyle = 'brown';
-            c.fillRect(this.position.x, this.position.y, this.width, this.height);
+        setFrameLimit(limit) {
+            this.maxFrame = limit;
+        }
+        draw(c){
+            c.drawImage(
+            this.image,
+            this.frameX * this.spriteWidth,
+            0, 
+            this.spriteWidth,
+            this.spriteHeight,
+            this.position.x,
+            this.position.y,
+            this.width * this.scale,
+            this.height * this.scale
+        );
         }
         update() {
             this.draw();
@@ -45,27 +74,35 @@ courses: { compsci: {week: 4} }
                 this.velocity.y += gravity;
             else
                 this.velocity.y = 0;
+            if (this.frameX < this.maxFrame) {
+                this.frameX++;
+            } else {
+                this.frameX = 0;
+            }
         }
     }
+    player = new Player()
+
     class Platform {
         constructor(image) {
             this.position = {
                 x: 0,
-                y: 300
+                y: 310
             }
             this.image = image;
             this.width = 1500;
-            this.height = 100;
+            this.height = 300;
         }
         draw() {
             c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
         }
     }
+
     class Tube {
         constructor(image) {
             this.position = {
-                x: 1390,
-                y: 180
+                x: 1200,
+                y: 190
             }
             this.image = image;
             this.width = 100;
@@ -75,29 +112,27 @@ courses: { compsci: {week: 4} }
             c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
         }
     }
+
     class BlockObject {
         constructor(image) {
             this.position = {
                 x: 200,
-                y: 100
+                y: 50
             };
             this.image = image;
-            this.width = 158;
-            this.height = 79;
+            this.width = 300;
+            this.height = 160;
         }
         draw() {
-            c.drawImage(this.image, this.position.x, this.position.y);
+            c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
         }
     }
-    //--
-    // NEW CODE - CREATE GOOMBA CLASS
-    //--
-</body>
+
     class Goomba {
         constructor(image) {
             this.position = {
                 x: 250,
-                y: 245
+                y: 260
             };
             this.image = image;
             this.width = 55;
@@ -115,22 +150,19 @@ courses: { compsci: {week: 4} }
             this.draw();
         }
     }
+
     let image = new Image()
     let imageTube = new Image()
     let imageBlock = new Image()
-    image.src = '{{site.baseurl}}/images/Road.png'
+    image.src = '{{site.baseurl}}/images/other_road.png'
     imageTube.src = '{{site.baseurl}}/images/house.png'
-    imageBlock.src = '{{site.baseurl}}/images/balcony.png';
-    //--
-    // NEW CODE - ADD GOOMBA IMAGE
-    //--
+    imageBlock.src = '{{site.baseurl}}/images/Cloud.png';
     let imageGoomba = new Image()
-    imageGoomba.src = 'https://ryann96.github.io/BoxGame/images/goomba.png';
+    imageGoomba.src = '{{site.baseurl}}/images/Uno-Stalker.png';
     let platform = new Platform(image)
     let tube = new Tube(imageTube)
     let blockObject = new BlockObject(imageBlock)
     let goomba = new Goomba(imageGoomba)
-    player = new Player()
     let keys = {
         right: {
             pressed: false
@@ -139,26 +171,69 @@ courses: { compsci: {week: 4} }
             pressed: false
         }
     }
-    function animate() {
+
+    class GenericObject {
+        constructor({ x, y, image }) {
+            this.position = {
+                x,
+                y
+            };
+            this.image = image;
+            this.width = 1500; // Adjust the width to fit your canvas
+            this.height = 400; // Adjust the height to fit your canvas
+        }
+
+        draw() {
+            c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+        }
+    }
+
+    let imageBackground = new Image();
+    imageBackground.src = '{{site.baseurl}}/images/Background-With-Road-6.1.png';
+
+    let background = new GenericObject({
+        x: 0,
+        y: 0,
+        image: imageBackground
+    });
+
+    let genericObjects = [background];
+
+    let lastTimestamp = 0;
+
+    function animate(timestamp) {
         requestAnimationFrame(animate);
         c.clearRect(0, 0, canvas.width, canvas.height);
+
+        genericObjects.forEach(genericObject => {
+            genericObject.draw()
+        });
+        const deltaTime = timestamp - lastTimestamp;
+        if (deltaTime >= 66.66667) {
+            c.clearRect(0, 0, canvas.width, canvas.height);
+            player.draw(c);
+            player.update();
+            updateAnimations();
+            lastTimestamp = timestamp;
+        }
+        requestAnimationFrame(animate);
+
         platform.draw();
-        player.update();
         tube.draw();
         blockObject.draw();
-        //--
-        // NEW CODE - UPDATE GOOMBA ANIMATION
-        //--
+
         goomba.update();
         if (
-            player.position.y + player.height <= blockObject.position.y &&
+            player.position.y + player.height <= blockObject.position.y + 50 && // Add desired value to lower the player
             player.position.y + player.height + player.velocity.y >= blockObject.position.y &&
-            player.position.x + player.width >= blockObject.position.x &&
-            player.position.x <= blockObject.position.x + blockObject.width
+            player.position.x + player.width >= blockObject.position.x + 50 && // Add desired value to shorten the collision width
+            player.position.x <= blockObject.position.x + blockObject.width - 50 // Subtract desired value to shorten the collision width
         )
         {
             player.velocity.y = 0;
+            player.position.y = blockObject.position.y - player.height + 50; // Adjust the player's position
         }
+
         if (keys.right.pressed && player.position.x + player.width <= canvas.width - 50) {
             player.velocity.x = 15;
         } else if (keys.left.pressed && player.position.x >= 50) {
@@ -166,6 +241,7 @@ courses: { compsci: {week: 4} }
         } else {
             player.velocity.x = 0;
         }
+
         if (
                 player.position.y + player.height <= platform.position.y &&
                 player.position.y + player.height + player.velocity.y >= platform.position.y &&
@@ -175,6 +251,7 @@ courses: { compsci: {week: 4} }
             {
                 player.velocity.y = 0;
             }
+
         if (
                 player.position.y + player.height <= tube.position.y &&
                 player.position.y + player.height + player.velocity.y >= tube.position.y &&
@@ -186,12 +263,14 @@ courses: { compsci: {week: 4} }
                 player.velocity.y = 0.0001
                 gravity = 0.2
             }
+
             if (player.position.y + player.height == tube.position.y + tube.height ||
                     player.position.y + player.height <= tube.position.y ||
                     player.position.x + player.width <= tube.position.x ||
                     player.position.x >= tube.position.x + tube.width) {
                         gravity = 1.5
                     }
+
         if (
                 player.position.x + player.width<= tube.position.x &&
                 player.position.x + player.width + player.velocity.x >= tube.position.x &&
@@ -201,6 +280,7 @@ courses: { compsci: {week: 4} }
             {
                 player.velocity.x = 0;
             }
+
         if (
                 player.position.x >= tube.position.x + tube.width &&
                 player.position.x + player.velocity.x <= tube.position.x + tube.width &&
@@ -210,6 +290,7 @@ courses: { compsci: {week: 4} }
             {
                 player.velocity.x = 0;
             }
+
         if (
                 player.position.x >= tube.position.x &&
                 player.position.x + player.velocity.x <= tube.position.x &&
@@ -219,6 +300,7 @@ courses: { compsci: {week: 4} }
             {
                 player.velocity.x = 0;
             }
+
         if (
                 player.position.x + player.width <= tube.position.x + tube.width &&
                 player.position.x + player.width + player.velocity.x >= tube.position.x + tube.width &&
@@ -228,9 +310,7 @@ courses: { compsci: {week: 4} }
             {
                 player.velocity.x = 0;
             }
-            //--
-            // NEW CODE - GOOMBA COLLISION DETECTION
-            //--
+
         if(
             player.position.y + player.height <= goomba.position.y &&
             player.position.y + player.height + player.velocity.y >= goomba.position.y &&
@@ -238,8 +318,19 @@ courses: { compsci: {week: 4} }
             player.position.x <= goomba.position.x + goomba.width
         )
         {
-            player.velocity.y = -5;
+            player.velocity.y = -20;
         }
+
+        if (
+            player.position.x < goomba.position.x + goomba.width &&
+            player.position.x + player.width > goomba.position.x &&
+            player.position.y < goomba.position.y + goomba.height &&
+            player.position.y + player.height > goomba.position.y
+        ) {
+            // Player collided with goomba, refresh the page
+            location.reload();
+        }
+
         if (
             goomba.position.x >= platform.position.x &&
             goomba.position.x <= platform.position.x
@@ -247,6 +338,7 @@ courses: { compsci: {week: 4} }
         {
             goomba.velocity.x = 2;
         }
+
         if (
             goomba.position.x + goomba.width <= tube.position.x &&
             goomba.position.x + goomba.width + goomba.velocity.x >= tube.position.x
@@ -255,41 +347,37 @@ courses: { compsci: {week: 4} }
             goomba.velocity.x = -2;
         }
     }
+
     animate();
+
     addEventListener('keydown', ({ keyCode }) => {
         switch (keyCode) {
             case 65:
-                console.log('left');
                 keys.left.pressed = true;
                 break;
-            case 83:
-                console.log('down');
-                break;
             case 68:
-                console.log('right');
                 keys.right.pressed = true;
                 break;
-            case 87:
-                console.log('up');
-                player.velocity.y -= 20;
+            case 87: 
+                if (player.velocity.y >= 0) { 
+                    player.velocity.y = -20; 
+                    setTimeout(() => {
+                        player.velocity.y = 20; 
+                    }, 200); 
+                }
                 break;
         }
     });
+
     addEventListener('keyup', ({ keyCode }) => {
         switch (keyCode) {
             case 65:
-                console.log('left');
                 keys.left.pressed = false;
                 break;
-            case 83:
-                console.log('down');
-                break;
             case 68:
-                console.log('right');
                 keys.right.pressed = false;
                 break;
             case 87:
-                console.log('up');
                 player.velocity.y = -20;
                 break;
         }
